@@ -18,8 +18,8 @@ const router = createBrowserRouter([
     element: <Layout />, // Layout을 공통으로 사용
     children: [
       { path: '', element: <MainPage /> }, // 메인페이지
-      { path: 'ocial/history', element: <HistoryPage /> }, // 연혁
-      { path: 'ocial/members', element: <MembersPage /> }, // 구성원
+      { path: 'ocial/history', element: <HistoryPage /> }, // 오셜,연혁페이지
+      { path: 'ocial/members', element: <MembersPage /> }, // 오셜,구성원
       { path: 'activity', element: <ActivityListPage /> }, // Activity 목록
       { path: 'activity/detail', element: <ActivityDetailPage /> }, // Activity 상세
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
