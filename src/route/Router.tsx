@@ -10,7 +10,7 @@ import NoticePage from '@/pages/news/NoticePage';
 import PressPage from '@/pages/news/PressPage';
 import MyPage from '@/pages/mypage/MyPage';
 import EditPage from '@/pages/mypage/EditPage';
-// import NotFoundPage from '@/pages/error/NotFoundPage';
+import NotFoundPage from '@/pages/error/NotFoundPage';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    // element: <NotFoundPage /> // 404 페이지
+    element: <NotFoundPage />, // 404 페이지
   },
 ]);
 
