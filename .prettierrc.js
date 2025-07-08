@@ -9,4 +9,5 @@ export default {
   arrowParens: 'always', // 화살표 함수에서 항상 괄호 사용
   jsxBracketSameLine: false, // JSX 태그 닫는 괄호를 다음 줄에
   jsxSingleQuote: true, // JSX에서 작은따옴표 사용
+  bracketSpacing: true, // 객체 리터럴 중괄호 사이에 공백 추가: { foo: bar }
 };

@@ -11,6 +11,8 @@ import PressPage from '@/pages/news/PressPage';
 import MyPage from '@/pages/mypage/MyPage';
 import EditPage from '@/pages/mypage/EditPage';
 import NotFoundPage from '@/pages/error/NotFoundPage';
+import SigninPage from '@/pages/auth/SigninPage';
+import SignupPage from '@/pages/auth/SignupPage';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,8 @@ const router = createBrowserRouter([
       { path: 'news/press', element: <PressPage /> }, // 보도자료
       { path: 'mypage', element: <MyPage /> }, // 마이페이지
       { path: 'mypage/edit', element: <EditPage /> }, // 정보수정
+      { path: '/auth/signin', element: <SigninPage /> }, // 로그인
+      { path: '/auth/signup', element: <SignupPage /> }, // 회원가입
     ],
   },
   {
