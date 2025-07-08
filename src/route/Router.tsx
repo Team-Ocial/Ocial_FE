@@ -2,8 +2,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/layouts/Layout';
 import MainPage from '@/pages/MainPage';
-import HistoryPage from '@/pages/ocial/HistoryPage';
-import MembersPage from '@/pages/ocial/MembersPage';
+import HistoryPage from '@/pages/OCIAL/HistoryPage';
+import MembersPage from '@/pages/OCIAL/MembersPage';
 import ActivityListPage from '@/pages/activity/ActivityListPage';
 import ActivityDetailPage from '@/pages/activity/ActivityDetailPage';
 import NoticePage from '@/pages/news/NoticePage';
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
     element: <Layout />, // Layout을 공통으로 사용
     children: [
       { path: '', element: <MainPage /> }, // 메인페이지
-      { path: 'ocial/history', element: <HistoryPage /> }, // 오셜,연혁페이지
-      { path: 'ocial/members', element: <MembersPage /> }, // 오셜,구성원
+      { path: 'OCIAL/history', element: <HistoryPage /> }, // 오셜,연혁페이지
+      { path: 'OCIAL/members', element: <MembersPage /> }, // 오셜,구성원
       { path: 'activity', element: <ActivityListPage /> }, // Activity 목록
       { path: 'activity/detail', element: <ActivityDetailPage /> }, // Activity 상세
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항

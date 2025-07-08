@@ -1,22 +1,17 @@
-/** @jsxImportSource @emotion/react */
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
+import logoImage from '@/assets/images/logo_black.png';
 
 const Header = () => {
   return (
     <header css={headerContainer}>
       <Link to='/' css={logoLink}>
-        <img
-          src='https://cdn.builder.io/api/v1/image/assets/TEMP/715bc504f51434731ff03a828cb112d176455775?width=241'
-          alt='Ocial Logo'
-          width={120}
-          height={38}
-        />
+        <img src={logoImage} alt='OCIAL Logo' width={120} height={38} />
       </Link>
 
       <nav css={navigation}>
-        <Link to='/ocial/history' css={navLink}>
-          Ocial
+        <Link to='/OCIAL/history' css={navLink}>
+          OCIAL
         </Link>
         <Link to='/activity' css={navLink}>
           Activity
@@ -27,7 +22,7 @@ const Header = () => {
       </nav>
 
       <Link to='/auth/signup' css={startButton}>
-        Start with Ocial
+        Start with OCIAL
       </Link>
     </header>
   );
@@ -42,6 +37,7 @@ const headerContainer = css`
   justify-content: space-between;
   padding: 16px 135px;
   background: rgba(248, 249, 251, 0.1);
+  border: 1px solid red; /*칸 확인*/
   backdrop-filter: blur(2px);
 `;
 
@@ -56,7 +52,7 @@ const navigation = css`
 `;
 
 const navLink = css`
-  color: #fff;
+  color: #000;
   text-decoration: none;
 `;
 

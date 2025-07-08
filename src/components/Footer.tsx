@@ -9,22 +9,22 @@ const Footer = () => {
         <div>
           <img
             src='https://cdn.builder.io/api/v1/image/assets/TEMP/715bc504f51434731ff03a828cb112d176455775?width=241'
-            alt='Ocial Logo'
+            alt='OCIAL Logo'
             css={footerLogo}
           />
-          <p css={copyright}>© 2024 Ocial. All rights reserved.</p>
+          <p css={copyright}>© 2024 OCIAL. All rights reserved.</p>
         </div>
 
         {/* 네비게이션 섹션 */}
         <div css={navigationSection}>
-          {/* Ocial */}
+          {/* OCIAL */}
           <div>
-            <h3 css={sectionTitle}>Ocial</h3>
+            <h3 css={sectionTitle}>OCIAL</h3>
             <div css={linkContainer}>
-              <Link to='/ocial/history' css={footerLink}>
+              <Link to='/OCIAL/history' css={footerLink}>
                 연혁
               </Link>
-              <Link to='/ocial/members' css={footerLink}>
+              <Link to='/OCIAL/members' css={footerLink}>
                 구성원
               </Link>
             </div>
