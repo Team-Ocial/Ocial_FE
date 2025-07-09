@@ -35,6 +35,7 @@ const headerContainer = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 82px;
   padding: 16px 135px;
   background: rgba(248, 249, 251, 0.1);
   border: 1px solid red; /*칸 확인*/

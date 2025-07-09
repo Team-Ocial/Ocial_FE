@@ -1,31 +1,52 @@
 import { css } from '@emotion/react';
 
-const MainPage = () => (
-  <div css={mainContainer}>
-    <h1 css={mainTitle}>메인페이지</h1>
-    <div css={mainContent}>{/* 추후 메인 페이지 컨텐츠가 추가될 영역 */}</div>
-  </div>
-);
+const MainPage = () => {
+  return (
+    <main>
+      <section css={heroSection}>Hero Section</section>
+      <section css={aboutSection}>About Section</section>
+      <section css={storySection}>Story Section</section>
+      <section css={mnaSection}>M&A Section</section>
+      <section css={visionSection}>Vision Section</section>
+    </main>
+  );
+};
 
 export default MainPage;
-
 // Styles
-const mainContainer = css`
-  text-align: center;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
 
-const mainTitle = css`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #04009a;
-  margin-bottom: 1.5rem;
-`;
-
-const mainContent = css`
+const sectionBase = css`
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+  border-bottom: 1px solid gray;
+`;
+
+// 각각의 섹션 높이
+const heroSection = css`
+  ${sectionBase};
+  height: 880px;
+`;
+
+const aboutSection = css`
+  ${sectionBase};
+  height: 975px;
+`;
+
+const storySection = css`
+  ${sectionBase};
+  height: 1687px;
+`;
+
+const mnaSection = css`
+  ${sectionBase};
+  height: 1024px;
+`;
+
+const visionSection = css`
+  ${sectionBase};
+  height: 1344px;
 `;
