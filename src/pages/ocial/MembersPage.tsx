@@ -1,4 +1,3 @@
-// src/pages/ocial/MembersPage.tsx
 import { css } from '@emotion/react';
 
 const MembersPage = () => (

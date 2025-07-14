@@ -29,6 +29,7 @@ const sectionBase = css`
 const heroSection = css`
   ${sectionBase};
   height: 880px;
+  border: 2px solid blue;
 `;
 
 const aboutSection = css`

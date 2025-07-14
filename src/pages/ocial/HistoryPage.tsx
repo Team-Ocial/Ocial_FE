@@ -1,30 +1,28 @@
 import { css } from '@emotion/react';
+import { theme } from '@/styles/theme';
 
 const HistoryPage = () => (
-  <div css={pageContainer}>
-    <h1 css={pageTitle}>연혁</h1>
-    <div css={historyContainer}>hhhhhhhhhhhhhh</div>
+  <div css={historyContainer}>
+    <h1 css={pageTitle}>
+      데이터와 함께 걸어온 길,
+      <br />
+      새로운 미래를 향해 나아갑니다.
+    </h1>
   </div>
 );
 
 export default HistoryPage;
 
 // Styles
-const pageContainer = css`
-  padding: 2rem;
-  max-width: 1200px;
+const historyContainer = css`
+  width: ${theme.layout.width.content};
   margin: 0 auto;
+  padding: 30px 0 140px 0;
+  border: 1px solid red;
 `;
 
 const pageTitle = css`
   font-size: 2rem;
   font-weight: 700;
   color: #04009a;
-  margin-bottom: 2rem;
-`;
-
-const historyContainer = css`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
 `;
