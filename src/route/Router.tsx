@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       { path: 'activity', element: <ActivityListPage /> }, // Activity 목록
       { path: 'activity/detail', element: <ActivityDetailPage /> }, // Activity 상세
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
-      { path: 'news/press', element: <PressPage /> }, // 보도자료
+      { path: 'news/press', element: <PressPage /> }, // 보도자료,뉴스
       { path: 'mypage', element: <MyPage /> }, // 마이페이지
       { path: 'mypage/edit', element: <EditPage /> }, // 정보수정
       { path: '/auth/signin', element: <SigninPage /> }, // 로그인

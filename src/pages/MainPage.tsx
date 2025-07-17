@@ -1,9 +1,12 @@
 import { css } from '@emotion/react';
+import HeroSlider from '@/components/common/HeroSlider';
 
 const MainPage = () => {
   return (
     <main>
-      <section css={heroSection}>Hero Section</section>
+      <section css={heroSection}>
+        <HeroSlider />
+      </section>
       <section css={aboutSection}>About Section</section>
       <section css={storySection}>Story Section</section>
       <section css={mnaSection}>M&A Section</section>
@@ -28,7 +31,7 @@ const sectionBase = css`
 // 각각의 섹션 높이
 const heroSection = css`
   ${sectionBase};
-  height: 880px;
+  height: 800px;
   border: 2px solid blue;
 `;
 

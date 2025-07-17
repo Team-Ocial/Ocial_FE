@@ -31,8 +31,10 @@ const layoutStyle = css`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const mainStyle = css`
   flex: 1;
+  margin-top: -82px; // 헤더 높이만큼 negative margin
 `;
