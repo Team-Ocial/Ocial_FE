@@ -36,5 +36,4 @@ const layoutStyle = css`
 
 const mainStyle = css`
   flex: 1;
-  margin-top: -82px; // 헤더 높이만큼 negative margin
 `;

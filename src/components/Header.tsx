@@ -3,6 +3,12 @@ import { css } from '@emotion/react';
 import logoImage from '@/assets/images/logo_white.png';
 import { theme } from '@/styles/theme';
 
+const navLinks = [
+  { to: '/OCIAL/history', text: 'OCIAL' },
+  { to: '/activity', text: 'Activity' },
+  { to: '/news/notice', text: 'News' },
+];
+
 const Header = () => {
   return (
     <header css={headerContainer}>
@@ -11,15 +17,11 @@ const Header = () => {
       </Link>
 
       <nav css={navigation}>
-        <Link to='/OCIAL/history' css={navLink}>
-          OCIAL
-        </Link>
-        <Link to='/activity' css={navLink}>
-          Activity
-        </Link>
-        <Link to='/news/notice' css={navLink}>
-          News
-        </Link>
+        {navLinks.map((link) => (
+          <Link key={link.to} to={link.to} css={navLink}>
+            {link.text}
+          </Link>
+        ))}
       </nav>
 
       <Link to='/auth/signup' css={startButton}>
@@ -33,7 +35,7 @@ export default Header;
 
 // Styles
 const headerContainer = css`
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
