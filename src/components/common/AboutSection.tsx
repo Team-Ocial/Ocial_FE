@@ -9,12 +9,12 @@ const AboutSection = () => {
       </div>
 
       <div css={container}>
-        <h2 css={title}>
-          About OCIAL
+        <div css={titleRow}>
+          <h2 css={title}>About OCIAL</h2>
           <div css={underline} />
-        </h2>
+        </div>
 
-        <p css={Paragraph1}>
+        <p css={Paragraph}>
           OCIAL은 ‘Social’에서 ‘S’를 뺀 이름으로, 사회를 대표하는 의미를 담고 있습니다.
         </p>
 
@@ -24,13 +24,10 @@ const AboutSection = () => {
           <span>OCIAL</span>
         </div>
 
-        <div css={Paragraph2}>
-          <p>
-            영단어에서 s를 뺀다는 것은 복수형을 단수형으로 바꾼다는 의미입니다.
-            <br />
-            사회를 나타내는 단어인 Social에서 S를 뺀 OCIAL은 사회를 대표한다는 의미를 담고 있습니다.
-          </p>
-        </div>
+        <p css={Paragraph}>영단어에서 s를 뺀다는 것은 복수형을 단수형으로 바꾼다는 의미입니다.</p>
+        <p css={Paragraph}>
+          사회를 나타내는 단어인 Social에서 S를 뺀 OCIAL은 사회를 대표한다는 의미를 담고 있습니다.
+        </p>
       </div>
     </section>
   );
@@ -72,19 +69,23 @@ const backgroundText = css`
 const container = css`
   position: relative;
   z-index: 1;
-  max-width: ${theme.layout.width.content};
+  max-width: ${theme.layout.width.max};
   margin: 0 auto;
   top: 265px;
   box-sizing: border-box;
 `;
 
-const title = css`
-  ${theme.typography.headlineLarge2};
+const titleRow = css`
   display: flex;
   align-items: center;
-  gap: 16px; /* 텍스트와 라인 사이 간격 */
-  color: ${theme.colors.black};
+  gap: 16px;
   margin-bottom: 100px;
+`;
+
+const title = css`
+  ${theme.typography.headlineLarge2};
+  color: ${theme.colors.black};
+  white-space: nowrap;
 `;
 
 const underline = css`
@@ -93,12 +94,7 @@ const underline = css`
   background-color: ${theme.colors.primary[100]};
 `;
 
-const Paragraph1 = css`
-  ${theme.typography.headlineSmall};
-  color: ${theme.colors.black};
-`;
-
-const Paragraph2 = css`
+const Paragraph = css`
   ${theme.typography.headlineSmall};
   color: ${theme.colors.black};
 `;
