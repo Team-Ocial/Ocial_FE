@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
+import ButtonTest from '../test-page/ButtonTest';
 
 const HistoryPage = () => (
   <div css={historyContainer}>
+    <ButtonTest />
     <h1 css={pageTitle}>
       데이터와 함께 걸어온 길,
       <br />

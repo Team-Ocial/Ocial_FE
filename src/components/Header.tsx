@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import logoImage from '@/assets/images/logo_white.png';
 import { theme } from '@/styles/theme';
+import { Link, useLocation } from 'react-router-dom';
+import logoBlack from '@/assets/images/logo_black.png';
+import logoWhite from '@/assets/images/logo_white.png';
 
 const navLinks = [
   { to: '/OCIAL/history', text: 'OCIAL' },
@@ -10,15 +12,22 @@ const navLinks = [
 ];
 
 const Header = () => {
+  const location = useLocation();
+  const isMainPage = location.pathname === '/';
+
   return (
     <header css={headerContainer}>
       <Link to='/' css={logoLink}>
-        <img src={logoImage} alt='OCIAL Logo' width={120} height={38} />
+        <img src={isMainPage ? logoWhite : logoBlack} alt='OCIAL Logo' width={120} height={38} />
       </Link>
 
-      <nav css={navigation}>
+      <nav css={[navigation, isMainPage ? mainNavigation : subNavigation]}>
         {navLinks.map((link) => (
-          <Link key={link.to} to={link.to} css={navLink}>
+          <Link
+            key={link.to}
+            to={link.to}
+            css={[navLink, isMainPage ? navLinkWhite : navLinkBlack]}
+          >
             {link.text}
           </Link>
         ))}
@@ -33,7 +42,6 @@ const Header = () => {
 
 export default Header;
 
-// Styles
 const headerContainer = css`
   position: relative;
   top: 0;
@@ -45,7 +53,6 @@ const headerContainer = css`
   justify-content: space-between;
   min-height: 82px;
   padding: 16px 135px;
-  border: 1px solid yellow;
 `;
 
 const logoLink = css`
@@ -56,13 +63,19 @@ const logoLink = css`
 const navigation = css`
   display: flex;
   gap: 48px;
-  background: rgba(248, 249, 251, 0.1);
   border-radius: 50px;
-  padding: 8px 24px;
+  padding: 14px 24px;
+`;
+
+const mainNavigation = css`
+  background: rgba(248, 249, 251, 0.1);
+`;
+
+const subNavigation = css`
+  background: ${theme.colors.grayscale[50]};
 `;
 
 const navLink = css`
-  color: #fff;
   text-decoration: none;
   font-weight: 500;
   transition: opacity 0.2s ease;
@@ -72,10 +85,18 @@ const navLink = css`
   }
 `;
 
+const navLinkWhite = css`
+  color: ${theme.colors.white};
+`;
+
+const navLinkBlack = css`
+  color: ${theme.colors.black};
+`;
+
 const startButton = css`
   padding: 14px 24px;
   background-color: ${theme.colors.primary[100]};
-  color: #fff;
+  color: ${theme.colors.white};
   text-decoration: none;
   border-radius: 999px;
   transition: opacity 0.2s ease;

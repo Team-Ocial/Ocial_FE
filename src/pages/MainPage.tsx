@@ -3,10 +3,12 @@ import HeroSlider from '@/components/common/HeroSlider';
 import AboutSection from '@/components/common/AboutSection';
 import StorySection from '@/components/common/StorySection';
 import MnaSection from '@/components/common/MnaSection';
+import VisionSection from '@/components/common/VisionSection';
 
 const MainPage = () => {
   return (
     <div css={mainPageWrapper}>
+      <div></div>
       <section css={heroSection}>
         <HeroSlider />
       </section>
@@ -19,7 +21,9 @@ const MainPage = () => {
       <section css={mnaSection}>
         <MnaSection />
       </section>
-      <section css={visionSection}>Vision Section</section>
+      <section css={visionSection}>
+        <VisionSection />
+      </section>
     </div>
   );
 };

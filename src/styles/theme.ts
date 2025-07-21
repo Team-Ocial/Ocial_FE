@@ -147,25 +147,32 @@ export const typography = {
     fontFamily: 'Pretendard',
     //fontFeatureSettings: '"case" on',
   },
+  textSmall2: {
+    fontSize: '13px',
+    fontWeight: 500,
+    lineHeight: '160%' /* 20.8px */,
+    fontFamily: 'Pretendard',
+    //fontFeatureSettings: '"case" on',
+  },
 
   // Label
   labelLarge: {
     fontSize: '18px',
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '160%' /* 28.8px */,
     fontFamily: 'Pretendard',
     //fontFeatureSettings: '"case" on',
   },
   labelMedium: {
     fontSize: '16px',
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '160%' /* 25.6px */,
     fontFamily: 'Pretendard',
     //fontFeatureSettings: '"case" on',
   },
   labelSmall: {
     fontSize: '14px',
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '160%' /* 22.4px */,
     fontFamily: 'Pretendard',
     //fontFeatureSettings: '"case" on',
