@@ -1,27 +1,26 @@
 import { css } from '@emotion/react';
 import HeroSlider from '@/components/common/HeroSlider';
 import AboutSection from '@/components/common/AboutSection';
-import StorySection from '@/components/common/StorySection';
-import MnaSection from '@/components/common/MnaSection';
-import VisionSection from '@/components/common/VisionSection';
+import StorySection from '@/components/main/StorySection';
+import MnaSection from '@/components/main/MnaSection';
+import VisionSection from '@/components/main/VisionSection';
 
 const MainPage = () => {
   return (
     <div css={mainPageWrapper}>
-      <div></div>
-      <section css={heroSection}>
+      <section>
         <HeroSlider />
       </section>
-      <section css={aboutSection}>
+      <section>
         <AboutSection />
       </section>
-      <section css={storySection}>
+      <section>
         <StorySection />
       </section>
-      <section css={mnaSection}>
+      <section>
         <MnaSection />
       </section>
-      <section css={visionSection}>
+      <section>
         <VisionSection />
       </section>
     </div>
@@ -33,38 +32,4 @@ export default MainPage;
 
 const mainPageWrapper = css`
   margin-top: -120px; // 헤더 높이만큼 negative margin
-`;
-
-const sectionBase = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // border-bottom: 1px solid gray; // 삭제해야함
-`;
-
-// 각각의 섹션 높이
-const heroSection = css`
-  ${sectionBase};
-  height: 880px;
-  border: 2px solid blue;
-`;
-
-const aboutSection = css`
-  ${sectionBase};
-  height: 975px;
-`;
-
-const storySection = css`
-  ${sectionBase};
-  height: 1687px;
-`;
-
-const mnaSection = css`
-  ${sectionBase};
-  height: 1024px;
-`;
-
-const visionSection = css`
-  ${sectionBase};
-  height: 1344px;
 `;

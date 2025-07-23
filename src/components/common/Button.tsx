@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes } from 'react';
 import { theme } from '@/styles/theme';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'filled' | 'outlined' | 'menu' | 'filter';
+  variant?: 'filled' | 'outlined' | 'filter';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   active?: boolean;
@@ -62,8 +62,8 @@ const buttonBase = css`
 
 const sizes = {
   small: css`
-    padding: 6px 14px;
-    height: 33px;
+    padding: 8px 16px;
+    height: 36px;
     ${theme.typography.textSmall2}
   `,
   medium: css`
@@ -74,8 +74,6 @@ const sizes = {
   large: css`
     padding: 14px 24px;
     height: 48px;
-    min-width: 320px;
-    ${theme.typography.labelSmall}
   `,
 };
 
@@ -92,21 +90,13 @@ const variants = {
     color: ${theme.colors.black};
     border: 1px solid ${theme.colors.grayscale[800]};
   `,
-  menu: css`
-    border-radius: 999px;
-    background: transparent;
-    color: ${theme.colors.black};
-    border: 1px solid ${theme.colors.grayscale[800]};
-    ${theme.typography.labelSmall}
-  `,
   filter: css`
     border-radius: 6px;
     padding: 6px 14px;
     background: transparent;
-    border: 2px solid ${theme.colors.grayscale[100]};
-    color: ${theme.colors.grayscale[900]};
-    height: auto;
-    min-height: 33px;
+    border: 1px solid ${theme.colors.grayscale[100]};
+    color: ${theme.colors.grayscale[800]};
+    height: 32px;
     ${theme.typography.textSmall2}
   `,
 };
@@ -118,11 +108,6 @@ const hoverStyles = {
     }
   `,
   outlined: css`
-    &:hover:not(:disabled) {
-      background: ${theme.colors.grayscale[100]};
-    }
-  `,
-  menu: css`
     &:hover:not(:disabled) {
       background: ${theme.colors.grayscale[100]};
     }
@@ -141,11 +126,6 @@ const activeStyles = {
     border: 1px solid ${theme.colors.grayscale[800]};
   `,
   outlined: css`
-    background: ${theme.colors.grayscale[50]};
-    color: ${theme.colors.black};
-    border: 1px solid ${theme.colors.grayscale[800]};
-  `,
-  menu: css`
     background: ${theme.colors.black};
     color: ${theme.colors.white};
     border: 1px solid ${theme.colors.black};

@@ -1,5 +1,7 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import Button from '@/components/common/Button';
+import { theme } from '@/styles/theme';
 
 const ButtonTest = () => {
   return (
@@ -19,10 +21,10 @@ const ButtonTest = () => {
       <section>
         <h2>메뉴 버튼 (150px)</h2>
         <div css={buttonGroup}>
-          <Button variant='menu' width={150} active>
+          <Button variant='outlined' size='medium' width={150} active>
             현재 페이지
           </Button>
-          <Button variant='menu' width={150}>
+          <Button variant='outlined' size='medium' width={150}>
             다른 페이지
           </Button>
         </div>
@@ -86,16 +88,7 @@ const ButtonTest = () => {
 
       <section>
         <h2>실제 사용 예시</h2>
-        <div
-          css={[
-            buttonGroup,
-            css`
-              background: #f5f5f5;
-              padding: 20px;
-              border-radius: 8px;
-            `,
-          ]}
-        >
+        <div css={[buttonGroup, exampleBackground]}>
           <Button size='large' width={320}>
             시작하기
           </Button>
@@ -122,7 +115,7 @@ const container = css`
   h2 {
     margin-bottom: 16px;
     font-size: 18px;
-    color: #333;
+    color: ${theme.colors.grayscale[700]};
   }
 `;
 
@@ -131,4 +124,10 @@ const buttonGroup = css`
   gap: 8px;
   margin-bottom: 16px;
   flex-wrap: wrap;
+`;
+
+const exampleBackground = css`
+  background: ${theme.colors.grayscale[50]};
+  padding: 20px;
+  border-radius: 8px;
 `;
