@@ -31,6 +31,7 @@ const layoutStyle = css`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const mainStyle = css`

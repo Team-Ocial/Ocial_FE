@@ -1,30 +1,17 @@
 import { css } from '@emotion/react';
+import PageHeader from '@/components/common/PageHeader';
 
-const HistoryPage = () => (
-  <div css={pageContainer}>
-    <h1 css={pageTitle}>연혁</h1>
-    <div css={historyContainer}>hhhhhhhhhhhhhh</div>
-  </div>
-);
+const HistoryPage = () => {
+  return (
+    <div css={historyContainer}>
+      <PageHeader title={'데이터와 함께 걸어온 길,\n새로운 미래를 향해 나아갑니다.'} />
+      {/* 페이지 컨텐츠 */}
+    </div>
+  );
+};
 
 export default HistoryPage;
 
-// Styles
-const pageContainer = css`
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const pageTitle = css`
-  font-size: 2rem;
-  font-weight: 700;
-  color: #04009a;
-  margin-bottom: 2rem;
-`;
-
 const historyContainer = css`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  width: 100%;
 `;
