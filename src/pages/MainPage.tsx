@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import HeroSlider from '@/components/common/HeroSlider';
-import AboutSection from '@/components/common/AboutSection';
+import HeroSlider from '@/components/main/HeroSlider';
+import AboutSection from '@/components/main/AboutSection';
 import StorySection from '@/components/main/StorySection';
 import MnaSection from '@/components/main/MnaSection';
 import VisionSection from '@/components/main/VisionSection';

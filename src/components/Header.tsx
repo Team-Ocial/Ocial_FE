@@ -8,7 +8,7 @@ import logoWhite from '@/assets/images/logo_white.png';
 const navLinks = [
   { to: '/OCIAL/history', text: 'OCIAL' },
   { to: '/activity', text: 'Activity' },
-  { to: '/news/notice', text: 'News' },
+  { to: 'news/press', text: 'News' },
 ];
 
 const Header = () => {
