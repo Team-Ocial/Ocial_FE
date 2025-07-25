@@ -29,7 +29,7 @@ const headerStyle = css`
 const containerStyle = css`
   max-width: ${theme.layout.width.content};
   margin: 0 auto;
-  padding: 76px 20px;
+  padding: 70px 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

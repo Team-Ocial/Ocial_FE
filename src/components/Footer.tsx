@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
+import logoWhite from '@/assets/images/logo_white.png';
 
 const Footer = () => {
   return (
@@ -7,11 +8,7 @@ const Footer = () => {
       <div css={footerContent}>
         {/* 로고 섹션 */}
         <div>
-          <img
-            src='https://cdn.builder.io/api/v1/image/assets/TEMP/715bc504f51434731ff03a828cb112d176455775?width=241'
-            alt='OCIAL Logo'
-            css={footerLogo}
-          />
+          <img src={logoWhite} alt='OCIAL Logo' css={footerLogo} />
           <p css={copyright}>© 2024 OCIAL. All rights reserved.</p>
         </div>
 

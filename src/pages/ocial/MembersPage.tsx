@@ -1,18 +1,16 @@
 import { css } from '@emotion/react';
-import PageHeader from '@/components/common/PageHeader';
+import OCIALLayout from '@/layouts/OCIALLayout';
 
 const MembersPage = () => {
   return (
-    <div css={pageContainer}>
-      <PageHeader title={'오셜을 만들어가는 사람들\nTeam. OCIAL'} />
-      {/* 페이지 컨텐츠 */}
-    </div>
+    <OCIALLayout title={'오셜을 만들어가는 사람들\nTeam. OCIAL'}>
+      <div css={membersContent}>{/* 구성원 목록 컨텐츠 추가 예정 */}</div>
+    </OCIALLayout>
   );
 };
 
 export default MembersPage;
 
-// Styles
-const pageContainer = css`
-  width: 100%;
+const membersContent = css`
+  margin-top: 80px;
 `;

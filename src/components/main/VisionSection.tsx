@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import visionBg from '@/assets/images/visionSectionImg.png';
