@@ -1,10 +1,21 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import OCIALLayout from '@/layouts/OCIALLayout';
 import { theme } from '@/styles/theme';
-import { MEMBER_DATA } from '@/mocks/data/memberData';
 import MemberCard from '@/components/common/MemberCard';
+import Pagination from '@/components/common/Pagination';
+import { MEMBER_DATA } from '@/mocks/data/memberData';
+
+const ITEMS_PER_PAGE = 16; // 한 페이지당 보여줄 멤버 수
 
 const MembersPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(MEMBER_DATA.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentMembers = MEMBER_DATA.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   return (
     <OCIALLayout title={'오셜을 만들어가는 사람들\nTeam. OCIAL'}>
       <div css={descriptionStyle}>
@@ -12,9 +23,16 @@ const MembersPage = () => {
         {'\n'}우리와 함께하는 멤버들을 소개합니다.
       </div>
       <div css={membersGridStyle}>
-        {MEMBER_DATA.map((member) => (
+        {currentMembers.map((member) => (
           <MemberCard key={member.id} member={member} />
         ))}
+      </div>
+      <div css={paginationWrapperStyle}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </OCIALLayout>
   );
@@ -47,4 +65,10 @@ const membersGridStyle = css`
   @media (max-width: ${theme.breakpoints.sm}) {
     grid-template-columns: 1fr;
   }
+`;
+
+const paginationWrapperStyle = css`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;

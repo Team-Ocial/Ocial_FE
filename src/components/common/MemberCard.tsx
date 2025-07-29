@@ -12,8 +12,10 @@ const MemberCard = ({ member }: MemberCardProps) => {
       <div css={imageWrapper}>
         <img src={member.imageUrl} alt={member.name} css={imageStyle} />
       </div>
-      <h3 css={nameStyle}>{member.name}</h3>
-      <p css={positionStyle}>{member.position}</p>
+      <div css={textWrapper}>
+        <h3 css={nameStyle}>{member.name}</h3>
+        <p css={positionStyle}>{member.position}</p>
+      </div>
     </div>
   );
 };
@@ -22,14 +24,13 @@ export default MemberCard;
 
 const cardStyle = css`
   width: 100%;
+  margin-bottom: 70px;
 `;
 
 const imageWrapper = css`
   width: 100%;
-  aspect-ratio: 1;
-  margin-bottom: 10px;
+  aspect-ratio: 0.87;
   overflow: hidden;
-  // border-radius: 4px;
 `;
 
 const imageStyle = css`
@@ -38,10 +39,18 @@ const imageStyle = css`
   object-fit: cover;
 `;
 
+const textWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 20px;
+  gap: 4px;
+`;
+
 const nameStyle = css`
   ${theme.typography.titleLarge};
   color: ${theme.colors.grayscale[900]};
-  margin: 0 0 8px 0;
+  margin: 0;
 `;
 
 const positionStyle = css`
