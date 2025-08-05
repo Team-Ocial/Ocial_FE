@@ -1,49 +1,47 @@
-# Gemini Project Guidelines for Ocial_FE
+# Ocial_FE 프로젝트 가이드라인
 
-This document provides context and guidelines for working on the Ocial_FE project.
+이 문서는 Gemini가 Ocial_FE 프로젝트 작업을 위해 반드시 알아야 할 핵심 아키텍처 원칙과 규칙, 주요 파일 위치를 정의합니다.
 
-## TypeScript Type Definitions
+---
 
-### 1. Activity/Event Data Structure
+## 1. 핵심 아키텍처 원칙
 
-When defining types for activities or events, follow the structure laid out in `src/types/activity.types.ts`. The key interfaces are `ActivityInfo` (for lists) and `ActivityDetail` (for detailed views).
+### 1.1. Hooks-First 데이터 관리
 
-- **Curriculum:** The curriculum should be structured using the `CurriculumSection` interface, which includes a `title` and an array of `items`.
+- **원칙:** 모든 데이터 로직(API 호출, 상태 관리, 정렬, 필터링 등)은 **커스텀 훅(Custom Hook)**으로 분리합니다. UI 컴포넌트는 이 훅을 사용하여 데이터를 공급받고, 화면을 그리는 역할에만 집중합니다.
+- **구현:**
+  - `src/hooks` 폴더에 `use[FeatureName]` (예: `useActivity`, `useNotices`) 패턴으로 훅을 생성합니다.
+  - 각 훅은 `data`, `isLoading`, `error` 상태를 기본적으로 반환하여, UI 컴포넌트가 모든 경우(성공, 로딩, 실패)에 대해 일관된 사용자 경험을 제공하도록 합니다.
+- **목표:** 로직의 재사용성, 테스트 용이성, 유지보수성을 극대화합니다.
 
-  ```typescript
-  export interface CurriculumSection {
-    title: string;
-    items: string[];
-  }
-  ```
+### 1.2. 일관된 타입 및 데이터 형식
 
-### 2. JSDoc Comments and Examples
+- **타입 정의:** 모든 데이터 모델의 타입은 `src/types` 폴더에서 `[feature].types.ts` 형식으로 관리합니다. (예: `activity.types.ts`)
+- **날짜 형식:** 백엔드와 통신하거나 목업 데이터에서 사용하는 모든 날짜/시간 정보는 **ISO 8601 형식의 문자열** (`YYYY-MM-DDTHH:mm:ss.sssZ`)로 통일합니다.
+- **UI 표시:** 날짜를 화면에 표시할 때는 `src/utils/formatDate.ts` 유틸리티를 사용하여 `YYYY.MM.DD` 형식으로 변환합니다.
 
-All type definitions and their properties should have clear JSDoc comments. Use the `@example` tag to provide concrete examples of the expected data format. This improves code clarity and maintainability.
+### 1.3. 명확한 역할 분담 기반의 폴더 구조
 
-  ```typescript
-  /**
-   * @example "Vision 스터디"
-   */
-  title: string; // 활동의 제목
-  ```
+- `components`: 재사용 가능한 UI 조각. `common` 폴더에는 버튼, 페이지 헤더 등 범용 컴포넌트를, `main` 등 특정 페이지용 폴더에는 해당 페이지에서만 쓰이는 큰 컴포넌트를 둡니다.
+- `hooks`: 위에서 설명한 데이터 로직을 담당하는 커스텀 훅.
+- `mocks`: 실제 API가 구현되기 전까지 사용할 목업 데이터. `data` 폴더에 기능별로 파일을 관리합니다.
+- `pages`: 각 라우팅 경로에 해당하는 메인 페이지 컴포넌트.
+- `types`: 프로젝트 전체에서 사용되는 TypeScript 타입 정의.
+- `utils`: `formatDate` 등 특정 기능에 종속되지 않는 순수 함수 유틸리티.
 
-### 3. Date and Time Formatting
+---
 
-- **Dates:** For consistency and to avoid timezone issues, all date fields (like `period.start` and `period.end`) should be stored as **ISO 8601 formatted strings**.
+## 2. 주요 파일 위치 (단축키)
 
-  ```typescript
-  /** @example "2025-03-01T00:00:00.000Z" */
-  start: string; // 활동 시작일 (ISO 8601 형식)
-  ```
+- **전체 라우팅 구조:** `src/route/Router.tsx`
+- **전역 디자인 시스템:** `src/styles/theme.ts` (색상, 타이포그래피 등)
+- **전역 CSS 스타일:** `src/styles/globalStyle.tsx`
+- **API 명세서 (백엔드 협업용):** `API_SPECIFICATION.md` (프로젝트 루트)
 
-- **Times:** For time-only values (like `time.start` and `time.end`), use the `HH:mm` string format.
+---
 
-  ```typescript
-  /** @example "10:30" */
-  start: string; // 일일 활동 시작 시간 (HH:mm 형식)
-  ```
+## 3. 개발 결정 사항 (History & Decisions)
 
-## Key File Locations
-
-- **Activity Types:** All type definitions related to activities are located in `src/types/activity.types.ts`.
+- **상태 관리:** 현재는 각 기능별로 `useState`와 커스텀 훅을 사용. 향후 로그인 등 전역적으로 공유될 상태가 필요할 때 `Zustand`나 `Recoil` 같은 경량 상태 관리 라이브러리 도입을 고려합니다.
+- **`key` 생성:** `.map()` 렌더링 시, `index` 대신 `src/utils/generateKey.ts` 유틸리티를 사용하여 데이터 기반의 고유 `key`를 생성합니다.
+- **카테고리 타입:** `ActivityCategory`와 같이 선택지가 제한적인 타입은 `enum` 대신 **문자열 리터럴 유니온 타입** (`type Category = 'A' | 'B'`)을 사용합니다. 이는 런타임 오버헤드가 없고 더 간결하기 때문입니다.
