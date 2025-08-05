@@ -1,55 +1,42 @@
 import { css } from '@emotion/react';
+import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
-import logoWhite from '@/assets/images/logo_white.png';
+import logoGray from '@/assets/images/logo_gray.png';
 
 const Footer = () => {
   return (
-    <footer css={footerContainer}>
-      <div css={footerContent}>
-        {/* 로고 섹션 */}
-        <div>
-          <img src={logoWhite} alt='OCIAL Logo' css={footerLogo} />
-          <p css={copyright}>© 2024 OCIAL. All rights reserved.</p>
-        </div>
-
-        {/* 네비게이션 섹션 */}
-        <div css={navigationSection}>
-          {/* OCIAL */}
-          <div>
-            <h3 css={sectionTitle}>OCIAL</h3>
-            <div css={linkContainer}>
-              <Link to='/OCIAL/history' css={footerLink}>
-                연혁
-              </Link>
-              <Link to='/OCIAL/members' css={footerLink}>
-                구성원
-              </Link>
-            </div>
-          </div>
-
-          {/* Activity */}
-          <div>
-            <h3 css={sectionTitle}>Activity</h3>
-            <div css={linkContainer}>
-              <Link to='/activity' css={footerLink}>
-                Activity 목록
-              </Link>
-            </div>
-          </div>
-
-          {/* News */}
-          <div>
-            <h3 css={sectionTitle}>News</h3>
-            <div css={linkContainer}>
-              <Link to='/news/notice' css={footerLink}>
-                공지사항
-              </Link>
-              <Link to='/news/press' css={footerLink}>
-                보도자료
-              </Link>
-            </div>
+    <footer css={footerStyle}>
+      <div css={footerContentStyle}>
+        <div css={topRowStyle}>
+          <img src={logoGray} alt='OCIAL' css={logoStyle} />
+          <div css={linksStyle}>
+            <Link to='/privacy' css={linkStyle}>
+              개인정보 처리방침
+            </Link>
+            <Link to='/terms' css={linkStyle}>
+              이용안내
+            </Link>
           </div>
         </div>
+
+        <div css={infoRowStyle}>
+          <span>상호명 (주)오셜</span>
+          <span css={dividerStyle}>|</span>
+          <span>대표이사 오수열</span>
+          <span css={dividerStyle}>|</span>
+          <span>사업자 등록 번호 111-11-11111</span>
+        </div>
+
+        <div css={infoRowStyle}>
+          <span>서울 종로구 경희궁 2길 8-4</span>
+          <span css={dividerStyle}>|</span>
+          <span>제휴 및 문의 ocial@co.kr</span>
+          <span>000-000-0000</span>
+        </div>
+
+        <div css={dividerLineStyle} />
+
+        <div css={copyrightStyle}>© 2024 OCIAL. All rights reserved</div>
       </div>
     </footer>
   );
@@ -57,52 +44,65 @@ const Footer = () => {
 
 export default Footer;
 
-// Styles
-const footerContainer = css`
-  background: #000;
-  padding: 80px 135px;
-  color: #fff;
+const footerStyle = css`
+  width: 100%;
+  background-color: ${theme.colors.white};
+  padding: 40px 0;
 `;
 
-const footerContent = css`
+const footerContentStyle = css`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+`;
+
+const topRowStyle = css`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-`;
-
-const footerLogo = css`
-  width: 120px;
-  height: 38px;
+  align-items: center;
   margin-bottom: 24px;
 `;
 
-const copyright = css`
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
+const logoStyle = css`
+  height: 44px;
 `;
 
-const navigationSection = css`
+const linksStyle = css`
   display: flex;
-  gap: 80px;
+  gap: 24px;
 `;
 
-const sectionTitle = css`
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 24px;
-`;
-
-const linkContainer = css`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const footerLink = css`
-  color: rgba(255, 255, 255, 0.6);
+const linkStyle = css`
+  ${theme.typography.textMedium};
+  color: ${theme.colors.grayscale[700]};
   text-decoration: none;
+
   &:hover {
-    color: #fff;
+    color: ${theme.colors.grayscale[900]};
   }
+`;
+
+const infoRowStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${theme.typography.textSmall};
+  color: ${theme.colors.grayscale[600]};
+  margin-bottom: 8px;
+`;
+
+const dividerStyle = css`
+  color: ${theme.colors.grayscale[400]};
+`;
+
+const dividerLineStyle = css`
+  width: 100%;
+  height: 1px;
+  background-color: ${theme.colors.grayscale[200]};
+  margin: 24px 0;
+`;
+
+const copyrightStyle = css`
+  ${theme.typography.textSmall};
+  color: ${theme.colors.grayscale[500]};
 `;
