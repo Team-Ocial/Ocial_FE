@@ -36,7 +36,7 @@ const Footer = () => {
 
         <div css={dividerLineStyle} />
 
-        <div css={copyrightStyle}>© 2024 OCIAL. All rights reserved</div>
+        <div css={copyrightStyle}>Co© 2024 OCIAL. All rights reserved</div>
       </div>
     </footer>
   );
