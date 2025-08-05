@@ -6,6 +6,7 @@ import HistoryPage from '@/pages/OCIAL/HistoryPage';
 import MembersPage from '@/pages/OCIAL/MembersPage';
 import ActivityListPage from '@/pages/activity/ActivityListPage';
 import ActivityDetailPage from '@/pages/activity/ActivityDetailPage';
+import ActivityEditPage from '@/pages/activity/ActivityEditPage';
 import NoticePage from '@/pages/news/NoticePage';
 import PressPage from '@/pages/news/PressPage';
 import MyPage from '@/pages/mypage/MyPage';
@@ -23,7 +24,8 @@ const router = createBrowserRouter([
       { path: 'OCIAL/history', element: <HistoryPage /> }, // 오셜,연혁페이지
       { path: 'OCIAL/members', element: <MembersPage /> }, // 오셜,구성원
       { path: 'activity', element: <ActivityListPage /> }, // Activity 목록
-      { path: 'activity/detail', element: <ActivityDetailPage /> }, // Activity 상세
+      { path: 'activity/:id', element: <ActivityDetailPage /> }, // Activity 상세
+      { path: 'activity/edit/:id', element: <ActivityEditPage /> }, // Activity 수정
       { path: 'news/press', element: <PressPage /> }, // 보도자료,뉴스
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
       { path: 'mypage', element: <MyPage /> }, // 마이페이지
