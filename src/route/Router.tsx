@@ -14,6 +14,7 @@ import EditPage from '@/pages/mypage/EditPage';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 import SigninPage from '@/pages/auth/SigninPage';
 import SignupPage from '@/pages/auth/SignupPage';
+import ToastTest from '@/pages/test-page/ToastTest';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: 'mypage/edit', element: <EditPage /> }, // 정보수정
       { path: '/auth/signin', element: <SigninPage /> }, // 로그인
       { path: '/auth/signup', element: <SignupPage /> }, // 회원가입
+      { path: 'test/toast', element: <ToastTest /> }, // Toast 테스트 페이지
     ],
   },
   {
