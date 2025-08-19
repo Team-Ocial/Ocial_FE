@@ -3,7 +3,9 @@ import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
 import logoBlack from '@/assets/images/logo_black.png';
 import logoWhite from '@/assets/images/logo_white.png';
+import profileImage from '@/assets/icon/profile image.svg';
 import { NAV_LINKS } from '@/constants/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface HeaderProps {
   variant?: 'light' | 'dark';
@@ -12,6 +14,7 @@ interface HeaderProps {
 
 const Header = ({ variant = 'dark', className }: HeaderProps) => {
   const isLight = variant === 'light';
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <header css={[headerContainer, isLight ? headerLight : headerDark, className]}>
@@ -27,9 +30,15 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
         ))}
       </nav>
 
-      <Link to='/auth/signup' css={startButton}>
-        Start with OCIAL
-      </Link>
+      {isLoggedIn ? (
+        <Link to='/mypage' css={profileButton}>
+          <img src={profileImage} alt='Profile' css={profileImageStyle} />
+        </Link>
+      ) : (
+        <Link to='/auth/signin' css={startButton}>
+          Start with OCIAL
+        </Link>
+      )}
     </header>
   );
 };
@@ -93,4 +102,25 @@ const startButton = css`
   &:hover {
     opacity: 0.9;
   }
+`;
+
+const profileButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const profileImageStyle = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;

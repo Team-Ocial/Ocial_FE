@@ -7,7 +7,6 @@ import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useNotices } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
-import ToastTest from '../test-page/ToastTest';
 
 const NoticePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +14,6 @@ const NoticePage = () => {
 
   return (
     <div css={pageContainer}>
-      <ToastTest />
       <PageHeader title={'우리의 연결이\n새로운 가능성을 만듭니다.'} />
       <div css={contentWrapper}>
         <PageTabButtons
