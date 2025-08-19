@@ -112,11 +112,11 @@ const SigninPage = () => {
               <span css={checkboxLabel}>로그인 유지</span>
             </label>
             <div css={findLinksContainer}>
-              <Link to='/auth/find-id' css={findLink}>
+              <Link to='/auth/find' css={findLink}>
                 ID 찾기
               </Link>
               <span css={divider}>/</span>
-              <Link to='/auth/find-password' css={findLink}>
+              <Link to='/auth/find?tab=password' css={findLink}>
                 비밀번호 찾기
               </Link>
             </div>
@@ -209,7 +209,7 @@ const labelStyle = css`
 
 const inputStyle = css`
   width: 100%;
-  padding: 16px;
+  padding: 10px;
   border: 1px solid ${theme.colors.grayscale[150]};
   border-radius: 8px;
   ${theme.typography.textMedium}
