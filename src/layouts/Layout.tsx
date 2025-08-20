@@ -21,12 +21,12 @@ const Layout = () => {
 export default Layout;
 
 const layoutContainer = css`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100vh;
 `;
 
 const mainStyle = css`
-  flex: 1;
-  margin-top: 114px;
+  // flex: 1;
+  // margin-top: 114px;
 `;

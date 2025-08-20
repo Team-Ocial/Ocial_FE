@@ -97,7 +97,10 @@ export const useAuth = (): UseAuthReturn => {
 
       // 임시 회원가입 로직
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('회원가입 시도:', data);
+      console.log('회원가입 성공:', data);
+
+      // 회원가입 성공 후, 받은 사용자 ID로 즉시 로그인 처리
+      setAuthState(data.id);
     } catch (err) {
       // 회원가입 오류 처리 (필요시 확장)
       throw err;

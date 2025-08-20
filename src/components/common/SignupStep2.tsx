@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 import { useSignupStore } from '@/store/useSignupStore';
 import Button from '@/components/common/Button';
@@ -21,12 +23,29 @@ const Step2 = () => {
   const [currentAgreement, setCurrentAgreement] = useState<'terms' | 'privacy' | 'marketing'>(
     'terms'
   );
+  const navigate = useNavigate();
+  const { signup, isLoading } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateStep()) {
-      // TODO: 회원가입 처리 로직 구현
-      console.warn('회원가입 완료', formData);
+    if (!validateStep()) return;
+
+    try {
+      // useAuth의 signup 함수 호출
+      await signup({
+        id: formData.id,
+        password: formData.password,
+        // 참고: 현재 useSignupStore에 email, name이 없어 임시값을 사용합니다.
+        // 실제 구현 시에는 Step1에서 이 값들을 받아와야 합니다.
+        email: formData.email || 'user@ocial.com',
+        name: formData.name || '오셜 사용자',
+      });
+
+      // 성공 시 WelcomePage로 이동
+      navigate('/auth/welcome');
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      // TODO: 사용자에게 에러 메시지 표시 (예: 토스트 메시지)
     }
   };
 
@@ -195,8 +214,8 @@ const Step2 = () => {
           <Button type='button' variant='outlined' size='large' width={220} onClick={handleBack}>
             이전
           </Button>
-          <Button type='submit' size='large' width={220} disabled={!isSubmitEnabled}>
-            가입
+          <Button type='submit' size='large' width={220} disabled={!isSubmitEnabled || isLoading}>
+            {isLoading ? '가입 중...' : '가입'}
           </Button>
         </div>
       </form>

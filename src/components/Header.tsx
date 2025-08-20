@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
-import logoBlack from '@/assets/images/logo_black.png';
-import logoWhite from '@/assets/images/logo_white.png';
+import OCIALBlack from '@/assets/icon/OCIAL_black.svg';
+import OCIALWhite from '@/assets/icon/OCIAL_white.svg';
 import profileImage from '@/assets/icon/profile image.svg';
 import { NAV_LINKS } from '@/constants/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -19,7 +19,7 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
   return (
     <header css={[headerContainer, isLight ? headerLight : headerDark, className]}>
       <Link to='/' css={logoLink}>
-        <img src={isLight ? logoWhite : logoBlack} alt='OCIAL Logo' width={120} height={38} />
+        <img src={isLight ? OCIALWhite : OCIALBlack} alt='OCIAL Logo' width={120} height={38} />
       </Link>
 
       <nav css={getNavigationStyle(isLight)}>
@@ -46,7 +46,8 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
 export default Header;
 
 const headerContainer = css`
-  position: fixed;
+  // position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -57,6 +58,7 @@ const headerContainer = css`
   justify-content: space-between;
   min-height: 82px;
   padding: 16px 135px;
+  border: 2px solid red;
 `;
 
 const headerLight = css`

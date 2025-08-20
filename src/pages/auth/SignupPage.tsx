@@ -1,11 +1,17 @@
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 import Step1 from '@/components/common/SignupStep1';
 import Step2 from '@/components/common/SignupStep2';
 import { useSignupStore } from '@/store/useSignupStore';
 import { theme } from '@/styles/theme';
 
 const SignupPage = () => {
-  const { currentStep } = useSignupStore();
+  const { currentStep, resetForm } = useSignupStore();
+
+  useEffect(() => {
+    // 페이지가 처음 렌더링될 때 폼 상태를 초기화합니다.
+    resetForm();
+  }, [resetForm]);
 
   return (
     <div css={containerStyle}>

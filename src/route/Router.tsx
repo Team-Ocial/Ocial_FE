@@ -14,6 +14,7 @@ import EditPage from '@/pages/mypage/EditPage';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 import SigninPage from '@/pages/auth/SigninPage';
 import SignupPage from '@/pages/auth/SignupPage';
+import WelcomePage from '@/pages/auth/WelcomePage';
 import FindPage from '@/pages/auth/FindPage';
 import IdFoundPage from '@/pages/auth/IdFoundPage';
 import PasswordResetPage from '@/pages/auth/PasswordResetPage';
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       }, // 정보수정 (로그인 필요)
       { path: '/auth/signin', element: <SigninPage /> }, // 로그인
       { path: '/auth/signup', element: <SignupPage /> }, // 회원가입
+      { path: '/auth/welcome', element: <WelcomePage /> }, // 회원가입 완료
       { path: '/auth/find', element: <FindPage /> }, // ID/비밀번호 찾기
       { path: '/auth/id-found', element: <IdFoundPage /> }, // ID 찾기 성공
       { path: '/auth/password-reset', element: <PasswordResetPage /> }, // 비밀번호 찾기 성공
