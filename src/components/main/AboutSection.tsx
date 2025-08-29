@@ -1,9 +1,48 @@
 import { css, keyframes } from '@emotion/react';
+import { useState, useEffect, useRef } from 'react';
 import { theme } from '@/styles/theme';
 
 const AboutSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // 섹션이 화면에서 사라지면 다시 false로 설정하여 재실행 가능하게 함
+          setTimeout(() => {
+            if (!entry.isIntersecting) {
+              setIsVisible(false);
+            }
+          }, 100);
+        } else {
+          // 섹션이 완전히 화면에서 사라지면 애니메이션 상태 리셋
+          setTimeout(() => {
+            setIsVisible(false);
+          }, 500);
+        }
+      },
+      {
+        threshold: 0.3, // 30% 이상 보일 때 트리거
+        rootMargin: '0px 0px -100px 0px', // 하단에서 100px 전에 트리거
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section css={aboutWrapper}>
+    <section ref={sectionRef} css={aboutWrapper}>
       <div css={backgroundWrapper}>
         <div css={backgroundText}>ABOUT</div>
       </div>
@@ -15,12 +54,12 @@ const AboutSection = () => {
         </div>
 
         <p css={Paragraph}>
-          OCIAL은 ‘Social’에서 ‘S’를 뺀 이름으로, 사회를 대표하는 의미를 담고 있습니다.
+          OCIAL은 'Social'에서 'S'를 뺀 이름으로, 사회를 대표하는 의미를 담고 있습니다.
         </p>
 
         {/* ✅ SOCIAL → OCIAL 애니메이션 텍스트 */}
         <div css={animationBox}>
-          <span css={sLetter}>S</span>
+          <span css={sLetter(isVisible)}>S</span>
           <span>OCIAL</span>
         </div>
 
@@ -120,8 +159,8 @@ const fadeOutLeft = keyframes`
   }
 `;
 
-const sLetter = css`
+const sLetter = (isVisible: boolean) => css`
   display: inline-block;
-  animation: ${fadeOutLeft} 1s ease forwards;
+  animation: ${isVisible ? fadeOutLeft : 'none'} 1s ease forwards;
   animation-delay: 0.5s;
 `;

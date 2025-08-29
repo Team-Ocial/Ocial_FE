@@ -9,7 +9,7 @@ const WelcomePage = () => {
 
   const handleCreateProfileClick = () => {
     // 마이페이지로 이동
-    navigate('/mypage');
+    navigate('/mypage/profilesetup');
   };
 
   return (
