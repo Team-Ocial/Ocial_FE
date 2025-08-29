@@ -1,42 +1,16 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { IoCameraSharp } from 'react-icons/io5';
 
 import Button from '@/components/common/Button';
 import { theme } from '@/styles/theme';
 import defaultProfileImage from '@/assets/icon/profile image.svg';
+import { useProfileSetup } from '@/hooks/useProfileSetup';
 
 const ProfileSetupPage = () => {
-  const navigate = useNavigate();
-  const [nickname, setNickname] = useState('김오셜'); // 예시 데이터
-  const [bio, setBio] = useState('');
-  const [isEditingNickname, setIsEditingNickname] = useState(false);
-  const [tempNickname, setTempNickname] = useState(nickname);
-
-  const handleSave = () => {
-    // eslint-disable-next-line no-console
-    console.log({ nickname, bio });
-    alert('프로필이 저장되었습니다.');
-    navigate('/'); // 저장 후 메인 페이지로 이동
-  };
-
-  const handleEditNickname = () => {
-    setIsEditingNickname(true);
-    setTempNickname(nickname);
-  };
-
-  const handleSaveNickname = () => {
-    if (tempNickname.trim()) {
-      setNickname(tempNickname.trim());
-      setIsEditingNickname(false);
-    }
-  };
-
-  const handleCancelNickname = () => {
-    setTempNickname(nickname);
-    setIsEditingNickname(false);
-  };
+  const { profile, tempNickname, setTempNickname, isEditingNickname, profilePreview, fileInputRef, actions } = useProfileSetup({
+    nickname: '김오셜',
+    bio: '',
+  });
 
   return (
     <div css={layout}>
@@ -48,12 +22,28 @@ const ProfileSetupPage = () => {
 
         <div css={profileImageSection}>
           <div css={imageWrapper}>
-            {/* TODO: 실제 이미지 데이터 연결 */}
-            <img src={defaultProfileImage} alt='프로필 이미지' css={profileImage} />
-            <button css={imageEditButton}>
+            <img src={profilePreview} alt='프로필 이미지' css={profileImage} />
+            <button
+              type='button'
+              css={imageEditButton}
+              onClick={actions.openFilePicker}
+              aria-label='프로필 이미지 변경'
+            >
               <IoCameraSharp size={20} />
             </button>
+            <input
+              type='file'
+              accept='image/*'
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={actions.handleImageChange}
+            />
           </div>
+          {profilePreview !== defaultProfileImage && (
+            <button type='button' css={resetThumbButton} onClick={actions.clearSelectedImage}>
+              기본 이미지로 되돌리기
+            </button>
+          )}
         </div>
 
         <form css={form}>
@@ -69,18 +59,18 @@ const ProfileSetupPage = () => {
                   placeholder='활동명을 입력하세요'
                 />
                 <div css={editButtons}>
-                  <button type='button' css={saveButton} onClick={handleCancelNickname}>
+                  <button type='button' css={saveButton} onClick={actions.handleCancelNickname}>
                     취소
                   </button>
-                  <button type='button' css={cancelButton} onClick={handleSaveNickname}>
+                  <button type='button' css={cancelButton} onClick={actions.handleSaveNickname}>
                     저장하기
                   </button>
                 </div>
               </div>
             ) : (
               <div css={nicknameWrapper}>
-                <span>{nickname}</span>
-                <button type='button' css={textButton} onClick={handleEditNickname}>
+                <span>{profile.nickname}</span>
+                <button type='button' css={textButton} onClick={actions.handleEditNickname}>
                   수정
                 </button>
               </div>
@@ -94,13 +84,14 @@ const ProfileSetupPage = () => {
             <textarea
               id='bio'
               css={textarea}
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              value={profile.bio}
+              onChange={actions.handleBioChange}
               placeholder='나는 어떤 사람인가요?'
             />
           </div>
+
           <div css={buttonContainer}>
-            <Button variant='filled' size='large' onClick={handleSave}>
+            <Button variant='filled' size='large' onClick={actions.handleSave}>
               저장하기
             </Button>
           </div>
@@ -111,6 +102,21 @@ const ProfileSetupPage = () => {
 };
 
 export default ProfileSetupPage;
+
+// Styles remain the same
+const resetThumbButton = css`
+  margin-top: 8px;
+  ${theme.typography.labelSmall};
+  color: ${theme.colors.grayscale[600]};
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: ${theme.colors.grayscale[800]};
+  }
+`;
 
 const layout = css`
   display: flex;
@@ -138,7 +144,7 @@ const title = css`
 `;
 
 const subtitle = css`
-  ${theme.typography.textLarge};
+  ${theme.typography.textMedium};
   color: ${theme.colors.grayscale[700]};
   margin-top: 8px;
 `;
@@ -206,7 +212,6 @@ const nicknameWrapper = css`
   align-items: center;
   padding: 4px 0;
   border-bottom: 1px solid ${theme.colors.grayscale[200]};
-  // border-radius: 8px;
   ${theme.typography.titleLarge};
   color: ${theme.colors.black};
 `;
@@ -300,7 +305,7 @@ const buttonContainer = css`
   width: 100%;
 
   button {
-    width: 60%; // 컨테이너의 60% 너비
-    max-width: 300px; // 최대 너비 제한
+    width: 60%;
+    max-width: 300px;
   }
 `;
