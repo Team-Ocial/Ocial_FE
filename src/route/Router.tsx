@@ -9,7 +9,8 @@ import ActivityDetailPage from '@/pages/activity/ActivityDetailPage';
 import ActivityEditPage from '@/pages/activity/ActivityEditPage';
 import NoticePage from '@/pages/news/NoticePage';
 import PressPage from '@/pages/news/PressPage';
-import MyPage from '@/pages/mypage/MyPage';
+import { Navigate } from 'react-router-dom';
+import ActivitiesPage from '@/pages/mypage/ActivitiesPage';
 import EditPage from '@/pages/mypage/EditPage';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 import SigninPage from '@/pages/auth/SigninPage';
@@ -44,12 +45,16 @@ const router = createBrowserRouter([
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
       {
         path: 'mypage',
+        element: <Navigate to='/mypage/activities' replace />,
+      }, // 마이페이지 리다이렉트
+      {
+        path: 'mypage/activities',
         element: (
           <ProtectedRoute>
-            <MyPage />
+            <ActivitiesPage />
           </ProtectedRoute>
         ),
-      }, // 마이페이지 (로그인 필요)
+      }, // 활동내역 페이지 (로그인 필요)
       {
         path: 'mypage/edit',
         element: (
