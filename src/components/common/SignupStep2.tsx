@@ -32,13 +32,18 @@ const Step2 = () => {
 
     try {
       // useAuth의 signup 함수 호출
+      // 성별 값을 한글로 변환
+      const genderInKorean = formData.gender === 'male' ? '남성' : '여성';
+
       await signup({
         id: formData.id,
         password: formData.password,
-        // 참고: 현재 useSignupStore에 email, name이 없어 임시값을 사용합니다.
-        // 실제 구현 시에는 Step1에서 이 값들을 받아와야 합니다.
-        email: formData.email || 'user@ocial.com',
-        name: formData.name || '오셜 사용자',
+        email: formData.email,
+        name: formData.name,
+        birthDate: formData.birthDate,
+        gender: genderInKorean,
+        location: formData.address, // address를 location으로 매핑
+        nickname: formData.name, // 초기 닉네임은 이름과 동일하게 설정
       });
 
       // 성공 시 WelcomePage로 이동

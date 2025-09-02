@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useProfileStore } from '@/store/useProfileStore';
 
 interface LoginCredentials {
   id: string;
@@ -7,11 +8,14 @@ interface LoginCredentials {
 }
 
 interface SignupData {
-  // 회원가입 데이터 타입 (필요시 확장)
   id: string;
   password: string;
   email: string;
   name: string;
+  birthDate: string;
+  gender: string;
+  location: string;
+  nickname: string;
 }
 
 interface LoginErrors {
@@ -99,7 +103,17 @@ export const useAuth = (): UseAuthReturn => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       console.log('회원가입 성공:', data);
 
-      // 회원가입 성공 후, 받은 사용자 ID로 즉시 로그인 처리
+      // 회원가입 성공 후, 프로필 데이터 저장 및 로그인 처리
+      const initialProfile = {
+        name: data.name,
+        birthDate: data.birthDate,
+        gender: data.gender,
+        location: data.location,
+        nickname: data.nickname,
+        bio: '',
+        profileImage: '',
+      };
+      useProfileStore.getState().setProfile(initialProfile);
       setAuthState(data.id);
     } catch (err) {
       // 회원가입 오류 처리 (필요시 확장)

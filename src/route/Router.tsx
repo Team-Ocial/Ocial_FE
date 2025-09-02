@@ -45,7 +45,11 @@ const router = createBrowserRouter([
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
       {
         path: 'mypage',
-        element: <Navigate to='/mypage/activities' replace />,
+        element: (
+          <ProtectedRoute>
+            <Navigate to='/mypage/activities' replace />
+          </ProtectedRoute>
+        ),
       }, // 마이페이지 리다이렉트
       {
         path: 'mypage/activities',
@@ -66,7 +70,14 @@ const router = createBrowserRouter([
       { path: '/auth/signin', element: <SigninPage /> }, // 로그인
       { path: '/auth/signup', element: <SignupPage /> }, // 회원가입
       { path: '/auth/welcome', element: <WelcomePage /> }, // 회원가입 완료
-      { path: '/mypage/profilesetup', element: <ProfileSetupPage /> }, // 프로필 설정
+      {
+        path: '/mypage/profilesetup',
+        element: (
+          <ProtectedRoute>
+            <ProfileSetupPage />
+          </ProtectedRoute>
+        ),
+      }, // 프로필 설정
       { path: '/auth/find', element: <FindPage /> }, // ID/비밀번호 찾기
       { path: '/auth/id-found', element: <IdFoundPage /> }, // ID 찾기 성공
       { path: '/auth/password-reset', element: <PasswordResetPage /> }, // 비밀번호 찾기 성공

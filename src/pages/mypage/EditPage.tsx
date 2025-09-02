@@ -6,31 +6,32 @@ import Button from '@/components/common/Button';
 import MyPageHeader from './MyPageHeader';
 import MyMenuCard from './MyMenuCard';
 import defaultProfileImage from '@/assets/icon/profile image.svg';
-import { useRef, useState } from 'react';
-
-interface ProfileData {
-  name: string;
-  birthDate: string;
-  gender: string;
-  location: string;
-  nickname: string;
-  bio: string;
-  profileImage: string;
-}
+import { useProfileData, type ProfileData } from '@/hooks/useProfileData';
+import { useRef, useState, useEffect } from 'react';
 
 const EditPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { profileData, isLoading, error, updateProfile } = useProfileData();
   const [profilePreview, setProfilePreview] = useState(defaultProfileImage);
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState<ProfileData>({
-    name: '김오셜',
-    birthDate: '1990.01.31',
-    gender: '남성',
-    location: '서울특별시 종로구',
-    nickname: '김오셜',
-    bio: '',
-    profileImage: defaultProfileImage,
-  });
+  const [formData, setFormData] = useState<ProfileData>(
+    profileData || {
+      name: '',
+      birthDate: '',
+      gender: '',
+      location: '',
+      nickname: '',
+      bio: '',
+      profileImage: defaultProfileImage,
+    }
+  );
+
+  useEffect(() => {
+    if (profileData) {
+      setFormData(profileData);
+      setProfilePreview(profileData.profileImage || defaultProfileImage);
+    }
+  }, [profileData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,10 +48,20 @@ const EditPage = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // TODO: API 연동
+  const handleSave = async () => {
+    const success = await updateProfile(formData);
+    if (success) {
+      setIsEditing(false);
+    }
   };
+
+  if (isLoading) {
+    return <div css={loadingContainer}>프로필 정보를 불러오는 중...</div>;
+  }
+
+  if (error) {
+    return <div css={errorContainer}>{error}</div>;
+  }
 
   return (
     <div css={pageContainer}>
@@ -90,10 +101,10 @@ const EditPage = () => {
                 <label css={label}>이름</label>
                 <input
                   type='text'
-                  value={profileData.name}
+                  value={formData.name}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
 
@@ -101,10 +112,10 @@ const EditPage = () => {
                 <label css={label}>생년월일</label>
                 <input
                   type='text'
-                  value={profileData.birthDate}
+                  value={formData.birthDate}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setProfileData({ ...profileData, birthDate: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
                 />
               </div>
 
@@ -112,10 +123,10 @@ const EditPage = () => {
                 <label css={label}>성별</label>
                 <input
                   type='text'
-                  value={profileData.gender}
+                  value={formData.gender}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setProfileData({ ...profileData, gender: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                 />
               </div>
 
@@ -123,10 +134,10 @@ const EditPage = () => {
                 <label css={label}>주소지(활동지)</label>
                 <input
                   type='text'
-                  value={profileData.location}
+                  value={formData.location}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 />
               </div>
 
@@ -134,20 +145,20 @@ const EditPage = () => {
                 <label css={label}>활동명</label>
                 <input
                   type='text'
-                  value={profileData.nickname}
+                  value={formData.nickname}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setProfileData({ ...profileData, nickname: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, nickname: e.target.value })}
                 />
               </div>
 
               <div css={formGroup}>
                 <label css={label}>나를 소개합니다</label>
                 <textarea
-                  value={profileData.bio}
+                  value={formData.bio}
                   disabled={!isEditing}
                   css={textarea}
-                  onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                 />
               </div>
 
@@ -335,4 +346,22 @@ const buttonContainer = css`
     width: 60%;
     max-width: 300px;
   }
+`;
+
+const loadingContainer = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  ${theme.typography.titleMedium};
+  color: ${theme.colors.grayscale[600]};
+`;
+
+const errorContainer = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  ${theme.typography.titleMedium};
+  color: ${theme.colors.grayscale[600]};
 `;
