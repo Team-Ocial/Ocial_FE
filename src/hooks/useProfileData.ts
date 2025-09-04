@@ -7,6 +7,7 @@ export interface ProfileData {
   birthDate: string;
   gender: string;
   location: string;
+  job?: string;
   nickname: string;
   bio: string;
   profileImage: string;

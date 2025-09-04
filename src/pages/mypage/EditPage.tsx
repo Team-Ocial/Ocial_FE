@@ -142,6 +142,18 @@ const EditPage = () => {
               </div>
 
               <div css={formGroup}>
+                <label css={label}>직업 (선택)</label>
+                <input
+                  type='text'
+                  value={formData.job || ''}
+                  disabled={!isEditing}
+                  css={input}
+                  onChange={(e) => setFormData({ ...formData, job: e.target.value })}
+                  placeholder='직업을 입력해주세요'
+                />
+              </div>
+
+              <div css={formGroup}>
                 <label css={label}>활동명</label>
                 <input
                   type='text'
@@ -190,7 +202,7 @@ const pageTitle = css`
   font-size: 2rem;
   font-weight: 700;
   color: ${theme.colors.grayscale[700]};
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   width: 100%;
 `;
 

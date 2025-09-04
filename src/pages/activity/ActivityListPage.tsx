@@ -6,11 +6,17 @@ import ActivityCard from '@/components/common/ActivityCard';
 import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useActivity } from '@/hooks/useActivity';
+import {
+  ACTIVITY_CATEGORIES,
+  ALL_ACTIVITIES_CATEGORY,
+  ActivityFilterCategory,
+} from '@/constants/categories';
 
 type SortType = '최신순' | '인기순';
 
 const ActivityListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('전체보기');
+  const [selectedCategory, setSelectedCategory] =
+    useState<ActivityFilterCategory>(ALL_ACTIVITIES_CATEGORY);
   const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -19,6 +25,11 @@ const ActivityListPage = () => {
     category: selectedCategory,
     sort: selectedSort === '최신순' ? 'latest' : 'popular',
   });
+
+  const handleCategoryClick = (category: ActivityFilterCategory) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
     <div css={pageContainer}>
@@ -33,34 +44,21 @@ const ActivityListPage = () => {
           <div css={categoryButtons}>
             <Button
               variant='filter'
-              active={selectedCategory === '전체보기'}
-              onClick={() => {
-                setSelectedCategory('전체보기');
-                setCurrentPage(1);
-              }}
+              active={selectedCategory === ALL_ACTIVITIES_CATEGORY}
+              onClick={() => handleCategoryClick(ALL_ACTIVITIES_CATEGORY)}
             >
-              전체보기
+              {ALL_ACTIVITIES_CATEGORY}
             </Button>
-            <Button
-              variant='filter'
-              active={selectedCategory === '원데이 클래스'}
-              onClick={() => {
-                setSelectedCategory('원데이 클래스');
-                setCurrentPage(1);
-              }}
-            >
-              원데이 클래스
-            </Button>
-            <Button
-              variant='filter'
-              active={selectedCategory === '스터디'}
-              onClick={() => {
-                setSelectedCategory('스터디');
-                setCurrentPage(1);
-              }}
-            >
-              소그룹
-            </Button>
+            {ACTIVITY_CATEGORIES.map((category) => (
+              <Button
+                key={category}
+                variant='filter'
+                active={selectedCategory === category}
+                onClick={() => handleCategoryClick(category)}
+              >
+                {category === '스터디' ? '소그룹' : category}
+              </Button>
+            ))}
           </div>
           <div css={sortButtons}>
             <button

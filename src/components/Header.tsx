@@ -58,7 +58,7 @@ const headerContainer = css`
   justify-content: space-between;
   min-height: 82px;
   padding: 16px 135px;
-  border: 2px solid red;
+  // border: 2px solid red;
 `;
 
 const headerLight = css`

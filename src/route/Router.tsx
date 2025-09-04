@@ -12,6 +12,7 @@ import PressPage from '@/pages/news/PressPage';
 import { Navigate } from 'react-router-dom';
 import ActivitiesPage from '@/pages/mypage/ActivitiesPage';
 import EditPage from '@/pages/mypage/EditPage';
+import LikesPage from '@/pages/mypage/LikesPage';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 import SigninPage from '@/pages/auth/SigninPage';
 import SignupPage from '@/pages/auth/SignupPage';
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       }, // 활동내역 페이지 (로그인 필요)
+      {
+        path: 'mypage/likes',
+        element: (
+          <ProtectedRoute>
+            <LikesPage />
+          </ProtectedRoute>
+        ),
+      }, // 좋아요 페이지 (로그인 필요)
       {
         path: 'mypage/edit',
         element: (

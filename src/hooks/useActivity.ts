@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { ActivityInfo, ActivityListResponse } from '@/types/activity.types';
+import { ActivityInfo } from '@/types/activity.types';
 import { ACTIVITY_LIST } from '@/mocks/data/activityData';
+import {
+  ActivityFilterCategory,
+  ALL_ACTIVITIES_CATEGORY,
+} from '@/constants/categories';
 
 interface UseActivityReturn {
   activities: ActivityInfo[];
@@ -14,7 +18,7 @@ interface UseActivityReturn {
 
 interface UseActivityProps {
   page?: number;
-  category?: string;
+  category?: ActivityFilterCategory;
   sort?: 'latest' | 'popular';
 }
 
@@ -22,7 +26,7 @@ const ITEMS_PER_PAGE = 12; // 한 페이지당 12개 표시 (3개씩 4줄)
 
 export const useActivity = ({
   page = 1,
-  category = '전체보기',
+  category = ALL_ACTIVITIES_CATEGORY,
   sort = 'latest',
 }: UseActivityProps = {}): UseActivityReturn => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +37,7 @@ export const useActivity = ({
     let result = [...ACTIVITY_LIST];
 
     // 카테고리 필터링
-    if (category !== '전체보기') {
+    if (category !== ALL_ACTIVITIES_CATEGORY) {
       result = result.filter((activity) => activity.category === category);
     }
 

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 
 interface MyMenuCardProps {
-  activeMenu: 'activities' | 'profile';
+  activeMenu: 'activities' | 'profile' | 'likes';
 }
 
 const MyMenuCard = ({ activeMenu }: MyMenuCardProps) => {
@@ -16,7 +16,9 @@ const MyMenuCard = ({ activeMenu }: MyMenuCardProps) => {
         >
           활동내역
         </a>
-
+        <a href='/mypage/likes' css={[sidebarItem, activeMenu === 'likes' && activeSidebarItem]}>
+          좋아요
+        </a>
         <a href='/mypage/edit' css={[sidebarItem, activeMenu === 'profile' && activeSidebarItem]}>
           정보수정
         </a>
@@ -27,7 +29,6 @@ const MyMenuCard = ({ activeMenu }: MyMenuCardProps) => {
 
 export default MyMenuCard;
 
-// Styles
 const sidebar = css`
   display: flex;
   flex-direction: column;

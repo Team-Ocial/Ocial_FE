@@ -6,28 +6,31 @@ import { MdLocationOn, MdCalendarMonth } from 'react-icons/md';
 import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import Badge from './Badge';
 import { formatDate } from '@/utils/formatDate';
+import { useLikesStore } from '@/store/useLikesStore';
 
 interface ActivityCardProps {
   activity: ActivityInfo;
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { id, status, category, title, location, period, thumbnail, likes, isLiked } = activity;
+  const { id, status, category, title, location, period, thumbnail, likes } = activity;
+  const { isLiked, toggleLike } = useLikesStore();
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // 링크 이동 방지
+    toggleLike(activity);
+  };
 
   return (
-    <Link
-      to={`/activity/${id}`}
-      css={cardStyle}
-      onClick={() => console.log('Clicked activity:', id)}
-    >
+    <Link to={`/activity/${id}`} css={cardStyle}>
       <div css={imageWrapper}>
         <img src={thumbnail} alt={title} css={imageStyle} />
         <div css={badgeWrapper}>
           <Badge variant='status'>{status}</Badge>
-          <div css={likeContainerStyle}>
-            {isLiked ? <PiThumbsUpFill size={16} /> : <PiThumbsUpLight size={16} />}
+          <button type='button' css={likeContainerStyle} onClick={handleLikeClick}>
+            {isLiked(id) ? <PiThumbsUpFill size={16} /> : <PiThumbsUpLight size={16} />}
             <span>{likes}</span>
-          </div>
+          </button>
         </div>
       </div>
       <div css={contentStyle}>
@@ -127,6 +130,13 @@ const likeContainerStyle = css`
   border-radius: 4px;
   ${theme.typography.textSmall};
   color: ${theme.colors.grayscale[700]};
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
 
   svg {
     color: ${theme.colors.primary[500]};
