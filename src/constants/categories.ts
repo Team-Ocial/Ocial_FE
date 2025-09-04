@@ -1,4 +1,4 @@
-// import { ActivityCategory } from '@/types/activity.types';
+// 
 
 export const ACTIVITY_CATEGORIES = ['원데이 클래스', '스터디'] as const;
 
