@@ -7,6 +7,8 @@ import MyPageHeader from './MyPageHeader';
 import MyMenuCard from './MyMenuCard';
 import { MyActivity } from '@/types/myActivity.types';
 import Pagination from '@/components/common/Pagination';
+import Button from '@/components/common/Button';
+import SquareButton from '@/components/common/SquareButton';
 import thumbnail1 from '@/assets/images/thumbnail1.png';
 import thumbnail2 from '@/assets/images/thumbnail2.png';
 
@@ -82,10 +84,12 @@ const ActivitiesPage = () => {
           <h1 css={pageTitle}>내 활동 보기</h1>
           <div css={contentArea}>
             <div css={filterTabs}>
-              <button css={[filterTab, filterTabActive]}>전체보기</button>
-              <button css={filterTab}>예정된 활동</button>
-              <button css={filterTab}>활동 중</button>
-              <button css={filterTab}>수료</button>
+              <Button variant='filter' active>
+                전체보기
+              </Button>
+              <Button variant='filter'>예정된 활동</Button>
+              <Button variant='filter'>활동 중</Button>
+              <Button variant='filter'>수료</Button>
             </div>
             <div css={activitiesList}>
               {mockActivities
@@ -114,11 +118,19 @@ const ActivitiesPage = () => {
                       </div>
                       <div css={activityActions}>
                         {activity.type === '예정된 활동' && (
-                          <button css={actionButton}>취소하기</button>
+                          <SquareButton size='small' variant='outlined'>
+                            취소하기
+                          </SquareButton>
                         )}
-                        {activity.type === '활동 중' && <div css={statusButton}>활동 중</div>}
+                        {activity.type === '활동 중' && (
+                          <SquareButton size='small' variant='text'>
+                            활동 중
+                          </SquareButton>
+                        )}
                         {activity.type === '수료' && (
-                          <button css={[actionButton, certificateButton]}>수료증 보기</button>
+                          <SquareButton size='small' variant='gray'>
+                            수료증 보기
+                          </SquareButton>
                         )}
                       </div>
                     </div>
@@ -177,38 +189,6 @@ const filterTabs = css`
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
-`;
-
-const filterTab = css`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  ${theme.typography.textSmall2}
-  border-radius: 6px;
-  padding: 6px 14px;
-  background: transparent;
-  border: 1px solid ${theme.colors.grayscale[100]};
-  color: ${theme.colors.grayscale[800]};
-  height: 32px;
-
-  &:hover:not(:disabled) {
-    background: ${theme.colors.grayscale[50]};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const filterTabActive = css`
-  background: ${theme.colors.grayscale[800]};
-  color: ${theme.colors.white};
-  border-color: ${theme.colors.grayscale[800]};
 `;
 
 const activitiesList = css`
@@ -342,41 +322,6 @@ const activityActions = css`
   justify-content: flex-end;
   padding-top: 1rem;
   border-top: 1px solid ${theme.colors.grayscale[200]};
-`;
-
-const actionButton = css`
-  padding: 0.5rem 1rem;
-  border: 1px solid ${theme.colors.grayscale[300]};
-  border-radius: 4px;
-  background: none;
-  color: ${theme.colors.grayscale[700]};
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: ${theme.colors.grayscale[100]};
-  }
-`;
-
-const statusButton = css`
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background: ${theme.colors.white};
-  color: ${theme.colors.grayscale[500]};
-  font-size: 0.875rem;
-  cursor: default;
-`;
-
-const certificateButton = css`
-  background: ${theme.colors.grayscale[100]};
-  color: ${theme.colors.grayscale[700]};
-  border: none;
-
-  &:hover {
-    background: ${theme.colors.grayscale[200]};
-  }
 `;
 
 const paginationWrapper = css`

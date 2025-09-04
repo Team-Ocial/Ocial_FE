@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 import { useSignupStore } from '@/store/useSignupStore';
 import Button from '@/components/common/Button';
+import SquareButton from '@/components/common/SquareButton';
 import { theme } from '@/styles/theme';
 import SignupLayout, {
   formStyle,
@@ -123,9 +124,9 @@ const Step2 = () => {
 
         <div css={verificationContainerStyle}>
           <h3 css={verificationTitleStyle}>본인인증</h3>
-          <button type='button' css={verificationButtonStyle}>
+          <SquareButton type='button' variant='plain' fullWidth>
             본인인증
-          </button>
+          </SquareButton>
         </div>
 
         <div css={agreementsContainerStyle}>
@@ -243,19 +244,6 @@ const verificationTitleStyle = css`
   ${theme.typography.titleLarge}
   color: ${theme.colors.grayscale[900]};
   margin: 0;
-`;
-
-const verificationButtonStyle = css`
-  height: 48px;
-  background-color: ${theme.colors.grayscale[100]};
-  border: none;
-  border-radius: 8px;
-  ${theme.typography.labelMedium}
-  color: ${theme.colors.grayscale[700]};
-  cursor: pointer;
-  &:hover {
-    background-color: ${theme.colors.grayscale[200]};
-  }
 `;
 
 const agreementsContainerStyle = css`

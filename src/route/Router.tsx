@@ -22,6 +22,9 @@ import FindPage from '@/pages/auth/FindPage';
 import IdFoundPage from '@/pages/auth/IdFoundPage';
 import PasswordResetPage from '@/pages/auth/PasswordResetPage';
 import ToastTest from '@/pages/test-page/ToastTest';
+import SquareButtonTest from '@/pages/test-page/SquareButtonTest';
+import ModalTest from '@/pages/test-page/ModalTest';
+import ProfileDropdownTest from '@/pages/test-page/ProfileDropdownTest';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -91,6 +94,9 @@ const router = createBrowserRouter([
       { path: '/auth/id-found', element: <IdFoundPage /> }, // ID 찾기 성공
       { path: '/auth/password-reset', element: <PasswordResetPage /> }, // 비밀번호 찾기 성공
       { path: 'test/toast', element: <ToastTest /> }, // Toast 테스트 페이지
+      { path: 'test/square-button', element: <SquareButtonTest /> }, // SquareButton 테스트 페이지
+      { path: 'test/modal', element: <ModalTest /> }, // Modal 테스트 페이지
+      { path: 'test/profile-dropdown', element: <ProfileDropdownTest /> }, // ProfileDropdown 테스트 페이지
     ],
   },
   {

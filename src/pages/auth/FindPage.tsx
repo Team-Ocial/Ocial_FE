@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { theme } from '@/styles/theme';
-import Button from '@/components/common/Button';
+import SquareButton from '@/components/common/SquareButton';
 import symbol2Blue from '@/assets/icon/symbol2_blue.svg';
 
 type TabType = 'id' | 'password';
@@ -81,9 +81,9 @@ const FindPage = () => {
                 <br />
                 본인인증 후 아이디를 확인하실 수 있습니다.
               </p>
-              <button type='button' css={verificationButtonStyle} onClick={handleIdVerification}>
+              <SquareButton type='button' variant='plain' fullWidth onClick={handleIdVerification}>
                 본인인증
-              </button>
+              </SquareButton>
             </div>
           ) : (
             <div css={tabContent}>
@@ -122,16 +122,18 @@ const FindPage = () => {
                   />
                 </div>
 
-                <Button
+                <SquareButton
                   type='button'
                   variant='filled'
                   size='large'
-                  width='100%'
-                  css={passwordFindButtonStyle}
+                  fullWidth
                   onClick={handlePasswordFind}
+                  css={css`
+                    margin-top: 24px;
+                  `}
                 >
                   비밀번호 찾기
-                </Button>
+                </SquareButton>
               </div>
             </div>
           )}
@@ -241,21 +243,6 @@ const descriptionText = css`
   text-align: center;
 `;
 
-const verificationButtonStyle = css`
-  height: 48px;
-  background-color: ${theme.colors.grayscale[100]};
-  border: none;
-  border-radius: 8px;
-  ${theme.typography.labelMedium}
-  color: ${theme.colors.grayscale[700]};
-  cursor: pointer;
-  width: 100%;
-
-  &:hover {
-    background-color: ${theme.colors.grayscale[200]};
-  }
-`;
-
 const inputFormStyle = css`
   width: 100%;
   display: flex;
@@ -299,15 +286,6 @@ const inputStyle = css`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary[100]};
-  }
-`;
-
-const passwordFindButtonStyle = css`
-  background-color: ${theme.colors.black} !important;
-  margin-top: 24px;
-
-  &:hover {
-    background-color: ${theme.colors.grayscale[800]} !important;
   }
 `;
 

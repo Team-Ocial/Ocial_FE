@@ -3,9 +3,9 @@ import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
 import OCIALBlack from '@/assets/icon/OCIAL_black.svg';
 import OCIALWhite from '@/assets/icon/OCIAL_white.svg';
-import profileImage from '@/assets/icon/profile image.svg';
 import { NAV_LINKS } from '@/constants/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
+import ProfileDropdown from '@/components/common/ProfileDropdown';
 
 interface HeaderProps {
   variant?: 'light' | 'dark';
@@ -31,9 +31,7 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
       </nav>
 
       {isLoggedIn ? (
-        <Link to='/mypage' css={profileButton}>
-          <img src={profileImage} alt='Profile' css={profileImageStyle} />
-        </Link>
+        <ProfileDropdown />
       ) : (
         <Link to='/auth/signin' css={startButton}>
           Start with OCIAL
@@ -46,7 +44,6 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
 export default Header;
 
 const headerContainer = css`
-  // position: fixed;
   position: sticky;
   top: 0;
   left: 0;
@@ -58,11 +55,14 @@ const headerContainer = css`
   justify-content: space-between;
   min-height: 82px;
   padding: 16px 135px;
-  // border: 2px solid red;
 `;
 
 const headerLight = css`
   background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `;
 
 const headerDark = css`
@@ -104,25 +104,4 @@ const startButton = css`
   &:hover {
     opacity: 0.9;
   }
-`;
-
-const profileButton = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const profileImageStyle = css`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 `;

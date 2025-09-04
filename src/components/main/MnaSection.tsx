@@ -50,6 +50,8 @@ const content = css`
   z-index: 1;
   max-width: ${theme.layout.width.content};
   width: 100%;
+  padding: 0 ${theme.layout.spacing.gutter};
+  box-sizing: border-box;
   color: ${theme.colors.white};
 `;
 

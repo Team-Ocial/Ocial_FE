@@ -108,8 +108,9 @@ const backgroundText = css`
 const container = css`
   position: relative;
   z-index: 1;
-  max-width: ${theme.layout.width.max};
+  max-width: ${theme.layout.width.content};
   margin: 0 auto;
+  padding: 0 ${theme.layout.spacing.gutter};
   top: 265px;
   box-sizing: border-box;
 `;
