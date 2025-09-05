@@ -1,10 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ActivityInfo } from '@/types/activity.types';
 import { ACTIVITY_LIST } from '@/mocks/data/activityData';
-import {
-  ActivityFilterCategory,
-  ALL_ACTIVITIES_CATEGORY,
-} from '@/constants/categories';
+import { useLikesStore } from '@/store/useLikesStore';
+import { ActivityFilterCategory, ALL_ACTIVITIES_CATEGORY } from '@/constants/categories';
 
 interface UseActivityReturn {
   activities: ActivityInfo[];
@@ -31,8 +29,9 @@ export const useActivity = ({
 }: UseActivityProps = {}): UseActivityReturn => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { likedActivities } = useLikesStore(); // 좋아요 상태 구독
 
-  // 필터링된 활동 목록
+  // 필터링된 활동 목록 (좋아요 상태 반영)
   const filteredActivities = useMemo(() => {
     let result = [...ACTIVITY_LIST];
 
@@ -41,16 +40,29 @@ export const useActivity = ({
       result = result.filter((activity) => activity.category === category);
     }
 
+    // 좋아요 상태 업데이트
+    result = result.map((activity) => {
+      const isLiked = likedActivities.includes(activity.id);
+      const likeCount = isLiked ? activity.likes + 1 : activity.likes;
+
+      return {
+        ...activity,
+        isLiked,
+        likes: likeCount,
+      };
+    });
+
     // 정렬
     if (sort === 'latest') {
       result.sort(
         (a, b) => new Date(b.period.start).getTime() - new Date(a.period.start).getTime()
       );
+    } else if (sort === 'popular') {
+      result.sort((a, b) => b.likes - a.likes); // 좋아요 순 정렬
     }
-    // 인기순 정렬 로직은 추후 추가
 
     return result;
-  }, [category, sort]);
+  }, [category, sort, likedActivities]); // likedActivities 의존성 추가
 
   // 페이지네이션 계산
   const total = filteredActivities.length;

@@ -10,13 +10,20 @@ import MyMenuCard from './MyMenuCard';
 import { useLikesStore } from '@/store/useLikesStore';
 import { formatDate } from '@/utils/formatDate';
 import Pagination from '@/components/common/Pagination';
+import { ACTIVITY_DETAILS } from '@/mocks/data/activityData';
 
 const ITEMS_PER_PAGE = 4;
 
 const LikesPage = () => {
   const { likedActivities, toggleLike, loadLikes } = useLikesStore();
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(likedActivities.length / ITEMS_PER_PAGE);
+
+  // ID 배열을 실제 활동 데이터로 변환
+  const likedActivityData = likedActivities
+    .map((id) => ACTIVITY_DETAILS[id])
+    .filter((activity) => activity !== undefined);
+
+  const totalPages = Math.ceil(likedActivityData.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
     loadLikes();
@@ -24,7 +31,7 @@ const LikesPage = () => {
 
   // 현재 페이지에 해당하는 활동들만 필터링
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentActivities = likedActivities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentActivities = likedActivityData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <div css={pageContainer}>
@@ -35,7 +42,7 @@ const LikesPage = () => {
           <h1 css={pageTitle}>좋아요</h1>
           <div css={contentArea}>
             <div css={activitiesList}>
-              {likedActivities.length === 0 ? (
+              {likedActivityData.length === 0 ? (
                 <div css={emptyState}>좋아요한 활동이 없습니다.</div>
               ) : (
                 currentActivities.map((activity) => (
@@ -51,7 +58,7 @@ const LikesPage = () => {
                         <Badge variant='category'>{activity.category}</Badge>
                         <button
                           css={closeButton}
-                          onClick={() => toggleLike(activity)}
+                          onClick={() => toggleLike(activity.id)}
                           aria-label='좋아요 취소'
                         >
                           <IoClose size={20} />
@@ -76,7 +83,7 @@ const LikesPage = () => {
                 ))
               )}
             </div>
-            {likedActivities.length > 0 && (
+            {likedActivityData.length > 0 && (
               <div css={paginationWrapper}>
                 <Pagination
                   currentPage={currentPage}

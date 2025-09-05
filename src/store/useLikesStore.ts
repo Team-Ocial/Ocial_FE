@@ -1,16 +1,15 @@
 import { create } from 'zustand';
-import { ActivityInfo } from '@/types/activity.types';
 
 interface LikesState {
-  likedActivities: ActivityInfo[];
-  toggleLike: (activity: ActivityInfo) => void;
+  likedActivities: string[]; // ActivityInfo[] 대신 ID만 저장
+  toggleLike: (activityId: string) => void;
   isLiked: (activityId: string) => boolean;
   loadLikes: () => void;
 }
 
 const LIKES_STORAGE_KEY = 'likedActivities';
 
-const getStoredLikes = (): ActivityInfo[] => {
+const getStoredLikes = (): string[] => {
   const stored = localStorage.getItem(LIKES_STORAGE_KEY);
   return stored ? JSON.parse(stored) : [];
 };
@@ -23,15 +22,15 @@ export const useLikesStore = create<LikesState>((set, get) => ({
     set({ likedActivities: likes });
   },
 
-  toggleLike: (activity: ActivityInfo) => {
+  toggleLike: (activityId: string) => {
     set((state) => {
-      const isAlreadyLiked = state.likedActivities.some((item) => item.id === activity.id);
+      const isAlreadyLiked = state.likedActivities.includes(activityId);
       let newLikedActivities;
 
       if (isAlreadyLiked) {
-        newLikedActivities = state.likedActivities.filter((item) => item.id !== activity.id);
+        newLikedActivities = state.likedActivities.filter((id) => id !== activityId);
       } else {
-        newLikedActivities = [...state.likedActivities, { ...activity, isLiked: true }];
+        newLikedActivities = [...state.likedActivities, activityId];
       }
 
       localStorage.setItem(LIKES_STORAGE_KEY, JSON.stringify(newLikedActivities));
@@ -40,6 +39,6 @@ export const useLikesStore = create<LikesState>((set, get) => ({
   },
 
   isLiked: (activityId: string) => {
-    return get().likedActivities.some((activity) => activity.id === activityId);
+    return get().likedActivities.includes(activityId);
   },
 }));

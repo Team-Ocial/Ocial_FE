@@ -14,11 +14,11 @@ interface ActivityCardProps {
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
   const { id, status, category, title, location, period, thumbnail, likes } = activity;
-  const { isLiked, toggleLike } = useLikesStore();
+  const { isLiked: checkIsLiked, toggleLike } = useLikesStore();
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.preventDefault(); // 링크 이동 방지
-    toggleLike(activity);
+    toggleLike(id); // activity 객체 대신 id만 전달
   };
 
   return (
@@ -28,7 +28,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         <div css={badgeWrapper}>
           <Badge variant='status'>{status}</Badge>
           <button type='button' css={likeContainerStyle} onClick={handleLikeClick}>
-            {isLiked(id) ? <PiThumbsUpFill size={16} /> : <PiThumbsUpLight size={16} />}
+            {checkIsLiked(id) ? <PiThumbsUpFill size={16} /> : <PiThumbsUpLight size={16} />}
             <span>{likes}</span>
           </button>
         </div>
