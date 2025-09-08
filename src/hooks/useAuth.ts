@@ -14,8 +14,8 @@ interface SignupData {
   name: string;
   birthDate: string;
   gender: string;
-  location: string;
-  job?: string;
+  address: string;
+  job: string;
   nickname: string;
 }
 
@@ -109,7 +109,7 @@ export const useAuth = (): UseAuthReturn => {
         name: data.name,
         birthDate: data.birthDate,
         gender: data.gender,
-        location: data.location,
+        address: data.address,
         job: data.job,
         nickname: data.nickname,
         bio: '',

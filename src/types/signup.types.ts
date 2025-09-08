@@ -24,6 +24,7 @@ export interface SignupErrors {
   email?: string;
   gender?: string;
   address?: string;
+  job?: string;
   id?: string;
   password?: string;
   passwordConfirm?: string;

@@ -6,7 +6,7 @@ export interface ProfileData {
   name: string;
   birthDate: string;
   gender: string;
-  location: string;
+  address: string;
   job?: string;
   nickname: string;
   bio: string;

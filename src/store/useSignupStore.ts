@@ -41,6 +41,9 @@ const validateStep1 = (formData: SignupFormData): SignupErrors => {
   if (!formData.address.trim()) {
     newErrors.address = VALIDATION_MESSAGES.REQUIRED.ADDRESS;
   }
+  if (!formData.job.trim()) {
+    newErrors.job = VALIDATION_MESSAGES.REQUIRED.JOB;
+  }
 
   return newErrors;
 };

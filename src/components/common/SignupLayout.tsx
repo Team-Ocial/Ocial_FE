@@ -79,11 +79,6 @@ export const requiredStyle = css`
   color: ${theme.colors.secondary[500]};
 `;
 
-export const optionalStyle = css`
-  ${theme.typography.textSmall}
-  color: ${theme.colors.grayscale[400]};
-`;
-
 export const inputStyle = css`
   height: 48px;
   padding: 0 16px;

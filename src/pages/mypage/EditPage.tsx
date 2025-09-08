@@ -19,7 +19,7 @@ const EditPage = () => {
       name: '',
       birthDate: '',
       gender: '',
-      location: '',
+      address: '',
       nickname: '',
       bio: '',
       profileImage: defaultProfileImage,
@@ -134,10 +134,10 @@ const EditPage = () => {
                 <label css={label}>주소지(활동지)</label>
                 <input
                   type='text'
-                  value={formData.location}
+                  value={formData.address}
                   disabled={!isEditing}
                   css={input}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 />
               </div>
 

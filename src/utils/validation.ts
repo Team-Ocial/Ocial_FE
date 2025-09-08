@@ -22,6 +22,7 @@ export const VALIDATION_MESSAGES = {
     EMAIL: '이메일을 입력해주세요.',
     GENDER: '성별을 선택해주세요.',
     ADDRESS: '주소지를 입력해주세요.',
+    JOB: '직업을 입력해주세요.',
     ID: '아이디를 입력해주세요.',
     PASSWORD: '비밀번호를 입력해주세요.',
     PASSWORD_CONFIRM: '비밀번호를 한번 더 입력해주세요.',

@@ -6,7 +6,6 @@ import SignupLayout, {
   inputGroupStyle,
   labelStyle,
   requiredStyle,
-  optionalStyle,
   inputStyle,
   dateInputStyle,
   selectStyle,
@@ -102,7 +101,7 @@ const Step1 = () => {
 
         <div css={inputGroupStyle}>
           <label css={labelStyle}>
-            직업 <span css={optionalStyle}>(선택)</span>
+            직업 <span css={requiredStyle}>*</span>
           </label>
           <input
             type='text'
@@ -111,6 +110,7 @@ const Step1 = () => {
             placeholder='직업을 입력해주세요.'
             css={inputStyle}
           />
+          {errors.job && <span css={errorMessageStyle}>{errors.job}</span>}
         </div>
 
         <Button type='submit' size='large' fullWidth css={buttonStyle}>

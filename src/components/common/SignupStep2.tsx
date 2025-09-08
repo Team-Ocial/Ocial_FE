@@ -43,7 +43,7 @@ const Step2 = () => {
         name: formData.name,
         birthDate: formData.birthDate,
         gender: genderInKorean,
-        location: formData.address, // address를 location으로 매핑
+        address: formData.address, // address를 location으로 매핑
         job: formData.job, // 직업 정보 추가
         nickname: formData.name, // 초기 닉네임은 이름과 동일하게 설정
       });
