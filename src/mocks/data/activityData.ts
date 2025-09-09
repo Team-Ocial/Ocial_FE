@@ -4,11 +4,13 @@ import thumbnail2 from '@/assets/images/thumbnail2.png';
 // import thumbnail3 from '@/assets/images/thumbnail3.png';
 
 // --- 마스터 데이터: 모든 활동의 상세 정보를 포함 ---
+import { ActivityStatus, ActivityMainCategory } from '@/types/activity.types';
+
 const MASTER_ACTIVITY_DATA: ActivityDetail[] = [
   {
     id: '1',
-    status: '모집 중',
-    category: '스터디',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.STUDY,
     title: 'Vision 스터디',
     location: 'Y-Space 광화문',
     address: '서울 종로구 경희궁2길 8-4',
@@ -53,8 +55,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '2',
-    status: '모집 마감',
-    category: '원데이 클래스',
+    status: ActivityStatus.CLOSED,
+    category: ActivityMainCategory.ONE_DAY,
     title: 'ChatGPT 기초 활용',
     location: 'Y-Space 강남',
     address: '서울 강남구 테헤란로 152',
@@ -81,8 +83,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '3',
-    status: '모집 중',
-    category: '스터디',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.STUDY,
     title: 'React 심화 스터디',
     location: 'Y-Space 판교',
     address: '경기 성남시 분당구 판교로 242',
@@ -116,8 +118,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '4',
-    status: '모집 중',
-    category: '원데이 클래스',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.ONE_DAY,
     title: 'UI/UX 디자인 워크샵',
     location: 'Y-Space 홍대',
     address: '서울 마포구 와우산로 94',
@@ -146,8 +148,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '5',
-    status: '모집 중',
-    category: '스터디',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.STUDY,
     title: 'TypeScript 마스터 과정',
     location: 'Y-Space 선릉',
     address: '서울 강남구 선릉로 428',
@@ -181,8 +183,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '6',
-    status: '모집 중',
-    category: '원데이 클래스',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.ONE_DAY,
     title: 'Next.js 13 시작하기',
     location: 'Y-Space 역삼',
     address: '서울 강남구 역삼로 172',
@@ -211,8 +213,8 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
   },
   {
     id: '7',
-    status: '모집 중',
-    category: '스터디',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.STUDY,
     title: 'DevOps 입문 스터디',
     location: 'Y-Space 서초',
     address: '서울 서초구 서초대로 396',

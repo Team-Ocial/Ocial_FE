@@ -6,17 +6,14 @@ import ActivityCard from '@/components/common/ActivityCard';
 import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useActivity } from '@/hooks/useActivity';
-import {
-  ACTIVITY_CATEGORIES,
-  ALL_ACTIVITIES_CATEGORY,
-  ActivityFilterCategory,
-} from '@/constants/categories';
+import { ACTIVITY_CONSTANTS, ActivityFilterCategory, isMainCategory } from '@/types/activity.types';
 
 type SortType = '최신순' | '인기순';
 
 const ActivityListPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<ActivityFilterCategory>(ALL_ACTIVITIES_CATEGORY);
+  const [selectedCategory, setSelectedCategory] = useState<ActivityFilterCategory>(
+    ACTIVITY_CONSTANTS.ALL
+  );
   const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -44,19 +41,19 @@ const ActivityListPage = () => {
           <div css={categoryButtons}>
             <Button
               variant='filter'
-              active={selectedCategory === ALL_ACTIVITIES_CATEGORY}
-              onClick={() => handleCategoryClick(ALL_ACTIVITIES_CATEGORY)}
+              active={selectedCategory === ACTIVITY_CONSTANTS.ALL}
+              onClick={() => handleCategoryClick(ACTIVITY_CONSTANTS.ALL)}
             >
-              {ALL_ACTIVITIES_CATEGORY}
+              {ACTIVITY_CONSTANTS.ALL}
             </Button>
-            {ACTIVITY_CATEGORIES.map((category) => (
+            {ACTIVITY_CONSTANTS.CATEGORIES.map((category) => (
               <Button
                 key={category}
                 variant='filter'
                 active={selectedCategory === category}
                 onClick={() => handleCategoryClick(category)}
               >
-                {category === '스터디' ? '소그룹' : category}
+                {isMainCategory(category) ? ACTIVITY_CONSTANTS.DISPLAY_NAMES[category] : category}
               </Button>
             ))}
           </div>

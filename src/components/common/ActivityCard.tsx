@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { theme } from '@/styles/theme';
-import { ActivityInfo } from '@/types/activity.types';
+import { ActivityInfo, ACTIVITY_CONSTANTS } from '@/types/activity.types';
 import { MdLocationOn, MdCalendarMonth } from 'react-icons/md';
 import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import Badge from './Badge';
@@ -34,7 +34,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         </div>
       </div>
       <div css={contentStyle}>
-        <Badge variant='category'>{category}</Badge>
+        <Badge variant='category'>{ACTIVITY_CONSTANTS.DISPLAY_NAMES[category]}</Badge>
         <h3 css={titleStyle}>{title}</h3>
         <div css={infoStyle}>
           <div css={infoItemStyle}>
