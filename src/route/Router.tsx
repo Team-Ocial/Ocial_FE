@@ -8,6 +8,9 @@ import ActivityListPage from '@/pages/activity/ActivityListPage';
 import ActivityDetailPage from '@/pages/activity/ActivityDetailPage';
 import ActivityEditPage from '@/pages/activity/ActivityEditPage';
 import NoticePage from '@/pages/news/NoticePage';
+import NoticeDetailPage from '@/pages/news/NoticeDetailPage';
+import NoticeEditPage from '@/pages/news/NoticeEditPage';
+import NoticeCreatePage from '@/pages/news/NoticeCreatePage';
 import PressPage from '@/pages/news/PressPage';
 import { Navigate } from 'react-router-dom';
 import ActivitiesPage from '@/pages/mypage/ActivitiesPage';
@@ -47,6 +50,23 @@ const router = createBrowserRouter([
       }, // Activity 수정 (로그인 필요)
       { path: 'news/press', element: <PressPage /> }, // 보도자료,뉴스
       { path: 'news/notice', element: <NoticePage /> }, // 공지사항
+      { path: 'news/notice/:id', element: <NoticeDetailPage /> }, // 공지사항 상세
+      {
+        path: 'news/notice/new',
+        element: (
+          <ProtectedRoute>
+            <NoticeCreatePage />
+          </ProtectedRoute>
+        ),
+      }, // 공지사항 등록 (로그인 필요)
+      {
+        path: 'news/notice/edit/:id',
+        element: (
+          <ProtectedRoute>
+            <NoticeEditPage />
+          </ProtectedRoute>
+        ),
+      }, // 공지사항 수정 (로그인 필요)
       {
         path: 'mypage',
         element: (

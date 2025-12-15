@@ -1,27 +1,43 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PageHeader from '@/components/common/PageHeader';
 import PageTabButtons from '@/components/common/PageTabButtons';
 import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useNotices } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
+import { useIsAdmin } from '@/utils/auth';
+import { MdAdd } from 'react-icons/md';
 
 const NoticePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { notices, isLoading, error, totalPages } = useNotices(currentPage);
+  const isAdmin = useIsAdmin();
+  const navigate = useNavigate();
 
   return (
     <div css={pageContainer}>
       <PageHeader title={'우리의 연결이\n새로운 가능성을 만듭니다.'} />
       <div css={contentWrapper}>
-        <PageTabButtons
-          tabs={[
-            { label: '보도자료', path: '/news/press' },
-            { label: '공지사항', path: '/news/notice' },
-          ]}
-        />
+        <div css={headerActionWrapper}>
+          <PageTabButtons
+            tabs={[
+              { label: '보도자료', path: '/news/press' },
+              { label: '공지사항', path: '/news/notice' },
+            ]}
+          />
+          {isAdmin && (
+            <button
+              css={createButtonStyle}
+              onClick={() => navigate('/news/notice/new')}
+              title='공지사항 등록'
+            >
+              <MdAdd size={18} />
+              <span>추가등록</span>
+            </button>
+          )}
+        </div>
         <div css={tableContainer}>
           {isLoading ? (
             <div css={messageStyle}>로딩 중...</div>
@@ -138,4 +154,36 @@ const paginationWrapper = css`
   display: flex;
   justify-content: center;
   margin-top: 60px;
+`;
+
+const headerActionWrapper = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+`;
+
+const createButtonStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 1px solid ${theme.colors.primary[600]};
+  border-radius: 8px;
+  background-color: transparent;
+  color: ${theme.colors.primary[600]};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: ${theme.colors.primary[600]};
+    color: ${theme.colors.white};
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 `;
