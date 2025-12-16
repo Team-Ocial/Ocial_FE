@@ -14,6 +14,8 @@ export const CATEGORY_DISPLAY_NAMES: Record<ActivityMainCategory, string> = {
 export type ActivityFilterCategory = ActivityMainCategory | typeof ALL_ACTIVITIES_CATEGORY;
 
 // 타입 가드
-export function isMainCategory(category: ActivityFilterCategory): category is ActivityMainCategory {
+export const isMainCategory = (
+  category: ActivityFilterCategory
+): category is ActivityMainCategory => {
   return category !== ALL_ACTIVITIES_CATEGORY;
-}
+};

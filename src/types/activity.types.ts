@@ -42,9 +42,11 @@ export type ActivityFilterCategory = ActivityMainCategory | typeof ACTIVITY_CONS
 /**
  * 카테고리가 메인 카테고리인지 확인하는 타입 가드
  */
-export function isMainCategory(category: ActivityFilterCategory): category is ActivityMainCategory {
+export const isMainCategory = (
+  category: ActivityFilterCategory
+): category is ActivityMainCategory => {
   return category !== ACTIVITY_CONSTANTS.ALL;
-}
+};
 
 export interface CurriculumSection {
   title: string;
