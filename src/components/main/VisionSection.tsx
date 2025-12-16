@@ -78,9 +78,9 @@ const backgroundText = css`
 const content = css`
   position: relative;
   z-index: 2;
-  max-width: ${theme.layout.width.max};
+  max-width: ${theme.layout.width.content};
   margin: 0 auto;
-  padding: 200px 0;
+  padding: 200px ${theme.layout.spacing.gutter};
   // border: 1px solid red;
 `;
 
@@ -101,7 +101,6 @@ const title = css`
 `;
 
 const textContent = css`
-  max-width: ${theme.layout.width.content};
   margin: 0 auto;
 `;
 

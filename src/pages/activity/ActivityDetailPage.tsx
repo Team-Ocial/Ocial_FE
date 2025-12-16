@@ -3,9 +3,10 @@ import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import Badge from '@/components/common/Badge';
 import { MdLocationOn, MdAccessTime, MdCalendarMonth, MdMap } from 'react-icons/md';
-import { PiThumbsUpLight } from 'react-icons/pi';
+import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useActivityDetail } from '@/hooks/useActivityDetail';
+import { useLikesStore } from '@/store/useLikesStore';
 import { formatDate } from '@/utils/formatDate';
 import { generateKey } from '@/utils/generateKey';
 
@@ -16,6 +17,13 @@ const ActivityDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { activity, isLoading, error } = useActivityDetail(id || '');
+  const { isLiked, toggleLike } = useLikesStore();
+
+  const handleLikeClick = () => {
+    if (activity) {
+      toggleLike(activity.id);
+    }
+  };
 
   const parsedCurriculum = useMemo(() => {
     if (!activity?.curriculum) return [];
@@ -65,9 +73,14 @@ const ActivityDetailPage = () => {
           <h1 css={titleStyle}>{title}</h1>
           <div css={actionButtonsStyle}>
             <button css={primaryButtonStyle}>신청하기</button>
-            <button css={secondaryButtonStyle}>
+            <button css={secondaryButtonStyle} onClick={handleLikeClick}>
               좋아요
-              <PiThumbsUpLight size={20} />
+              {isLiked(activity?.id || '') ? (
+                <PiThumbsUpFill size={20} />
+              ) : (
+                <PiThumbsUpLight size={20} />
+              )}
+              <span css={likeCountStyle}>{activity?.likes}</span>
             </button>
             {isAdmin && (
               <button css={editButtonStyle} onClick={() => navigate(`/activity/edit/${id}`)}>
@@ -389,4 +402,10 @@ const guidelineListStyle = css`
   li {
     margin-bottom: 12px;
   }
+`;
+
+const likeCountStyle = css`
+  margin-left: 4px;
+  font-weight: 600;
+  color: ${theme.colors.white};
 `;

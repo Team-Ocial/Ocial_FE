@@ -52,7 +52,7 @@ const buttonBase = css`
   transition: all 0.2s ease-in-out;
   border: 1px solid transparent;
   box-sizing: border-box;
-  ${theme.typography.textSmall}
+  ${theme.typography.labelSmall}
 
   &:disabled {
     opacity: 0.5;
@@ -72,8 +72,9 @@ const sizes = {
     ${theme.typography.labelSmall}
   `,
   large: css`
-    padding: 14px 24px;
+    padding: 24px;
     height: 48px;
+    ${theme.typography.labelSmall}
   `,
 };
 

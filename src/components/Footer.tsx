@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
-import logoGray from '@/assets/images/logo_gray.png';
+import OCIALGray from '@/assets/icon/OCIAL_gray.svg';
 
 const Footer = () => {
   return (
     <footer css={footerStyle}>
       <div css={footerContentStyle}>
         <div css={topRowStyle}>
-          <img src={logoGray} alt='OCIAL' css={logoStyle} />
+          <img src={OCIALGray} alt='OCIAL' css={logoStyle} />
           <div css={linksStyle}>
             <Link to='/privacy' css={linkStyle}>
               개인정보 처리방침

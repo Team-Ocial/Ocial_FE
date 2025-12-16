@@ -81,16 +81,15 @@ const backgroundImage = css`
 const container = css`
   position: relative;
   z-index: 1;
-  max-width: ${theme.layout.width.max};
+  max-width: ${theme.layout.width.content};
   margin: 0 auto;
-  padding-top: 200px;
+  padding: 200px ${theme.layout.spacing.gutter} 0;
   box-sizing: border-box;
 `;
 
 const titleWrapper = css`
   position: relative;
   margin-bottom: 100px;
-  max-width: ${theme.layout.width.max};
   margin: 0 auto;
 `;
 
@@ -177,7 +176,6 @@ const imageGrid = css`
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-top: 200px;
-  max-width: ${theme.layout.width.max};
   margin-left: auto;
   margin-right: auto;
 

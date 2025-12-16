@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
-import logoBlack from '@/assets/images/logo_black.png';
-import logoWhite from '@/assets/images/logo_white.png';
+import OCIALBlack from '@/assets/icon/OCIAL_black.svg';
+import OCIALWhite from '@/assets/icon/OCIAL_white.svg';
 import { NAV_LINKS } from '@/constants/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
+import ProfileDropdown from '@/components/common/ProfileDropdown';
 
 interface HeaderProps {
   variant?: 'light' | 'dark';
@@ -12,11 +14,12 @@ interface HeaderProps {
 
 const Header = ({ variant = 'dark', className }: HeaderProps) => {
   const isLight = variant === 'light';
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <header css={[headerContainer, isLight ? headerLight : headerDark, className]}>
       <Link to='/' css={logoLink}>
-        <img src={isLight ? logoWhite : logoBlack} alt='OCIAL Logo' width={120} height={38} />
+        <img src={isLight ? OCIALWhite : OCIALBlack} alt='OCIAL Logo' width={120} height={38} />
       </Link>
 
       <nav css={getNavigationStyle(isLight)}>
@@ -27,9 +30,13 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
         ))}
       </nav>
 
-      <Link to='/auth/signup' css={startButton}>
-        Start with OCIAL
-      </Link>
+      {isLoggedIn ? (
+        <ProfileDropdown />
+      ) : (
+        <Link to='/auth/signin' css={startButton}>
+          Start with OCIAL
+        </Link>
+      )}
     </header>
   );
 };
@@ -37,7 +44,7 @@ const Header = ({ variant = 'dark', className }: HeaderProps) => {
 export default Header;
 
 const headerContainer = css`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -52,6 +59,10 @@ const headerContainer = css`
 
 const headerLight = css`
   background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `;
 
 const headerDark = css`
