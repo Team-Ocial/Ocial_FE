@@ -8,6 +8,7 @@ import { theme } from '@/styles/theme';
 import { useNotices } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
 import { useIsAdmin } from '@/utils/auth';
+import { NOTICE_CONSTANTS } from '@/constants/notice';
 import { MdAdd } from 'react-icons/md';
 
 const NoticePage = () => {
@@ -57,7 +58,7 @@ const NoticePage = () => {
                   <tr key={notice.id}>
                     <td css={centerAlign}>
                       {/* TODO: API에서 실제 번호를 받아오도록 수정 */}
-                      {(currentPage - 1) * 8 + index + 1}
+                      {(currentPage - 1) * NOTICE_CONSTANTS.ITEMS_PER_PAGE + index + 1}
                     </td>
                     <td>
                       <Link to={`/news/notice/${notice.id}`} css={titleLink}>

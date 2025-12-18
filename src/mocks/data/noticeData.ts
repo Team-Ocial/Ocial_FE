@@ -9,7 +9,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '관리자',
     createdAt: '2025-08-01T09:00:00.000Z',
     updatedAt: '2025-08-01T09:00:00.000Z',
-    views: 156,
   },
   {
     id: '2',
@@ -19,7 +18,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '시스템 관리자',
     createdAt: '2025-07-28T12:00:00.000Z',
     updatedAt: '2025-07-28T12:00:00.000Z',
-    views: 89,
   },
   {
     id: '3',
@@ -29,7 +27,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '관리자',
     createdAt: '2025-07-15T10:30:00.000Z',
     updatedAt: '2025-07-15T10:30:00.000Z',
-    views: 234,
   },
   {
     id: '4',
@@ -39,7 +36,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '팀 비글',
     createdAt: '2025-06-30T09:00:00.000Z',
     updatedAt: '2025-07-01T14:20:00.000Z',
-    views: 312,
   },
   {
     id: '5',
@@ -49,7 +45,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '행사 기획팀',
     createdAt: '2025-06-10T15:00:00.000Z',
     updatedAt: '2025-06-10T15:00:00.000Z',
-    views: 445,
   },
   {
     id: '6',
@@ -59,7 +54,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '관리자',
     createdAt: '2025-05-25T18:00:00.000Z',
     updatedAt: '2025-05-25T18:00:00.000Z',
-    views: 278,
   },
   {
     id: '7',
@@ -69,7 +63,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '행사 기획팀',
     createdAt: '2025-05-26T14:00:00.000Z',
     updatedAt: '2025-05-26T14:00:00.000Z',
-    views: 167,
   },
   {
     id: '8',
@@ -79,7 +72,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '관리자',
     createdAt: '2025-04-28T08:00:00.000Z',
     updatedAt: '2025-04-28T08:00:00.000Z',
-    views: 201,
   },
   {
     id: '9',
@@ -89,7 +81,6 @@ export const NOTICE_LIST: Notice[] = [
     author: '재무팀',
     createdAt: '2025-03-05T11:00:00.000Z',
     updatedAt: '2025-03-10T09:30:00.000Z',
-    views: 389,
   },
   {
     id: '10',
@@ -99,6 +90,5 @@ export const NOTICE_LIST: Notice[] = [
     author: '행사 기획팀',
     createdAt: '2025-01-01T09:00:00.000Z',
     updatedAt: '2025-01-01T09:00:00.000Z',
-    views: 523,
   },
 ];

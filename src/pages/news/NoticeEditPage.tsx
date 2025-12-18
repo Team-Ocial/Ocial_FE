@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useNoticeDetail } from '@/hooks/useNoticeDetail';
+import { useNoticeDetail } from '@/hooks/useNotices';
 import { useState, useEffect } from 'react';
 import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
@@ -234,5 +234,6 @@ const submitButtonStyle = css`
     background-color: ${theme.colors.primary[500]};
   }
 `;
+
 
 

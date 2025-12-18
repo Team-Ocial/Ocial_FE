@@ -5,7 +5,6 @@ export interface Notice {
   author: string;
   createdAt: string;
   updatedAt?: string;
-  views: number;
 }
 
 export interface NoticeListResponse {

@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { theme } from '@/styles/theme';
-import { useNoticeDetail } from '@/hooks/useNoticeDetail';
+import { useNoticeDetail } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
 import { useIsAdmin } from '@/utils/auth';
 import { useModalStore } from '@/store/useModalStore';
 import { useToast } from '@/hooks/useToast';
-import { MdPerson, MdAccessTime, MdVisibility, MdEdit, MdDelete } from 'react-icons/md';
+import { MdPerson, MdAccessTime, MdEdit, MdDelete } from 'react-icons/md';
 
 const NoticeDetailPage = () => {
   const navigate = useNavigate();
@@ -99,11 +99,6 @@ const NoticeDetailPage = () => {
                   <span css={metaValueStyle}>{formatDate(notice.updatedAt)}</span>
                 </div>
               )}
-              <div css={metaItemStyle}>
-                <MdVisibility size={18} css={metaIconStyle} />
-                <span css={metaLabelStyle}>조회수</span>
-                <span css={metaValueStyle}>{notice.views.toLocaleString()}</span>
-              </div>
             </div>
             {isAdmin && (
               <div css={actionButtonsStyle}>
