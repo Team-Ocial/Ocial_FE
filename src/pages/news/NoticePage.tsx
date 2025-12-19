@@ -57,7 +57,6 @@ const NoticePage = () => {
                 {notices.map((notice, index) => (
                   <tr key={notice.id}>
                     <td css={centerAlign}>
-                      {/* TODO: API에서 실제 번호를 받아오도록 수정 */}
                       {(currentPage - 1) * NOTICE_CONSTANTS.ITEMS_PER_PAGE + index + 1}
                     </td>
                     <td>

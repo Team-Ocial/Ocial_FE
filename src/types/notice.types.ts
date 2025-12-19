@@ -13,10 +13,3 @@ export interface NoticePageResponse {
   totalPages: number;
   number: number; // 0부터 시작 (하지만 API 요청은 1부터)
 }
-
-export interface NoticeListResponse {
-  notices: Notice[];
-  total: number;
-  currentPage: number;
-  totalPages: number;
-}

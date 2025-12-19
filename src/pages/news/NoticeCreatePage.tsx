@@ -115,7 +115,7 @@ const formContainer = css`
 `;
 
 const titleStyle = css`
-  ${theme.typography.headlineLarge};
+  ${theme.typography.headlineLarge2};
   color: ${theme.colors.grayscale[900]};
   font-weight: 700;
   margin-bottom: 8px;

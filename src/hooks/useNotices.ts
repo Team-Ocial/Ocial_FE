@@ -79,6 +79,7 @@ interface UseNoticeDetailReturn {
   notice: Notice | null;
   isLoading: boolean;
   error: string | null;
+  isNotFound: boolean;
   refetch: () => Promise<void>;
   deleteNotice: () => Promise<boolean>;
 }
@@ -87,17 +88,28 @@ export const useNoticeDetail = (id: string): UseNoticeDetailReturn => {
   const [notice, setNotice] = useState<Notice | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   const fetchNoticeDetail = async () => {
     setIsLoading(true);
     setError(null);
+    setIsNotFound(false);
 
     try {
       const response = await apiGet<{ data: ApiNotice }>(`/api/notices/${id}`);
       setNotice(normalizeNotice(response.data));
     } catch (err) {
       console.error('공지 상세 API 에러:', err);
-      setError('공지사항을 불러오는데 실패했습니다.');
+      const errorMessage =
+        err instanceof Error ? err.message : '공지사항을 불러오는데 실패했습니다.';
+
+      // 404 에러인 경우 구분
+      if (errorMessage.includes('404') || errorMessage.includes('API 404')) {
+        setIsNotFound(true);
+        setError(null);
+      } else {
+        setError('공지사항을 불러오는데 실패했습니다.');
+      }
       setNotice(null);
     } finally {
       setIsLoading(false);
@@ -122,6 +134,7 @@ export const useNoticeDetail = (id: string): UseNoticeDetailReturn => {
     notice,
     isLoading,
     error,
+    isNotFound,
     refetch: fetchNoticeDetail,
     deleteNotice,
   };
