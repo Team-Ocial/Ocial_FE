@@ -11,7 +11,7 @@ const NoticeCreatePage = () => {
   const navigate = useNavigate();
   const { userId } = useAuthStore();
   const { success, error: showError } = useToast();
-  const [notice, setNotice] = useState<Omit<Notice, 'id' | 'createdAt' | 'updatedAt' | 'views'>>({
+  const [notice, setNotice] = useState<Omit<Notice, 'id' | 'createdAt' | 'updatedAt'>>({
     title: '',
     content: '',
     author: userId || '관리자',
@@ -29,7 +29,6 @@ const NoticeCreatePage = () => {
         id: `notice-${Date.now()}`, // 임시 ID 생성
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        views: 0,
       };
 
       NOTICE_LIST.unshift(newNotice); // 맨 앞에 추가 (최신순)
@@ -116,7 +115,7 @@ const formContainer = css`
 `;
 
 const titleStyle = css`
-  ${theme.typography.headlineLarge};
+  ${theme.typography.headlineLarge2};
   color: ${theme.colors.grayscale[900]};
   font-weight: 700;
   margin-bottom: 8px;

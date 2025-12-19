@@ -5,12 +5,11 @@ export interface Notice {
   author: string;
   createdAt: string;
   updatedAt?: string;
-  views: number;
+  pinned?: boolean;
 }
 
-export interface NoticeListResponse {
-  notices: Notice[];
-  total: number;
-  currentPage: number;
+export interface NoticePageResponse {
+  content: Notice[];
   totalPages: number;
+  number: number; // 0부터 시작 (하지만 API 요청은 1부터)
 }

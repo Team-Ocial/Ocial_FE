@@ -27,3 +27,8 @@ dist-ssr
 # Vite 캐시 폴더
 .vite
 
+# environment variables
+.env
+.env.local
+.env.development
+.env.production

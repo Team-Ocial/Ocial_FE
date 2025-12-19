@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/useAuthStore';
+﻿import { useAuthStore } from '@/store/useAuthStore';
 
 /**
  * 권한 체크 유틸리티 Hook
@@ -21,7 +21,7 @@ export const useIsAdmin = (): boolean => {
   // 임시: localStorage 사용
   // 나중: useAuthStore((state) => state.userRole === 'admin')
   // useAuthStore를 사용하여 hook 규칙 준수
-  const _ = useAuthStore(); // hook 규칙을 위해 사용
+  useAuthStore(); // hook 규칙을 위해 사용
   return localStorage.getItem('isAdmin') === 'true';
 };
 

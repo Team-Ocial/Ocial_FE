@@ -1,14 +1,26 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
-const NotFoundPage = () => {
+interface NotFoundPageProps {
+  title?: string;
+  description?: string;
+  backTo?: string;
+  backText?: string;
+}
+
+const NotFoundPage = ({
+  title = '페이지를 찾을 수 없습니다',
+  description = '요청하신 페이지가 삭제되었거나 잘못된 경로입니다.',
+  backTo = '/',
+  backText = '메인페이지로 이동',
+}: NotFoundPageProps = {}) => {
   return (
     <div css={notFoundContainer}>
       <h1 css={notFoundTitle}>404</h1>
-      <h2 css={notFoundSubtitle}>페이지를 찾을 수 없습니다</h2>
-      <p css={notFoundDescription}>요청하신 페이지가 삭제되었거나 잘못된 경로입니다.</p>
-      <Link to='/' css={notFoundButton}>
-        메인페이지로 이동
+      <h2 css={notFoundSubtitle}>{title}</h2>
+      <p css={notFoundDescription}>{description}</p>
+      <Link to={backTo} css={notFoundButton}>
+        {backText}
       </Link>
     </div>
   );

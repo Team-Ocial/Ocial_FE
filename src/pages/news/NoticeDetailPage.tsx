@@ -1,20 +1,29 @@
 import { css } from '@emotion/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { theme } from '@/styles/theme';
-import { useNoticeDetail } from '@/hooks/useNoticeDetail';
+import { useNoticeDetail } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
 import { useIsAdmin } from '@/utils/auth';
 import { useModalStore } from '@/store/useModalStore';
 import { useToast } from '@/hooks/useToast';
-import { MdPerson, MdAccessTime, MdVisibility, MdEdit, MdDelete } from 'react-icons/md';
+import { MdPerson, MdAccessTime, MdEdit, MdDelete } from 'react-icons/md';
+import NotFoundPage from '@/pages/error/NotFoundPage';
+import { useEffect } from 'react';
 
 const NoticeDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { notice, isLoading, error, deleteNotice } = useNoticeDetail(id || '');
+  const { notice, isLoading, error, isNotFound, deleteNotice } = useNoticeDetail(id || '');
   const isAdmin = useIsAdmin();
   const { openModal } = useModalStore();
   const { success, error: showError } = useToast();
+
+  // id가 없는 경우 목록으로 리다이렉트
+  useEffect(() => {
+    if (!id) {
+      navigate('/news/notice', { replace: true });
+    }
+  }, [id, navigate]);
 
   const handleDelete = () => {
     openModal({
@@ -42,6 +51,11 @@ const NoticeDetailPage = () => {
     navigate(`/news/notice/edit/${id}`);
   };
 
+  // id가 없는 경우 (리다이렉트 중이므로 아무것도 렌더링하지 않음)
+  if (!id) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <div css={pageContainer}>
@@ -52,21 +66,24 @@ const NoticeDetailPage = () => {
     );
   }
 
+  // 404 에러 또는 공지사항이 없는 경우
+  if (isNotFound || !notice) {
+    return (
+      <NotFoundPage
+        title="공지사항을 찾을 수 없습니다"
+        description="요청하신 공지사항이 삭제되었거나 존재하지 않습니다."
+        backTo="/news/notice"
+        backText="공지사항 목록으로"
+      />
+    );
+  }
+
+  // 일반 에러 (404가 아닌 경우)
   if (error) {
     return (
       <div css={pageContainer}>
         <div css={contentWrapper}>
           <div css={messageStyle}>{error}</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!notice) {
-    return (
-      <div css={pageContainer}>
-        <div css={contentWrapper}>
-          <div css={messageStyle}>공지사항을 찾을 수 없습니다.</div>
         </div>
       </div>
     );
@@ -99,11 +116,6 @@ const NoticeDetailPage = () => {
                   <span css={metaValueStyle}>{formatDate(notice.updatedAt)}</span>
                 </div>
               )}
-              <div css={metaItemStyle}>
-                <MdVisibility size={18} css={metaIconStyle} />
-                <span css={metaLabelStyle}>조회수</span>
-                <span css={metaValueStyle}>{notice.views.toLocaleString()}</span>
-              </div>
             </div>
             {isAdmin && (
               <div css={actionButtonsStyle}>
@@ -172,7 +184,7 @@ const detailContainer = css`
 `;
 
 const titleStyle = css`
-  ${theme.typography.headlineLarge};
+  ${theme.typography.headlineLarge2};
   color: ${theme.colors.grayscale[900]};
   font-weight: 700;
   margin-bottom: 24px;

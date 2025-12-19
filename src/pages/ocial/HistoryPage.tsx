@@ -28,7 +28,7 @@ const HistorySection = ({ bigYear, years }: { bigYear: string; years: HistoryYea
       {years.map((yearData, index) => (
         <div key={yearData.year} css={yearSection}>
           <YearContent yearData={yearData} />
-          {index < years.length && <div css={divider} />}
+          {index < years.length - 1 && <div css={divider} />}
         </div>
       ))}
     </div>

@@ -1,24 +1,37 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useNoticeDetail } from '@/hooks/useNoticeDetail';
+import { useNoticeDetail } from '@/hooks/useNotices';
 import { useState, useEffect } from 'react';
 import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
 import { NOTICE_LIST } from '@/mocks/data/noticeData';
+import NotFoundPage from '@/pages/error/NotFoundPage';
 
 const NoticeEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { notice: initialNotice, isLoading, error } = useNoticeDetail(id || '');
+  const { notice: initialNotice, isLoading, error, isNotFound } = useNoticeDetail(id || '');
   const [notice, setNotice] = useState<Notice | null>(null);
   const { success, error: showError } = useToast();
+
+  // id가 없는 경우 목록으로 리다이렉트
+  useEffect(() => {
+    if (!id) {
+      navigate('/news/notice', { replace: true });
+    }
+  }, [id, navigate]);
 
   useEffect(() => {
     if (initialNotice) {
       setNotice(initialNotice);
     }
   }, [initialNotice]);
+
+  // id가 없는 경우 (리다이렉트 중이므로 아무것도 렌더링하지 않음)
+  if (!id) {
+    return null;
+  }
 
   if (isLoading) {
     return (
@@ -30,21 +43,24 @@ const NoticeEditPage = () => {
     );
   }
 
+  // 404 에러 또는 공지사항이 없는 경우
+  if (isNotFound || !notice) {
+    return (
+      <NotFoundPage
+        title="공지사항을 찾을 수 없습니다"
+        description="요청하신 공지사항이 삭제되었거나 존재하지 않습니다."
+        backTo="/news/notice"
+        backText="공지사항 목록으로"
+      />
+    );
+  }
+
+  // 일반 에러 (404가 아닌 경우)
   if (error) {
     return (
       <div css={pageContainer}>
         <div css={contentWrapper}>
           <div css={messageStyle}>{error}</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!notice) {
-    return (
-      <div css={pageContainer}>
-        <div css={contentWrapper}>
-          <div css={messageStyle}>공지사항을 찾을 수 없습니다.</div>
         </div>
       </div>
     );
@@ -234,5 +250,6 @@ const submitButtonStyle = css`
     background-color: ${theme.colors.primary[500]};
   }
 `;
+
 
 
