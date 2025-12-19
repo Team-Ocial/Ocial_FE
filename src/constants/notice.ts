@@ -6,7 +6,7 @@
 
 export const NOTICE_CONSTANTS = {
   /** 페이지당 공지사항 개수 (프론트엔드 기본값) */
-  ITEMS_PER_PAGE: 8,
+  ITEMS_PER_PAGE: 10,
 
   /** 기본 작성자 이름 (API에서 제공하지 않을 경우 사용) */
   DEFAULT_AUTHOR: '관리자로 할 예정 뿌잉',

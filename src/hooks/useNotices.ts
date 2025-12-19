@@ -1,13 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Notice } from '@/types/notice.types';
+import { useState, useEffect } from 'react';
+import { Notice, NoticePageResponse } from '@/types/notice.types';
 import { apiGet } from '@/api/client';
 import { NOTICE_CONSTANTS } from '@/constants/notice';
 
 // ============================================================================
 // 1. 공통 타입 및 상수
 // ============================================================================
-
-const ITEMS_PER_PAGE = NOTICE_CONSTANTS.ITEMS_PER_PAGE;
 
 type ApiNotice = {
   id: number | string;
@@ -29,45 +27,48 @@ const normalizeNotice = (notice: ApiNotice): Notice => ({
   author: NOTICE_CONSTANTS.DEFAULT_AUTHOR,
   createdAt: notice.createdAt,
   updatedAt: notice.updatedAt,
+  pinned: notice.pinned,
 });
 
 // ============================================================================
-// 3. useNotices - 공지사항 목록 조회
+// 3. useNotices - 공지사항 목록 조회 (서버 사이드 페이지네이션)
 // ============================================================================
 
 export const useNotices = (page = 1) => {
-  const [allNotices, setAllNotices] = useState<Notice[]>([]);
+  const [notices, setNotices] = useState<Notice[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // 백엔드에서 정렬된 데이터를 받아오므로 프론트엔드 정렬 불필요
-  const totalPages = Math.max(1, Math.ceil(allNotices.length / ITEMS_PER_PAGE));
-  const currentPage = Math.min(Math.max(1, page), totalPages);
-  const pagedNotices = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return allNotices.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [currentPage, allNotices]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchNotices = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await apiGet<{ data: ApiNotice[] }>('/api/notices');
-        const normalized = (response.data || []).map(normalizeNotice);
-        setAllNotices(normalized);
+        // 백엔드: page는 1부터 시작, pageSize는 10으로 고정
+        // 응답 구조: { data: { content: [...], totalPages: ..., number: ... } }
+        const response = await apiGet<{ data: NoticePageResponse }>(`/api/notices?page=${page}`);
+
+        // Spring Page 구조에서 데이터 추출
+        const normalized = (response.data.content || []).map(normalizeNotice);
+        setNotices(normalized);
+        setTotalPages(response.data.totalPages || 1);
+        // number는 0부터 시작하지만, 프론트엔드는 1부터 사용
+        setCurrentPage((response.data.number || 0) + 1);
       } catch (err) {
         console.error('공지사항 API 에러:', err);
         setError('공지사항을 불러오는데 실패했습니다.');
+        setNotices([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchNotices();
-  }, []);
+  }, [page]);
 
-  return { notices: pagedNotices, isLoading, error, totalPages, currentPage };
+  return { notices, isLoading, error, totalPages, currentPage };
 };
 
 // ============================================================================
