@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useNoticeDetail } from '@/hooks/useNotices';
+import { useNoticeDetail, updateNotice } from '@/hooks/useNotices';
 import { useState, useEffect } from 'react';
 import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
-import { NOTICE_LIST } from '@/mocks/data/noticeData';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 
 const NoticeEditPage = () => {
@@ -68,18 +67,14 @@ const NoticeEditPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // TODO: API 연동
-      // await updateNotice(id, notice);
+    if (!notice || !id) return;
 
-      // Mock 데이터 업데이트
-      const index = NOTICE_LIST.findIndex((n) => n.id === id);
-      if (index !== -1) {
-        NOTICE_LIST[index] = {
-          ...notice,
-          updatedAt: new Date().toISOString(),
-        };
-      }
+    try {
+      await updateNotice(id, {
+        title: notice.title,
+        content: notice.content,
+        pinned: notice.pinned || false,
+      });
 
       success('공지사항이 수정되었습니다.');
       navigate(`/news/notice/${id}`);
@@ -124,6 +119,19 @@ const NoticeEditPage = () => {
               placeholder='본문 내용을 입력하세요'
               required
             />
+          </div>
+
+          {/* 고정 여부 */}
+          <div css={fieldGroupStyle}>
+            <label css={checkboxLabelStyle}>
+              <input
+                type='checkbox'
+                checked={notice.pinned || false}
+                onChange={(e) => setNotice({ ...notice, pinned: e.target.checked })}
+                css={checkboxStyle}
+              />
+              <span>공지사항 고정 (상단에 항상 표시)</span>
+            </label>
           </div>
 
           {/* 버튼 영역 */}
@@ -248,6 +256,29 @@ const submitButtonStyle = css`
 
   &:hover {
     background-color: ${theme.colors.primary[500]};
+  }
+`;
+
+const checkboxLabelStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${theme.typography.textMedium};
+  color: ${theme.colors.grayscale[700]};
+  cursor: pointer;
+`;
+
+const checkboxStyle = css`
+  width: 20px;
+  height: 20px;
+  border: 1px solid ${theme.colors.grayscale[300]};
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: ${theme.colors.primary[600]};
+
+  &:checked {
+    background-color: ${theme.colors.primary[600]};
+    border-color: ${theme.colors.primary[600]};
   }
 `;
 

@@ -2,39 +2,35 @@ import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
-import { NOTICE_LIST } from '@/mocks/data/noticeData';
-import { useAuthStore } from '@/store/useAuthStore';
+import { createNotice } from '@/hooks/useNotices';
+
+interface NoticeFormData {
+  title: string;
+  content: string;
+  pinned: boolean;
+}
 
 const NoticeCreatePage = () => {
   const navigate = useNavigate();
-  const { userId } = useAuthStore();
   const { success, error: showError } = useToast();
-  const [notice, setNotice] = useState<Omit<Notice, 'id' | 'createdAt' | 'updatedAt'>>({
+  const [notice, setNotice] = useState<NoticeFormData>({
     title: '',
     content: '',
-    author: userId || '관리자',
+    pinned: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // TODO: API 연동
-      // await createNotice(notice);
-
-      // Mock 데이터 추가
-      const newNotice: Notice = {
-        ...notice,
-        id: `notice-${Date.now()}`, // 임시 ID 생성
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      NOTICE_LIST.unshift(newNotice); // 맨 앞에 추가 (최신순)
+      const noticeId = await createNotice({
+        title: notice.title,
+        content: notice.content,
+        pinned: notice.pinned || false,
+      });
 
       success('공지사항이 등록되었습니다.');
-      navigate(`/news/notice/${newNotice.id}`);
+      navigate(`/news/notice/${noticeId}`);
     } catch (error) {
       showError('공지사항 등록에 실패했습니다.');
       console.error('Failed to create notice:', error);
@@ -76,6 +72,19 @@ const NoticeCreatePage = () => {
               placeholder='본문 내용을 입력하세요'
               required
             />
+          </div>
+
+          {/* 고정 여부 */}
+          <div css={fieldGroupStyle}>
+            <label css={checkboxLabelStyle}>
+              <input
+                type='checkbox'
+                checked={notice.pinned || false}
+                onChange={(e) => setNotice({ ...notice, pinned: e.target.checked })}
+                css={checkboxStyle}
+              />
+              <span>공지사항 고정 (상단에 항상 표시)</span>
+            </label>
           </div>
 
           {/* 버튼 영역 */}
@@ -193,5 +202,28 @@ const submitButtonStyle = css`
 
   &:hover {
     background-color: ${theme.colors.primary[500]};
+  }
+`;
+
+const checkboxLabelStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${theme.typography.textMedium};
+  color: ${theme.colors.grayscale[700]};
+  cursor: pointer;
+`;
+
+const checkboxStyle = css`
+  width: 20px;
+  height: 20px;
+  border: 1px solid ${theme.colors.grayscale[300]};
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: ${theme.colors.primary[600]};
+
+  &:checked {
+    background-color: ${theme.colors.primary[600]};
+    border-color: ${theme.colors.primary[600]};
   }
 `;

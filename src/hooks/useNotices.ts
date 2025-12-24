@@ -1,23 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Notice, NoticePageResponse } from '@/types/notice.types';
-import { apiGet } from '@/api/client';
+import { Notice, NoticePageResponse, ApiNotice } from '@/types/notice.types';
+import { apiGet, apiPost, apiPatch, apiDelete } from '@/api/client';
 import { NOTICE_CONSTANTS } from '@/constants/notice';
 
 // ============================================================================
-// 1. 공통 타입 및 상수
-// ============================================================================
-
-type ApiNotice = {
-  id: number | string;
-  title: string;
-  content: string;
-  pinned?: boolean;
-  createdAt: string;
-  updatedAt?: string;
-};
-
-// ============================================================================
-// 2. 공통 유틸리티 함수
+// 1. 공통 유틸리티 함수
 // ============================================================================
 
 const normalizeNotice = (notice: ApiNotice): Notice => ({
@@ -31,7 +18,7 @@ const normalizeNotice = (notice: ApiNotice): Notice => ({
 });
 
 // ============================================================================
-// 3. useNotices - 공지사항 목록 조회 (서버 사이드 페이지네이션)
+// 2. useNotices - 공지사항 목록 조회 (서버 사이드 페이지네이션)
 // ============================================================================
 
 export const useNotices = (page = 1) => {
@@ -72,7 +59,7 @@ export const useNotices = (page = 1) => {
 };
 
 // ============================================================================
-// 4. useNoticeDetail - 공지사항 상세 조회
+// 3. useNoticeDetail - 공지사항 상세 조회
 // ============================================================================
 
 interface UseNoticeDetailReturn {
@@ -117,8 +104,13 @@ export const useNoticeDetail = (id: string): UseNoticeDetailReturn => {
   };
 
   const deleteNotice = async (): Promise<boolean> => {
-    // DELETE /api/notices/{id} 생기면 여기서 사용
-    return false;
+    try {
+      await apiDelete(`/api/notices/${id}`);
+      return true;
+    } catch (err) {
+      console.error('공지사항 삭제 API 에러:', err);
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -138,4 +130,51 @@ export const useNoticeDetail = (id: string): UseNoticeDetailReturn => {
     refetch: fetchNoticeDetail,
     deleteNotice,
   };
+};
+
+// ============================================================================
+// 4. 공지사항 생성 함수
+// ============================================================================
+
+interface CreateNoticeParams {
+  title: string;
+  content: string;
+  pinned?: boolean;
+}
+
+export const createNotice = async (params: CreateNoticeParams): Promise<string> => {
+  try {
+    const response = await apiPost<{ data: { id: string } }>('/api/notices', {
+      title: params.title,
+      content: params.content,
+      pinned: params.pinned || false,
+    });
+    return response.data.id;
+  } catch (err) {
+    console.error('공지사항 생성 API 에러:', err);
+    throw err;
+  }
+};
+
+// ============================================================================
+// 5. 공지사항 수정 함수
+// ============================================================================
+
+interface UpdateNoticeParams {
+  title: string;
+  content: string;
+  pinned?: boolean;
+}
+
+export const updateNotice = async (id: string, params: UpdateNoticeParams): Promise<void> => {
+  try {
+    await apiPatch(`/api/notices/${id}`, {
+      title: params.title,
+      content: params.content,
+      pinned: params.pinned || false,
+    });
+  } catch (err) {
+    console.error('공지사항 수정 API 에러:', err);
+    throw err;
+  }
 };

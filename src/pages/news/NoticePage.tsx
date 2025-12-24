@@ -125,7 +125,7 @@ const tableStyle = css`
   td {
     ${theme.typography.textLarge};
     color: ${theme.colors.grayscale[700]};
-    padding: 32px 20px;
+    padding: 25px 20px;
     border-top: 1px solid ${theme.colors.grayscale[100]};
   }
 
@@ -153,7 +153,7 @@ const titleLink = css`
 const paginationWrapper = css`
   display: flex;
   justify-content: center;
-  margin-top: 60px;
+  margin-top: 120px;
 `;
 
 const headerActionWrapper = css`
