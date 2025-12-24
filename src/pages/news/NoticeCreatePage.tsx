@@ -5,16 +5,16 @@ import { useState } from 'react';
 import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
 import { NOTICE_LIST } from '@/mocks/data/noticeData';
-import { useAuthStore } from '@/store/useAuthStore';
+import { NOTICE_CONSTANTS } from '@/constants/notice';
 
 const NoticeCreatePage = () => {
   const navigate = useNavigate();
-  const { userId } = useAuthStore();
   const { success, error: showError } = useToast();
   const [notice, setNotice] = useState<Omit<Notice, 'id' | 'createdAt' | 'updatedAt'>>({
     title: '',
     content: '',
-    author: userId || '관리자',
+    author: NOTICE_CONSTANTS.DEFAULT_AUTHOR,
+    pinned: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,6 +76,19 @@ const NoticeCreatePage = () => {
               placeholder='본문 내용을 입력하세요'
               required
             />
+          </div>
+
+          {/* 고정 여부 */}
+          <div css={fieldGroupStyle}>
+            <label css={checkboxLabelStyle}>
+              <input
+                type='checkbox'
+                checked={notice.pinned || false}
+                onChange={(e) => setNotice({ ...notice, pinned: e.target.checked })}
+                css={checkboxStyle}
+              />
+              <span>공지사항 고정 (상단에 항상 표시)</span>
+            </label>
           </div>
 
           {/* 버튼 영역 */}
@@ -193,5 +206,28 @@ const submitButtonStyle = css`
 
   &:hover {
     background-color: ${theme.colors.primary[500]};
+  }
+`;
+
+const checkboxLabelStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${theme.typography.textMedium};
+  color: ${theme.colors.grayscale[700]};
+  cursor: pointer;
+`;
+
+const checkboxStyle = css`
+  width: 20px;
+  height: 20px;
+  border: 1px solid ${theme.colors.grayscale[300]};
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: ${theme.colors.primary[600]};
+
+  &:checked {
+    background-color: ${theme.colors.primary[600]};
+    border-color: ${theme.colors.primary[600]};
   }
 `;

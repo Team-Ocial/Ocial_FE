@@ -1,23 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Notice, NoticePageResponse } from '@/types/notice.types';
+import { Notice, NoticePageResponse, ApiNotice } from '@/types/notice.types';
 import { apiGet } from '@/api/client';
 import { NOTICE_CONSTANTS } from '@/constants/notice';
 
 // ============================================================================
-// 1. 공통 타입 및 상수
-// ============================================================================
-
-type ApiNotice = {
-  id: number | string;
-  title: string;
-  content: string;
-  pinned?: boolean;
-  createdAt: string;
-  updatedAt?: string;
-};
-
-// ============================================================================
-// 2. 공통 유틸리티 함수
+// 1. 공통 유틸리티 함수
 // ============================================================================
 
 const normalizeNotice = (notice: ApiNotice): Notice => ({
@@ -31,7 +18,7 @@ const normalizeNotice = (notice: ApiNotice): Notice => ({
 });
 
 // ============================================================================
-// 3. useNotices - 공지사항 목록 조회 (서버 사이드 페이지네이션)
+// 2. useNotices - 공지사항 목록 조회 (서버 사이드 페이지네이션)
 // ============================================================================
 
 export const useNotices = (page = 1) => {
@@ -72,7 +59,7 @@ export const useNotices = (page = 1) => {
 };
 
 // ============================================================================
-// 4. useNoticeDetail - 공지사항 상세 조회
+// 3. useNoticeDetail - 공지사항 상세 조회
 // ============================================================================
 
 interface UseNoticeDetailReturn {
