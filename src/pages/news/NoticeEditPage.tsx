@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useNoticeDetail } from '@/hooks/useNotices';
+import { useNoticeDetail, updateNotice } from '@/hooks/useNotices';
 import { useState, useEffect } from 'react';
 import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
-import { NOTICE_LIST } from '@/mocks/data/noticeData';
 import NotFoundPage from '@/pages/error/NotFoundPage';
 
 const NoticeEditPage = () => {
@@ -68,18 +67,14 @@ const NoticeEditPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // TODO: API 연동
-      // await updateNotice(id, notice);
+    if (!notice || !id) return;
 
-      // Mock 데이터 업데이트
-      const index = NOTICE_LIST.findIndex((n) => n.id === id);
-      if (index !== -1) {
-        NOTICE_LIST[index] = {
-          ...notice,
-          updatedAt: new Date().toISOString(),
-        };
-      }
+    try {
+      await updateNotice(id, {
+        title: notice.title,
+        content: notice.content,
+        pinned: notice.pinned || false,
+      });
 
       success('공지사항이 수정되었습니다.');
       navigate(`/news/notice/${id}`);

@@ -2,39 +2,35 @@ import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Notice } from '@/types/notice.types';
 import { useToast } from '@/hooks/useToast';
-import { NOTICE_LIST } from '@/mocks/data/noticeData';
-import { NOTICE_CONSTANTS } from '@/constants/notice';
+import { createNotice } from '@/hooks/useNotices';
+
+interface NoticeFormData {
+  title: string;
+  content: string;
+  pinned: boolean;
+}
 
 const NoticeCreatePage = () => {
   const navigate = useNavigate();
   const { success, error: showError } = useToast();
-  const [notice, setNotice] = useState<Omit<Notice, 'id' | 'createdAt' | 'updatedAt'>>({
+  const [notice, setNotice] = useState<NoticeFormData>({
     title: '',
     content: '',
-    author: NOTICE_CONSTANTS.DEFAULT_AUTHOR,
     pinned: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // TODO: API 연동
-      // await createNotice(notice);
-
-      // Mock 데이터 추가
-      const newNotice: Notice = {
-        ...notice,
-        id: `notice-${Date.now()}`, // 임시 ID 생성
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      NOTICE_LIST.unshift(newNotice); // 맨 앞에 추가 (최신순)
+      const noticeId = await createNotice({
+        title: notice.title,
+        content: notice.content,
+        pinned: notice.pinned || false,
+      });
 
       success('공지사항이 등록되었습니다.');
-      navigate(`/news/notice/${newNotice.id}`);
+      navigate(`/news/notice/${noticeId}`);
     } catch (error) {
       showError('공지사항 등록에 실패했습니다.');
       console.error('Failed to create notice:', error);
