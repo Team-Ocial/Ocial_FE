@@ -28,34 +28,42 @@ export const useNotices = (page = 1) => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const fetchNotices = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // 백엔드: page는 1부터 시작, pageSize는 10으로 고정
+      // 응답 구조: { data: { content: [...], totalPages: ..., number: ... } }
+      const response = await apiGet<{ data: NoticePageResponse }>(`/api/notices?page=${page}`);
+
+      // Spring Page 구조에서 데이터 추출
+      const normalized = (response.data.content || []).map(normalizeNotice);
+
+      // 고정 공지를 상단에 정렬 (pinned: true가 먼저 오도록)
+      const sortedNotices = [...normalized].sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return 0;
+      });
+
+      setNotices(sortedNotices);
+      setTotalPages(response.data.totalPages || 1);
+      // number는 0부터 시작하지만, 프론트엔드는 1부터 사용
+      setCurrentPage((response.data.number || 0) + 1);
+    } catch (err) {
+      console.error('공지사항 API 에러:', err);
+      setError('공지사항을 불러오는데 실패했습니다.');
+      setNotices([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchNotices = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // 백엔드: page는 1부터 시작, pageSize는 10으로 고정
-        // 응답 구조: { data: { content: [...], totalPages: ..., number: ... } }
-        const response = await apiGet<{ data: NoticePageResponse }>(`/api/notices?page=${page}`);
-
-        // Spring Page 구조에서 데이터 추출
-        const normalized = (response.data.content || []).map(normalizeNotice);
-        setNotices(normalized);
-        setTotalPages(response.data.totalPages || 1);
-        // number는 0부터 시작하지만, 프론트엔드는 1부터 사용
-        setCurrentPage((response.data.number || 0) + 1);
-      } catch (err) {
-        console.error('공지사항 API 에러:', err);
-        setError('공지사항을 불러오는데 실패했습니다.');
-        setNotices([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchNotices();
   }, [page]);
 
-  return { notices, isLoading, error, totalPages, currentPage };
+  return { notices, isLoading, error, totalPages, currentPage, refetch: fetchNotices };
 };
 
 // ============================================================================
