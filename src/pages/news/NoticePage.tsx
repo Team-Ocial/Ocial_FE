@@ -7,14 +7,16 @@ import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useNotices } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
-import { useIsAdmin } from '@/utils/auth';
+// TODO: 나중에 관리자만 등록 가능하도록 설정 시 아래 주석 해제
+// import { useIsAdmin } from '@/utils/auth';
 import { NOTICE_CONSTANTS } from '@/constants/notice';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdPushPin } from 'react-icons/md';
 
 const NoticePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { notices, isLoading, error, totalPages } = useNotices(currentPage);
-  const isAdmin = useIsAdmin();
+  // TODO: 나중에 관리자만 등록 가능하도록 설정 시 아래 주석 해제
+  // const isAdmin = useIsAdmin();
   const navigate = useNavigate();
 
   return (
@@ -28,16 +30,17 @@ const NoticePage = () => {
               { label: '공지사항', path: '/news/notice' },
             ]}
           />
-          {isAdmin && (
-            <button
-              css={createButtonStyle}
-              onClick={() => navigate('/news/notice/new')}
-              title='공지사항 등록'
-            >
-              <MdAdd size={18} />
-              <span>추가등록</span>
-            </button>
-          )}
+          {/* TODO: 나중에 관리자만 등록 가능하도록 설정 시 아래 주석 해제하고 버튼을 조건부로 표시 */}
+          {/* {isAdmin && ( */}
+          <button
+            css={createButtonStyle}
+            onClick={() => navigate('/news/notice/new')}
+            title='공지사항 등록'
+          >
+            <MdAdd size={18} />
+            <span>추가등록</span>
+          </button>
+          {/* )} */}
         </div>
         <div css={tableContainer}>
           {isLoading ? (
@@ -61,6 +64,9 @@ const NoticePage = () => {
                     </td>
                     <td>
                       <Link to={`/news/notice/${notice.id}`} css={titleLink}>
+                        {notice.pinned && (
+                          <MdPushPin size={18} css={pinnedIconStyle} title='고정 공지' />
+                        )}
                         {notice.title}
                       </Link>
                     </td>
@@ -186,4 +192,9 @@ const createButtonStyle = css`
   &:active {
     transform: scale(0.95);
   }
+`;
+
+const pinnedIconStyle = css`
+  color: ${theme.colors.primary[600]};
+  flex-shrink: 0;
 `;

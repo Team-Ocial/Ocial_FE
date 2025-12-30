@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import { useNoticeDetail } from '@/hooks/useNotices';
 import { formatDate } from '@/utils/formatDate';
-import { useIsAdmin } from '@/utils/auth';
+// TODO: 나중에 관리자만 수정/삭제 가능하도록 설정 시 아래 주석 해제
+// import { useIsAdmin } from '@/utils/auth';
 import { useModalStore } from '@/store/useModalStore';
 import { useToast } from '@/hooks/useToast';
 import { MdPerson, MdAccessTime, MdEdit, MdDelete } from 'react-icons/md';
@@ -14,7 +15,8 @@ const NoticeDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { notice, isLoading, error, isNotFound, deleteNotice } = useNoticeDetail(id || '');
-  const isAdmin = useIsAdmin();
+  // TODO: 나중에 관리자만 수정/삭제 가능하도록 설정 시 아래 주석 해제
+  // const isAdmin = useIsAdmin();
   const { openModal } = useModalStore();
   const { success, error: showError } = useToast();
 
@@ -117,16 +119,17 @@ const NoticeDetailPage = () => {
                 </div>
               )}
             </div>
-            {isAdmin && (
-              <div css={actionButtonsStyle}>
-                <button css={iconButtonStyle} onClick={handleEdit} title='수정하기'>
-                  <MdEdit size={20} />
-                </button>
-                <button css={iconButtonDeleteStyle} onClick={handleDelete} title='삭제하기'>
-                  <MdDelete size={20} />
-                </button>
-              </div>
-            )}
+            {/* TODO: 나중에 관리자만 수정/삭제 가능하도록 설정 시 아래 주석 해제하고 버튼을 조건부로 표시 */}
+            {/* {isAdmin && ( */}
+            <div css={actionButtonsStyle}>
+              <button css={iconButtonStyle} onClick={handleEdit} title='수정하기'>
+                <MdEdit size={20} />
+              </button>
+              <button css={iconButtonDeleteStyle} onClick={handleDelete} title='삭제하기'>
+                <MdDelete size={20} />
+              </button>
+            </div>
+            {/* )} */}
           </div>
 
           {/* 구분선 */}
