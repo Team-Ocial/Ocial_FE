@@ -6,7 +6,7 @@ export interface NavLink {
 export const NAV_LINKS: NavLink[] = [
   { to: '/OCIAL/history', text: 'OCIAL' },
   { to: '/activity', text: 'Activity' },
-  { to: 'news/press', text: 'News' },
+  { to: '/news/press', text: 'News' },
 ];
 
 export const OCIAL_TABS = [
