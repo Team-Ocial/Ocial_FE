@@ -1,62 +1,178 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import OCIALLayout from '@/layouts/OCIALLayout';
-import { theme } from '@/styles/theme';
-import MemberCard from '@/components/common/MemberCard';
+import PageHeader from '@/components/common/PageHeader';
+import Button from '@/components/common/Button';
+import ActivityCard from '@/components/common/ActivityCard';
 import Pagination from '@/components/common/Pagination';
-import { MEMBER_DATA } from '@/mocks/data/memberData';
+import { theme } from '@/styles/theme';
+import { useActivity } from '@/hooks/useActivity';
+import { ACTIVITY_CONSTANTS, ActivityFilterCategory, isMainCategory } from '@/types/activity.types';
 
-const ITEMS_PER_PAGE = 16; // 한 페이지당 보여줄 멤버 수
+type SortType = '최신순' | '인기순';
 
-const MembersPage = () => {
+const ActivityListPage = () => {
+  const [selectedCategory, setSelectedCategory] = useState<ActivityFilterCategory>(
+    ACTIVITY_CONSTANTS.ALL
+  );
+  const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 페이지네이션 계산
-  const totalPages = Math.ceil(MEMBER_DATA.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentMembers = MEMBER_DATA.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const { activities, isLoading, error, totalPages } = useActivity({
+    page: currentPage,
+    category: selectedCategory,
+    sort: selectedSort === '최신순' ? 'latest' : 'popular',
+  });
+
+  const handleCategoryClick = (category: ActivityFilterCategory) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
-    <OCIALLayout title={'오셜을 만들어가는 사람들\nTeam. OCIAL'}>
-      <div css={descriptionStyle}>
-        오셜은 다양한 경험과 열정을 가진 사람들이 모여 더 나은 IT 커뮤니티를 만들어갑니다.
-        {'\n'}우리와 함께하는 멤버들을 소개합니다.
+    <div css={pageContainer}>
+      <PageHeader
+        title='새로운 배움과 만남이 시작되는 곳'
+        description={
+          '오셜은 배움과 네트워킹을 통해 함께 성장하고\n활발한 커뮤니티 문화를 만들어갑니다.'
+        }
+      />
+      <div css={contentWrapper}>
+        <div css={filterContainer}>
+          <div css={categoryButtons}>
+            <Button
+              variant='filter'
+              active={selectedCategory === ACTIVITY_CONSTANTS.ALL}
+              onClick={() => handleCategoryClick(ACTIVITY_CONSTANTS.ALL)}
+            >
+              {ACTIVITY_CONSTANTS.ALL}
+            </Button>
+            {ACTIVITY_CONSTANTS.CATEGORIES.map((category) => (
+              <Button
+                key={category}
+                variant='filter'
+                active={selectedCategory === category}
+                onClick={() => handleCategoryClick(category)}
+              >
+                {isMainCategory(category) ? ACTIVITY_CONSTANTS.DISPLAY_NAMES[category] : category}
+              </Button>
+            ))}
+          </div>
+          <div css={sortButtons}>
+            <button
+              css={[sortButtonStyle, selectedSort === '최신순' && sortButtonActiveStyle]}
+              onClick={() => {
+                setSelectedSort('최신순');
+                setCurrentPage(1);
+              }}
+            >
+              최신순
+            </button>
+            <div css={dividerStyle} />
+            <button
+              css={[sortButtonStyle, selectedSort === '인기순' && sortButtonActiveStyle]}
+              onClick={() => {
+                setSelectedSort('인기순');
+                setCurrentPage(1);
+              }}
+            >
+              인기순
+            </button>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div css={messageStyle}>로딩 중...</div>
+        ) : error ? (
+          <div css={messageStyle}>{error}</div>
+        ) : activities.length === 0 ? (
+          <div css={messageStyle}>활동이 없습니다.</div>
+        ) : (
+          <>
+            <div css={activitiesContainer}>
+              {activities.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))}
+            </div>
+            <div css={paginationWrapper}>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
+        )}
       </div>
-      <div css={membersGridStyle}>
-        {currentMembers.map((member) => (
-          <MemberCard key={member.id} member={member} />
-        ))}
-      </div>
-      <div css={paginationWrapperStyle}>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
-    </OCIALLayout>
+    </div>
   );
 };
 
-export default MembersPage;
+export default ActivityListPage;
 
-const descriptionStyle = css`
-  ${theme.typography.textLarge};
-  color: ${theme.colors.black};
-  white-space: pre-line;
-  margin-top: 40px;
-  margin-bottom: 80px;
+const pageContainer = css`
+  width: 100%;
 `;
 
-const membersGridStyle = css`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-top: 80px;
+const contentWrapper = css`
+  max-width: ${theme.layout.width.content};
+  margin: 0 auto;
+  padding: 40px ${theme.layout.spacing.gutter} 80px;
+`;
 
-  @media (max-width: ${theme.breakpoints.xl}) {
-    grid-template-columns: repeat(3, 1fr);
+const filterContainer = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+`;
+
+const categoryButtons = css`
+  display: flex;
+  gap: 12px;
+`;
+
+const sortButtons = css`
+  display: flex;
+  align-items: center;
+`;
+
+const sortButtonStyle = css`
+  ${theme.typography.textMedium};
+  color: ${theme.colors.grayscale[400]};
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: ${theme.colors.grayscale[600]};
   }
+`;
+
+const sortButtonActiveStyle = css`
+  color: ${theme.colors.grayscale[900]};
+  font-weight: 600;
+`;
+
+const dividerStyle = css`
+  width: 1px;
+  height: 12px;
+  background-color: ${theme.colors.grayscale[200]};
+  margin: 0 8px;
+`;
+
+const messageStyle = css`
+  ${theme.typography.headlineMedium};
+  color: ${theme.colors.grayscale[400]};
+  text-align: center;
+  padding: 120px 0;
+`;
+
+const activitiesContainer = css`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 
   @media (max-width: ${theme.breakpoints.lg}) {
     grid-template-columns: repeat(2, 1fr);
@@ -67,8 +183,8 @@ const membersGridStyle = css`
   }
 `;
 
-const paginationWrapperStyle = css`
+const paginationWrapper = css`
   display: flex;
   justify-content: center;
-  width: 100%;
+  margin-top: 60px;
 `;
