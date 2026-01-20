@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
-import Badge from '@/components/common/Badge';
-import { MdLocationOn, MdAccessTime, MdCalendarMonth, MdMap } from 'react-icons/md';
+import { MdAccessTime, MdCalendarMonth, MdMap, MdEventAvailable } from 'react-icons/md';
 import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useActivityDetail } from '@/hooks/useActivityDetail';
@@ -56,7 +55,7 @@ const ActivityDetailPage = () => {
     return <div>Activity not found</div>;
   }
 
-  const { title, category, location, address, period, description } = activity;
+  const { title, address, period, description, applyDeadline } = activity;
 
   return (
     <div>
@@ -67,9 +66,6 @@ const ActivityDetailPage = () => {
           style={{ backgroundImage: `url(${activity.thumbnail})` }}
         />
         <div css={headerContentStyle}>
-          <div css={categoryBadgeStyle}>
-            <Badge variant='category'>{category}</Badge>
-          </div>
           <h1 css={titleStyle}>{title}</h1>
           <div css={actionButtonsStyle}>
             <button css={primaryButtonStyle}>신청하기</button>
@@ -115,17 +111,17 @@ const ActivityDetailPage = () => {
               </div>
             </div>
             <div css={infoItemStyle}>
-              <MdLocationOn size={20} css={infoIconStyle} />
-              <div css={infoContentStyle}>
-                <span css={infoLabelStyle}>장소</span>
-                <span css={infoValueStyle}>{location}</span>
-              </div>
-            </div>
-            <div css={infoItemStyle}>
               <MdMap size={20} css={infoIconStyle} />
               <div css={infoContentStyle}>
                 <span css={infoLabelStyle}>주소</span>
                 <span css={infoValueStyle}>{address}</span>
+              </div>
+            </div>
+            <div css={infoItemStyle}>
+              <MdEventAvailable size={20} css={infoIconStyle} />
+              <div css={infoContentStyle}>
+                <span css={infoLabelStyle}>신청 마감</span>
+                <span css={infoValueStyle}>{formatDate(applyDeadline || period.end)}</span>
               </div>
             </div>
           </div>
@@ -221,10 +217,6 @@ const headerContentStyle = css`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
-
-const categoryBadgeStyle = css`
-  margin-bottom: 8px;
 `;
 
 const titleStyle = css`

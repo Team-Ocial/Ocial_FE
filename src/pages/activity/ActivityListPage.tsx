@@ -6,11 +6,14 @@ import ActivityCard from '@/components/common/ActivityCard';
 import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
 import { useActivity } from '@/hooks/useActivity';
-import { ACTIVITY_CONSTANTS, ActivityFilterCategory, isMainCategory } from '@/types/activity.types';
+import { ACTIVITY_CONSTANTS, ActivityFilterCategory } from '@/types/activity.types';
+import { useNavigate } from 'react-router-dom';
+import { MdAdd } from 'react-icons/md';
 
 type SortType = '최신순' | '인기순';
 
 const ActivityListPage = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<ActivityFilterCategory>(
     ACTIVITY_CONSTANTS.ALL
   );
@@ -46,17 +49,18 @@ const ActivityListPage = () => {
             >
               {ACTIVITY_CONSTANTS.ALL}
             </Button>
-            {ACTIVITY_CONSTANTS.CATEGORIES.map((category) => (
+            {ACTIVITY_CONSTANTS.FILTERS.map((filter) => (
               <Button
-                key={category}
+                key={filter.label}
                 variant='filter'
-                active={selectedCategory === category}
-                onClick={() => handleCategoryClick(category)}
+                active={selectedCategory === filter.value}
+                onClick={() => handleCategoryClick(filter.value)}
               >
-                {isMainCategory(category) ? ACTIVITY_CONSTANTS.DISPLAY_NAMES[category] : category}
+                {filter.label}
               </Button>
             ))}
           </div>
+          <div css={actionsContainer}>
           <div css={sortButtons}>
             <button
               css={[sortButtonStyle, selectedSort === '최신순' && sortButtonActiveStyle]}
@@ -76,6 +80,15 @@ const ActivityListPage = () => {
               }}
             >
               인기순
+              </button>
+            </div>
+            <button
+              css={createButtonStyle}
+              onClick={() => navigate('/activity/new')}
+              title='활동 등록'
+            >
+              <MdAdd size={18} />
+              <span>추가등록</span>
             </button>
           </div>
         </div>
@@ -129,6 +142,37 @@ const filterContainer = css`
 const categoryButtons = css`
   display: flex;
   gap: 12px;
+`;
+
+const actionsContainer = css`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const createButtonStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 1px solid ${theme.colors.primary[600]};
+  border-radius: 8px;
+  background-color: transparent;
+  color: ${theme.colors.primary[600]};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: ${theme.colors.primary[600]};
+    color: ${theme.colors.white};
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 const sortButtons = css`

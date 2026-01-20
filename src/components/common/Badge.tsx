@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
 
 interface BadgeProps {
-  variant: 'status' | 'category';
+  variant: 'status';
   children: string;
 }
 
@@ -20,52 +20,29 @@ const badgeStyle = css`
   margin-bottom: 10px;
 `;
 
-const getBadgeStyle = (variant: BadgeProps['variant'], value: string) => {
-  if (variant === 'status') {
-    switch (value) {
-      case '모집 중':
-        return css`
-          background: ${theme.colors.black};
-          color: ${theme.colors.white};
-          border: 1px solid ${theme.colors.grayscale[700]};
-        `;
-      case '모집 마감':
-        return css`
-          background: ${theme.colors.grayscale[50]};
-          color: ${theme.colors.black};
-          border: 1px solid ${theme.colors.grayscale[200]};
-        `;
-      case '수강 마감':
-        return css`
-          background: ${theme.colors.grayscale[300]};
-          color: ${theme.colors.black};
-          border: 1px solid ${theme.colors.grayscale[700]};
-        `;
-      default:
-        return css`
-          background: ${theme.colors.white};
-          color: ${theme.colors.black};
-        `;
-    }
-  }
-
-  // 카테고리별 스타일
+const getBadgeStyle = (_variant: BadgeProps['variant'], value: string) => {
   switch (value) {
-    case '원데이 클래스':
+    case '모집 중':
       return css`
-        background: ${theme.colors.secondary[100]};
-        color: ${theme.colors.black};
-        border: 1px solid ${theme.colors.secondary[200]};
+        background: ${theme.colors.black};
+        color: ${theme.colors.white};
+        border: 1px solid ${theme.colors.grayscale[700]};
       `;
-    case '스터디':
+    case '모집 마감':
       return css`
-        background: ${theme.colors.tertiary[100]};
+        background: ${theme.colors.grayscale[50]};
         color: ${theme.colors.black};
-        border: 1px solid ${theme.colors.tertiary[200]};
+        border: 1px solid ${theme.colors.grayscale[200]};
+      `;
+    case '수강 마감':
+      return css`
+        background: ${theme.colors.grayscale[300]};
+        color: ${theme.colors.black};
+        border: 1px solid ${theme.colors.grayscale[700]};
       `;
     default:
       return css`
-        background: ${theme.colors.grayscale[100]};
+        background: ${theme.colors.white};
         color: ${theme.colors.black};
       `;
   }

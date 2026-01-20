@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { theme } from '@/styles/theme';
-import { ActivityInfo, ACTIVITY_CONSTANTS } from '@/types/activity.types';
-import { MdLocationOn, MdCalendarMonth } from 'react-icons/md';
+import { ActivityInfo } from '@/types/activity.types';
+import { MdCalendarMonth, MdMap, MdEventAvailable } from 'react-icons/md';
 import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import Badge from './Badge';
 import { formatDate } from '@/utils/formatDate';
@@ -13,7 +13,7 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { id, status, category, title, location, period, thumbnail, likes } = activity;
+  const { id, status, title, address, period, applyDeadline, thumbnail, likes } = activity;
   const { isLiked: checkIsLiked, toggleLike } = useLikesStore();
 
   const handleLikeClick = (e: React.MouseEvent) => {
@@ -34,19 +34,22 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         </div>
       </div>
       <div css={contentStyle}>
-        <Badge variant='category'>{ACTIVITY_CONSTANTS.DISPLAY_NAMES[category]}</Badge>
         <h3 css={titleStyle}>{title}</h3>
         <div css={infoStyle}>
-          <div css={infoItemStyle}>
-            <MdLocationOn size={16} />
-            <span>{location}</span>
-          </div>
           <div css={infoItemStyle}>
             <MdCalendarMonth size={16} />
             <span>
               {formatDate(period.start)}-{formatDate(period.end)} {period.time.start} ~{' '}
               {period.time.end}
             </span>
+          </div>
+          <div css={infoItemStyle}>
+            <MdMap size={16} />
+            <span>{address}</span>
+          </div>
+          <div css={infoItemStyle}>
+            <MdEventAvailable size={16} />
+            <span>신청 마감: {formatDate(applyDeadline || period.end)}</span>
           </div>
         </div>
       </div>

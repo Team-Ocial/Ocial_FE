@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { IoClose } from 'react-icons/io5';
-import { MdLocationOn, MdCalendarMonth } from 'react-icons/md';
+import { MdCalendarMonth } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 
 import { theme } from '@/styles/theme';
@@ -55,7 +55,6 @@ const LikesPage = () => {
                     </div>
                     <div css={activityContent}>
                       <div css={activityHeader}>
-                        <Badge variant='category'>{activity.category}</Badge>
                         <button
                           css={closeButton}
                           onClick={() => toggleLike(activity.id)}
@@ -72,10 +71,6 @@ const LikesPage = () => {
                             {formatDate(activity.period.start)}-{formatDate(activity.period.end)}{' '}
                             {activity.period.time.start} ~ {activity.period.time.end}
                           </span>
-                        </div>
-                        <div css={infoItem}>
-                          <MdLocationOn css={infoIcon} size={16} />
-                          <span css={infoText}>{activity.location}</span>
                         </div>
                       </div>
                     </div>

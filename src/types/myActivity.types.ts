@@ -4,6 +4,6 @@ export interface MyActivity {
   status: string;
   title: string;
   date: string;
-  location: string;
+  address: string;
   thumbnail: string;
 }
