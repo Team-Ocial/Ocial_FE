@@ -1,0 +1,42 @@
+name: FE Auto Deploy Test
+
+on:
+  push:
+    branches: [ "develop" ] # develop 브랜치 푸시 시 작동
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 1. 도커 허브 로그인
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 2. 이미지 빌드 및 푸시
+      - name: Build and Push
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_REPO }}:latest .
+          docker push ${{ secrets.DOCKERHUB_REPO }}:latest
+
+      # 3. Tailscale 연결 (비밀 통로 개척)
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTH_KEY }}
+
+      # 4. 서버 접속 및 배포 (SSH Key 사용)
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_IP }}     # 100.x.x.x
+          username: deployer
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # id_rsa 내용
+          script: |
+            cd /opt/web-auto
+            docker compose pull nginx-auto
+            docker compose up -d nginx-auto
