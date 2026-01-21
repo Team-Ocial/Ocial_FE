@@ -12,7 +12,6 @@ const MASTER_ACTIVITY_DATA: ActivityDetail[] = [
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'Vision 스터디',
-    location: 'Y-Space 광화문',
     address: '서울 종로구 경희궁2길 8-4',
     period: {
       start: '2025-03-01T00:00:00.000Z',
@@ -58,7 +57,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.CLOSED,
     category: ActivityMainCategory.ONE_DAY,
     title: 'ChatGPT 기초 활용',
-    location: 'Y-Space 강남',
     address: '서울 강남구 테헤란로 152',
     period: {
       start: '2025-03-15T00:00:00.000Z',
@@ -86,7 +84,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'React 심화 스터디',
-    location: 'Y-Space 판교',
     address: '경기 성남시 분당구 판교로 242',
     period: {
       start: '2025-04-01T00:00:00.000Z',
@@ -121,7 +118,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.ONE_DAY,
     title: 'UI/UX 디자인 워크샵',
-    location: 'Y-Space 홍대',
     address: '서울 마포구 와우산로 94',
     period: {
       start: '2025-04-15T00:00:00.000Z',
@@ -151,7 +147,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'TypeScript 마스터 과정',
-    location: 'Y-Space 선릉',
     address: '서울 강남구 선릉로 428',
     period: {
       start: '2025-05-01T00:00:00.000Z',
@@ -186,7 +181,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.ONE_DAY,
     title: 'Next.js 13 시작하기',
-    location: 'Y-Space 역삼',
     address: '서울 강남구 역삼로 172',
     period: {
       start: '2025-05-15T00:00:00.000Z',
@@ -216,7 +210,6 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'DevOps 입문 스터디',
-    location: 'Y-Space 서초',
     address: '서울 서초구 서초대로 396',
     period: {
       start: '2025-06-01T00:00:00.000Z',

@@ -7,6 +7,7 @@ import MembersPage from '@/pages/ocial/MembersPage';
 import ActivityListPage from '@/pages/activity/ActivityListPage';
 import ActivityDetailPage from '@/pages/activity/ActivityDetailPage';
 import ActivityEditPage from '@/pages/activity/ActivityEditPage';
+import ActivityCreatePage from '@/pages/activity/ActivityCreatePage';
 import NoticePage from '@/pages/news/NoticePage';
 import NoticeDetailPage from '@/pages/news/NoticeDetailPage';
 import NoticeEditPage from '@/pages/news/NoticeEditPage';
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
       { path: 'ocial/members', element: <MembersPage /> }, // 오셜,구성원
       { path: 'activity', element: <ActivityListPage /> }, // Activity 목록
       { path: 'activity/:id', element: <ActivityDetailPage /> }, // Activity 상세
+      {
+        path: 'activity/new',
+        element: (
+          <ProtectedRoute>
+            <ActivityCreatePage />
+          </ProtectedRoute>
+        ),
+      }, // Activity 등록 (로그인 필요)
       {
         path: 'activity/edit/:id',
         element: (

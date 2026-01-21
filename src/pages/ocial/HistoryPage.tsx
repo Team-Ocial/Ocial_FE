@@ -1,190 +1,125 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
-import PageHeader from '@/components/common/PageHeader';
-import Button from '@/components/common/Button';
-import ActivityCard from '@/components/common/ActivityCard';
-import Pagination from '@/components/common/Pagination';
 import { theme } from '@/styles/theme';
-import { useActivity } from '@/hooks/useActivity';
-import { ACTIVITY_CONSTANTS, ActivityFilterCategory, isMainCategory } from '@/types/activity.types';
+import { useHistory } from '@/hooks/useHistory';
+import { HistoryYear } from '@/types/history.types';
+import OCIALLayout from '@/layouts/OCIALLayout';
+import LoadingState from '@/components/common/LoadingState';
+import ErrorState from '@/components/common/ErrorState';
 
-type SortType = '최신순' | '인기순';
+const YearContent = ({ yearData }: { yearData: HistoryYear }) => (
+  <div css={yearContentWrapper}>
+    <h3 css={yearTitle}>{yearData.year}</h3>
+    <ul css={historyList}>
+      {yearData.items.map((item) => (
+        <li key={item.id} css={historyItem}>
+          {item.content}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
-const ActivityListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<ActivityFilterCategory>(
-    ACTIVITY_CONSTANTS.ALL
-  );
-  const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
-  const [currentPage, setCurrentPage] = useState(1);
+const HistorySection = ({ bigYear, years }: { bigYear: string; years: HistoryYear[] }) => (
+  <div css={historyContent}>
+    <div css={leftSection}>
+      <h2 css={bigYearStyle}>{bigYear}</h2>
+    </div>
+    <div css={rightSection}>
+      {years.map((yearData, index) => (
+        <div key={yearData.year} css={yearSection}>
+          <YearContent yearData={yearData} />
+          {index < years.length - 1 && <div css={divider} />}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
-  const { activities, isLoading, error, totalPages } = useActivity({
-    page: currentPage,
-    category: selectedCategory,
-    sort: selectedSort === '최신순' ? 'latest' : 'popular',
-  });
+const HistoryPage = () => {
+  const { data: historyData, isLoading, error } = useHistory();
 
-  const handleCategoryClick = (category: ActivityFilterCategory) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
-  };
+  if (isLoading) return <LoadingState />;
+  if (error) return <ErrorState message={error} />;
+  if (!historyData) return null;
 
   return (
-    <div css={pageContainer}>
-      <PageHeader
-        title='새로운 배움과 만남이 시작되는 곳'
-        description={
-          '오셜은 배움과 네트워킹을 통해 함께 성장하고\n활발한 커뮤니티 문화를 만들어갑니다.'
-        }
-      />
-      <div css={contentWrapper}>
-        <div css={filterContainer}>
-          <div css={categoryButtons}>
-            <Button
-              variant='filter'
-              active={selectedCategory === ACTIVITY_CONSTANTS.ALL}
-              onClick={() => handleCategoryClick(ACTIVITY_CONSTANTS.ALL)}
-            >
-              {ACTIVITY_CONSTANTS.ALL}
-            </Button>
-            {ACTIVITY_CONSTANTS.CATEGORIES.map((category) => (
-              <Button
-                key={category}
-                variant='filter'
-                active={selectedCategory === category}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {isMainCategory(category) ? ACTIVITY_CONSTANTS.DISPLAY_NAMES[category] : category}
-              </Button>
-            ))}
-          </div>
-          <div css={sortButtons}>
-            <button
-              css={[sortButtonStyle, selectedSort === '최신순' && sortButtonActiveStyle]}
-              onClick={() => {
-                setSelectedSort('최신순');
-                setCurrentPage(1);
-              }}
-            >
-              최신순
-            </button>
-            <div css={dividerStyle} />
-            <button
-              css={[sortButtonStyle, selectedSort === '인기순' && sortButtonActiveStyle]}
-              onClick={() => {
-                setSelectedSort('인기순');
-                setCurrentPage(1);
-              }}
-            >
-              인기순
-            </button>
-          </div>
-        </div>
-
-        {isLoading ? (
-          <div css={messageStyle}>로딩 중...</div>
-        ) : error ? (
-          <div css={messageStyle}>{error}</div>
-        ) : activities.length === 0 ? (
-          <div css={messageStyle}>활동이 없습니다.</div>
-        ) : (
-          <>
-            <div css={activitiesContainer}>
-              {activities.map((activity) => (
-                <ActivityCard key={activity.id} activity={activity} />
-              ))}
-            </div>
-            <div css={paginationWrapper}>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+    <OCIALLayout title={'데이터와 함께 걸어온 길,\n새로운 미래를 향해 나아갑니다.'}>
+      {historyData.sections.map((section) => (
+        <HistorySection key={section.bigYear} bigYear={section.bigYear} years={section.years} />
+      ))}
+    </OCIALLayout>
   );
 };
 
-export default ActivityListPage;
+export default HistoryPage;
 
-const pageContainer = css`
-  width: 100%;
-`;
-
-const contentWrapper = css`
-  max-width: ${theme.layout.width.content};
-  margin: 0 auto;
-  padding: 40px ${theme.layout.spacing.gutter} 80px;
-`;
-
-const filterContainer = css`
+const historyContent = css`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-`;
+  margin-top: 80px;
+  gap: 120px;
 
-const categoryButtons = css`
-  display: flex;
-  gap: 12px;
-`;
-
-const sortButtons = css`
-  display: flex;
-  align-items: center;
-`;
-
-const sortButtonStyle = css`
-  ${theme.typography.textMedium};
-  color: ${theme.colors.grayscale[400]};
-  background: none;
-  border: none;
-  padding: 4px 8px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: ${theme.colors.grayscale[600]};
+  & + & {
+    margin-top: 120px;
   }
 `;
 
-const sortButtonActiveStyle = css`
+const leftSection = css`
+  flex: 0 0 auto;
+`;
+
+const bigYearStyle = css`
+  ${theme.typography.displaySmall};
   color: ${theme.colors.grayscale[900]};
-  font-weight: 600;
+  margin: 0;
 `;
 
-const dividerStyle = css`
-  width: 1px;
-  height: 12px;
-  background-color: ${theme.colors.grayscale[200]};
-  margin: 0 8px;
+const rightSection = css`
+  flex: 1;
+  max-width: 600px;
 `;
 
-const messageStyle = css`
-  ${theme.typography.headlineMedium};
-  color: ${theme.colors.grayscale[400]};
-  text-align: center;
-  padding: 120px 0;
-`;
+const yearSection = css`
+  margin-bottom: 60px;
 
-const activitiesContainer = css`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-
-  @media (max-width: ${theme.breakpoints.lg}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
-const paginationWrapper = css`
+const yearContentWrapper = css`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 40px;
+`;
+
+const yearTitle = css`
+  ${theme.typography.headlineMedium};
+  color: ${theme.colors.grayscale[900]};
+  margin: 0;
+  flex: 0 0 auto;
+`;
+
+const historyList = css`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+`;
+
+const historyItem = css`
+  ${theme.typography.textLarge};
+  color: ${theme.colors.grayscale[900]};
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const divider = css`
+  height: 1px;
+  background-color: ${theme.colors.grayscale[100]};
   margin-top: 60px;
 `;
+

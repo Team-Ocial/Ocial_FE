@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { MdLocationOn, MdCalendarMonth } from 'react-icons/md';
+import { MdMap, MdCalendarMonth } from 'react-icons/md';
 import { useState } from 'react';
 
 import { theme } from '@/styles/theme';
@@ -19,7 +19,7 @@ const mockActivities: MyActivity[] = [
     status: '신청이 완료',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail1,
   },
   {
@@ -28,7 +28,7 @@ const mockActivities: MyActivity[] = [
     status: '스터디',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail2,
   },
   {
@@ -37,7 +37,7 @@ const mockActivities: MyActivity[] = [
     status: '스터디',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail1,
   },
   {
@@ -46,7 +46,7 @@ const mockActivities: MyActivity[] = [
     status: '스터디',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail2,
   },
   {
@@ -55,7 +55,7 @@ const mockActivities: MyActivity[] = [
     status: '스터디',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail1,
   },
   {
@@ -64,7 +64,7 @@ const mockActivities: MyActivity[] = [
     status: '스터디',
     title: '종료되는 한 해, 새로운 시작을 준비다',
     date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    location: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
+    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
     thumbnail: thumbnail2,
   },
 ];
@@ -111,10 +111,10 @@ const ActivitiesPage = () => {
                       </div>
                       <div css={activityInfo}>
                         <span css={infoLabel}>
-                          <MdLocationOn css={infoIcon} size={16} />
-                          장소
+                          <MdMap css={infoIcon} size={16} />
+                          주소
                         </span>
-                        <span css={infoValue}>{activity.location}</span>
+                        <span css={infoValue}>{activity.address}</span>
                       </div>
                       <div css={activityActions}>
                         {activity.type === '예정된 활동' && (

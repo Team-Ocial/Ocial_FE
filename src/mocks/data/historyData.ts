@@ -3,6 +3,51 @@ import { HistoryData } from '@/types/history.types';
 export const INITIAL_HISTORY_DATA: HistoryData = {
   sections: [
     {
+      bigYear: '2026-2025',
+      years: [
+        {
+          year: '2026',
+          items: [
+            {
+              id: '2026-1',
+              content: '커뮤니티 데이터 허브 고도화',
+              date: '2026-02',
+            },
+            {
+              id: '2026-2',
+              content: '글로벌 파트너십 확대',
+              date: '2026-05',
+            },
+            {
+              id: '2026-3',
+              content: '차세대 추천 엔진 공개',
+              date: '2026-09',
+            },
+          ],
+        },
+        {
+          year: '2025',
+          items: [
+            {
+              id: '2025-1',
+              content: '커뮤니티 성장 100만 달성',
+              date: '2025-03',
+            },
+            {
+              id: '2025-2',
+              content: '오셜 캠퍼스 프로그램 론칭',
+              date: '2025-06',
+            },
+            {
+              id: '2025-3',
+              content: 'AI 커리어 매칭 서비스 출시',
+              date: '2025-10',
+            },
+          ],
+        },
+      ],
+    },
+    {
       bigYear: '2024-2021',
       years: [
         {
@@ -10,28 +55,23 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2024-1',
-              content: '데이터 분석 플랫폼 런칭',
-              date: '2024-01',
-            },
-            {
-              id: '2024-2',
-              content: '시리즈 A 투자 유치',
+              content: '데이터 기반 커뮤니티 플랫폼 정식 오픈',
               date: '2024-02',
             },
             {
+              id: '2024-2',
+              content: '첫 오프라인 컨퍼런스 개최',
+              date: '2024-05',
+            },
+            {
               id: '2024-3',
-              content: '특허 등록 완료',
-              date: '2024-03',
+              content: '기업 파트너십 프로그램 출범',
+              date: '2024-09',
             },
             {
               id: '2024-4',
-              content: '신규 서비스 출시',
-              date: '2024-04',
-            },
-            {
-              id: '2024-5',
-              content: '글로벌 시장 진출',
-              date: '2024-05',
+              content: '멤버십 고도화 및 혜택 확장',
+              date: '2024-12',
             },
           ],
         },
@@ -40,23 +80,23 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2023-1',
-              content: '장관상 받음 짝짝짝',
-              date: '2023-12',
+              content: '오셜 커뮤니티 정식 출범',
+              date: '2023-03',
             },
             {
               id: '2023-2',
-              content: '오셜 창립',
-              date: '2023-09',
-            },
-            {
-              id: '2023-3',
-              content: '장관상 받음 짝짝짝',
+              content: '첫 커뮤니티 밋업 진행',
               date: '2023-06',
             },
             {
+              id: '2023-3',
+              content: '운영 멤버 1기 모집',
+              date: '2023-09',
+            },
+            {
               id: '2023-4',
-              content: '오셜 창립',
-              date: '2023-03',
+              content: '연말 커뮤니티 어워즈 개최',
+              date: '2023-12',
             },
           ],
         },
@@ -65,28 +105,23 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2022-1',
-              content: '서비스 베타 버전 출시',
-              date: '2022-12',
-            },
-            {
-              id: '2022-2',
-              content: '시드 투자 유치',
-              date: '2022-09',
-            },
-            {
-              id: '2022-3',
-              content: '팀 구성 완료',
-              date: '2022-06',
-            },
-            {
-              id: '2022-4',
-              content: '비즈니스 모델 확립',
+              content: '커뮤니티 베타 운영 시작',
               date: '2022-03',
             },
             {
-              id: '2022-5',
-              content: '프로토타입 개발',
-              date: '2022-01',
+              id: '2022-2',
+              content: '온라인 콘텐츠 시리즈 런칭',
+              date: '2022-06',
+            },
+            {
+              id: '2022-3',
+              content: '파트너 협업 프로젝트 시작',
+              date: '2022-09',
+            },
+            {
+              id: '2022-4',
+              content: '첫 멤버십 프로그램 공개',
+              date: '2022-12',
             },
           ],
         },
@@ -95,28 +130,23 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2021-1',
-              content: '회사 설립',
-              date: '2021-12',
+              content: '커뮤니티 기획 및 리서치 착수',
+              date: '2021-01',
             },
             {
               id: '2021-2',
-              content: '초기 팀 구성',
-              date: '2021-09',
+              content: '핵심 팀 구성',
+              date: '2021-05',
             },
             {
               id: '2021-3',
-              content: '비즈니스 모델 기획',
-              date: '2021-06',
+              content: '파일럿 모임 및 피드백 수집',
+              date: '2021-09',
             },
             {
               id: '2021-4',
-              content: '시장 조사 완료',
-              date: '2021-03',
-            },
-            {
-              id: '2021-5',
-              content: '기술 검증',
-              date: '2021-01',
+              content: '초기 서비스 방향성 확정',
+              date: '2021-12',
             },
           ],
         },
@@ -130,23 +160,23 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2020-1',
-              content: '연구 개발 시작',
-              date: '2020-10',
+              content: '커뮤니티 운영 모델 설계',
+              date: '2020-02',
             },
             {
               id: '2020-2',
-              content: '기술 특허 출원',
-              date: '2020-07',
+              content: '프로토타입 커뮤니티 운영',
+              date: '2020-06',
             },
             {
               id: '2020-3',
-              content: '초기 투자 유치',
-              date: '2020-04',
+              content: '콘텐츠 운영 가이드 제작',
+              date: '2020-09',
             },
             {
               id: '2020-4',
-              content: '기술 검증 완료',
-              date: '2020-01',
+              content: '정식 런칭 로드맵 확정',
+              date: '2020-12',
             },
           ],
         },
@@ -155,23 +185,18 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2019-1',
-              content: '시장 조사 진행',
-              date: '2019-10',
+              content: '커뮤니티 니즈 조사',
+              date: '2019-03',
             },
             {
               id: '2019-2',
-              content: '기술 개발 계획 수립',
+              content: '업계 전문가 네트워크 구축',
               date: '2019-07',
             },
             {
               id: '2019-3',
-              content: '파트너십 구축',
-              date: '2019-04',
-            },
-            {
-              id: '2019-4',
-              content: '비즈니스 모델 검증',
-              date: '2019-01',
+              content: '스터디 그룹 시범 운영',
+              date: '2019-10',
             },
           ],
         },
@@ -180,23 +205,18 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2018-1',
-              content: '아이디어 구체화',
-              date: '2018-10',
+              content: '커뮤니티 비전 수립',
+              date: '2018-02',
             },
             {
               id: '2018-2',
-              content: '시장 분석 완료',
-              date: '2018-07',
+              content: '초기 멤버 모집 및 운영 체계 준비',
+              date: '2018-06',
             },
             {
               id: '2018-3',
-              content: '초기 팀 구성',
-              date: '2018-04',
-            },
-            {
-              id: '2018-4',
-              content: '기술 타당성 검토',
-              date: '2018-01',
+              content: '정기 밋업 파일럿 진행',
+              date: '2018-11',
             },
           ],
         },
@@ -205,23 +225,18 @@ export const INITIAL_HISTORY_DATA: HistoryData = {
           items: [
             {
               id: '2017-1',
-              content: '비즈니스 아이디어 발굴',
-              date: '2017-10',
+              content: '오셜 커뮤니티 아이디어 착수',
+              date: '2017-03',
             },
             {
               id: '2017-2',
-              content: '시장 기회 분석',
+              content: '초기 멤버 네트워킹 시작',
               date: '2017-07',
             },
             {
               id: '2017-3',
-              content: '사업 계획 수립',
-              date: '2017-04',
-            },
-            {
-              id: '2017-4',
-              content: '초기 멤버 모집',
-              date: '2017-01',
+              content: '첫 스터디 모임 진행',
+              date: '2017-11',
             },
           ],
         },

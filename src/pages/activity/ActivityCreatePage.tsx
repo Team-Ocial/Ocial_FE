@@ -1,35 +1,44 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useActivityDetail } from '@/hooks/useActivityDetail';
-import { useState, useEffect } from 'react';
-import { ActivityDetail, ACTIVITY_CONSTANTS } from '@/types/activity.types';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import {
+  ActivityDetail,
+  ActivityMainCategory,
+  ActivityStatus,
+  ACTIVITY_CONSTANTS,
+} from '@/types/activity.types';
+import thumbnail1 from '@/assets/images/thumbnail1.png';
 import { MdExpandMore } from 'react-icons/md';
 
-const ActivityEditPage = () => {
-  const { id } = useParams<{ id: string }>();
+const createInitialActivity = (): ActivityDetail => {
+  const today = new Date().toISOString().slice(0, 10);
+
+  return {
+    id: '',
+    status: ActivityStatus.OPEN,
+    category: ActivityMainCategory.STUDY,
+    title: '',
+    address: '',
+    period: {
+      start: `${today}T00:00:00.000Z`,
+      end: `${today}T00:00:00.000Z`,
+      time: { start: '10:00', end: '12:00' },
+    },
+    applyDeadline: `${today}T00:00:00.000Z`,
+    thumbnail: thumbnail1,
+    likes: 0,
+    isLiked: false,
+    description: '',
+    curriculum: '',
+    guidelines: '',
+  };
+};
+
+const ActivityCreatePage = () => {
   const navigate = useNavigate();
-  const { activity: initialActivity, isLoading, error } = useActivityDetail(id || '');
-  const [activity, setActivity] = useState<ActivityDetail | null>(null);
+  const [activity, setActivity] = useState<ActivityDetail>(createInitialActivity());
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-
-  useEffect(() => {
-    if (initialActivity) {
-      setActivity(initialActivity);
-    }
-  }, [initialActivity]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!activity) {
-    return <div>Activity not found</div>;
-  }
 
   const selectedCategoryLabel =
     ACTIVITY_CONSTANTS.FILTERS.find((filter) => filter.value === activity.category)?.label ||
@@ -44,10 +53,11 @@ const ActivityEditPage = () => {
     e.preventDefault();
     try {
       // TODO: API 연동
-      // await updateActivity(id, activity);
-      navigate(`/activity/${id}`);
+      // const newId = await createActivity(activity);
+      // navigate(`/activity/${newId}`);
+      navigate('/activity');
     } catch (error) {
-      console.error('Failed to update activity:', error);
+      console.error('Failed to create activity:', error);
     }
   };
 
@@ -90,11 +100,7 @@ const ActivityEditPage = () => {
                 }
               }}
             />
-            <button
-              type='button'
-              css={cancelButtonStyle}
-              onClick={() => navigate(`/activity/${id}`)}
-            >
+            <button type='button' css={cancelButtonStyle} onClick={() => navigate('/activity')}>
               취소
             </button>
           </div>
@@ -177,7 +183,6 @@ const ActivityEditPage = () => {
           {/* 일정 정보 */}
           <section css={sectionStyle}>
             <h3 css={groupTitleStyle}>활동일정</h3>
-            {/* <h2 css={sectionTitleStyle}>일정 정보</h2> */}
             <div css={fieldGroupStyle}>
               <div css={inlineFieldGroupStyle}>
                 <div css={dateFieldGroupStyle}>
@@ -190,7 +195,7 @@ const ActivityEditPage = () => {
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, start: e.target.value + 'T00:00:00.000Z' },
+                          period: { ...activity.period, start: `${e.target.value}T00:00:00.000Z` },
                         })
                       }
                       css={inputStyle}
@@ -205,7 +210,7 @@ const ActivityEditPage = () => {
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, end: e.target.value + 'T00:00:00.000Z' },
+                          period: { ...activity.period, end: `${e.target.value}T00:00:00.000Z` },
                         })
                       }
                       css={inputStyle}
@@ -256,7 +261,6 @@ const ActivityEditPage = () => {
 
           {/* 장소 정보 */}
           <section css={sectionStyle}>
-            {/* <h2 css={sectionTitleStyle}>장소 정보</h2> */}
             <div css={fieldGroupStyle}>
               <div css={fieldStyle}>
                 <label htmlFor='address'>주소</label>
@@ -338,7 +342,7 @@ const ActivityEditPage = () => {
           {/* 버튼 */}
           <div css={buttonGroupStyle}>
             <button type='submit' css={submitButtonStyle}>
-              저장
+              등록
             </button>
           </div>
         </div>
@@ -347,7 +351,7 @@ const ActivityEditPage = () => {
   );
 };
 
-export default ActivityEditPage;
+export default ActivityCreatePage;
 
 // Styles
 const headerStyle = css`
