@@ -1,98 +1,49 @@
 import { css } from '@emotion/react';
 import { MdMap, MdCalendarMonth } from 'react-icons/md';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { theme } from '@/styles/theme';
 import MyPageHeader from './MyPageHeader';
 import MyMenuCard from './MyMenuCard';
-import { MyActivity } from '@/types/myActivity.types';
+import { ActivityInfo, ACTIVITY_CONSTANTS, ActivityMainCategory } from '@/types/activity.types';
+import { ACTIVITY_LIST } from '@/mocks/data/activityData';
+import { formatDate } from '@/utils/formatDate';
 import Pagination from '@/components/common/Pagination';
-import Button from '@/components/common/Button';
 import SquareButton from '@/components/common/SquareButton';
-import thumbnail1 from '@/assets/images/thumbnail1.png';
-import thumbnail2 from '@/assets/images/thumbnail2.png';
-
-const mockActivities: MyActivity[] = [
-  {
-    id: '1',
-    type: '예정된 활동',
-    status: '신청이 완료',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail1,
-  },
-  {
-    id: '2',
-    type: '활동 중',
-    status: '스터디',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail2,
-  },
-  {
-    id: '3',
-    type: '수료',
-    status: '스터디',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail1,
-  },
-  {
-    id: '4',
-    type: '수료',
-    status: '스터디',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail2,
-  },
-  {
-    id: '5',
-    type: '활동 중',
-    status: '스터디',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail1,
-  },
-  {
-    id: '6',
-    type: '예정된 활동',
-    status: '스터디',
-    title: '종료되는 한 해, 새로운 시작을 준비다',
-    date: '2025.03.01 오전 10시 30분 ~ 오후 5시',
-    address: '서울 종로구 경희궁2길 8-4 (뉴욕 시립 및 공공 연극) Y.Space 광화문',
-    thumbnail: thumbnail2,
-  },
-];
 
 const ITEMS_PER_PAGE = 4;
 
+const isDeadlineClosed = (deadline: string) => {
+  return new Date(deadline).getTime() < Date.now();
+};
+
+const getCategoryLabel = (category: ActivityInfo['category']) => {
+  return (
+    ACTIVITY_CONSTANTS.FILTERS.find((filter) => filter.value === category)?.label ||
+    String(category)
+  );
+};
+
 const ActivitiesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(mockActivities.length / ITEMS_PER_PAGE);
+  const activities = useMemo(() => ACTIVITY_LIST, []);
+  const totalPages = Math.ceil(activities.length / ITEMS_PER_PAGE);
+
+  const scheduledCount = activities.filter(
+    (activity) => new Date(activity.period.start).getTime() > Date.now()
+  ).length;
+  const totalCount = activities.length;
 
   return (
     <div css={pageContainer}>
-      <MyPageHeader />
+      <MyPageHeader stats={{ scheduledCount, totalCount }} />
       <div css={mainContainer}>
         <MyMenuCard activeMenu='activities' />
         <main css={mainContent}>
           <h1 css={pageTitle}>내 활동 보기</h1>
           <div css={contentArea}>
-            <div css={filterTabs}>
-              <Button variant='filter' active>
-                전체보기
-              </Button>
-              <Button variant='filter'>예정된 활동</Button>
-              <Button variant='filter'>활동 중</Button>
-              <Button variant='filter'>수료</Button>
-            </div>
             <div css={activitiesList}>
-              {mockActivities
+              {activities
                 .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
                 .map((activity) => (
                   <div key={activity.id} css={activityCard}>
@@ -100,14 +51,19 @@ const ActivitiesPage = () => {
                       <img src={activity.thumbnail} alt={activity.title} css={thumbnailImage} />
                     </div>
                     <div css={activityContent}>
-                      <div css={activityType(activity.type)}>{activity.type}</div>
+                      <div css={categoryBadge(activity.category)}>
+                        {getCategoryLabel(activity.category)}
+                      </div>
                       <h3 css={activityTitle}>{activity.title}</h3>
                       <div css={activityInfo}>
                         <span css={infoLabel}>
                           <MdCalendarMonth css={infoIcon} size={16} />
                           일시
                         </span>
-                        <span css={infoValue}>{activity.date}</span>
+                        <span css={infoValue}>
+                          {formatDate(activity.period.start)} {activity.period.time.start} ~{' '}
+                          {formatDate(activity.period.end)} {activity.period.time.end}
+                        </span>
                       </div>
                       <div css={activityInfo}>
                         <span css={infoLabel}>
@@ -117,21 +73,15 @@ const ActivitiesPage = () => {
                         <span css={infoValue}>{activity.address}</span>
                       </div>
                       <div css={activityActions}>
-                        {activity.type === '예정된 활동' && (
-                          <SquareButton size='small' variant='outlined'>
-                            취소하기
-                          </SquareButton>
-                        )}
-                        {activity.type === '활동 중' && (
-                          <SquareButton size='small' variant='text'>
-                            활동 중
-                          </SquareButton>
-                        )}
-                        {activity.type === '수료' && (
-                          <SquareButton size='small' variant='gray'>
-                            수료증 보기
-                          </SquareButton>
-                        )}
+                        <SquareButton
+                          size='small'
+                          variant='outlined'
+                          disabled={isDeadlineClosed(activity.applyDeadline || activity.period.end)}
+                        >
+                          {isDeadlineClosed(activity.applyDeadline || activity.period.end)
+                            ? '마감'
+                            : '취소하기'}
+                        </SquareButton>
                       </div>
                     </div>
                   </div>
@@ -185,12 +135,6 @@ const contentArea = css`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
-const filterTabs = css`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-`;
-
 const activitiesList = css`
   display: flex;
   flex-direction: column;
@@ -229,7 +173,7 @@ const activityContent = css`
   gap: 0.75rem;
 `;
 
-const activityType = (type: string) => css`
+const categoryBadge = (category: ActivityInfo['category']) => css`
   margin-bottom: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -240,7 +184,7 @@ const activityType = (type: string) => css`
   gap: 0.5rem;
   width: fit-content;
 
-  ${type === '예정된 활동' &&
+  ${category === ActivityMainCategory.ONE_DAY &&
   `
     background-color: ${theme.colors.white};
     color: ${theme.colors.grayscale[900]};
@@ -255,7 +199,7 @@ const activityType = (type: string) => css`
     }
   `}
 
-  ${type === '활동 중' &&
+  ${category === ActivityMainCategory.STUDY &&
   `
     background-color: ${theme.colors.white};
     color: ${theme.colors.grayscale[900]};
@@ -270,7 +214,7 @@ const activityType = (type: string) => css`
     }
   `}
 
-  ${type === '수료' &&
+  ${category === '분과' &&
   `
     background-color: ${theme.colors.white};
     color: ${theme.colors.grayscale[900]};

@@ -5,5 +5,7 @@ export interface MyActivity {
   title: string;
   date: string;
   address: string;
+  applyDeadline: string;
+  category: '원데이클래스' | '소모임' | '분과';
   thumbnail: string;
 }
