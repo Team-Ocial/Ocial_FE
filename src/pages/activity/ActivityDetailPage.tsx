@@ -8,6 +8,8 @@ import { useActivityDetail } from '@/hooks/useActivityDetail';
 import { useLikesStore } from '@/store/useLikesStore';
 import { formatDate } from '@/utils/formatDate';
 import { generateKey } from '@/utils/generateKey';
+import { isDeadlineClosed } from '@/utils/activity';
+import { FALLBACK_IMAGE } from '@/utils/image';
 
 // TODO: 실제 인증 상태 관리로 대체
 const isAdmin = true; // 임시로 관리자 상태 설정
@@ -55,23 +57,40 @@ const ActivityDetailPage = () => {
     return <div>Activity not found</div>;
   }
 
-  const { title, address, period, description, applyDeadline } = activity;
+  const {
+    title,
+    location,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    applyDeadline,
+    description,
+  } = activity;
+
+  const isClosed = isDeadlineClosed(applyDeadline, endDate);
 
   return (
     <div>
       {/* 헤더 섹션 */}
       <div css={headerStyle}>
-        <div
+        <img
+          src={activity.thumbnail || FALLBACK_IMAGE}
+          alt={title}
           css={headerBackgroundStyle}
-          style={{ backgroundImage: `url(${activity.thumbnail})` }}
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE;
+          }}
         />
         <div css={headerContentStyle}>
           <h1 css={titleStyle}>{title}</h1>
           <div css={actionButtonsStyle}>
-            <button css={primaryButtonStyle}>신청하기</button>
+            <button css={primaryButtonStyle} disabled={isClosed}>
+              {isClosed ? '마감' : '신청하기'}
+            </button>
             <button css={secondaryButtonStyle} onClick={handleLikeClick}>
               좋아요
-              {isLiked(activity?.id || '') ? (
+              {isLiked(activity?.id ?? 0) ? (
                 <PiThumbsUpFill size={20} />
               ) : (
                 <PiThumbsUpLight size={20} />
@@ -97,7 +116,7 @@ const ActivityDetailPage = () => {
               <div css={infoContentStyle}>
                 <span css={infoLabelStyle}>일정</span>
                 <span css={infoValueStyle}>
-                  {formatDate(period.start)}-{formatDate(period.end)}
+                  {formatDate(startDate)}-{formatDate(endDate)}
                 </span>
               </div>
             </div>
@@ -106,7 +125,7 @@ const ActivityDetailPage = () => {
               <div css={infoContentStyle}>
                 <span css={infoLabelStyle}>시간</span>
                 <span css={infoValueStyle}>
-                  {period.time.start} ~ {period.time.end}
+                  {startTime} ~ {endTime}
                 </span>
               </div>
             </div>
@@ -114,14 +133,14 @@ const ActivityDetailPage = () => {
               <MdMap size={20} css={infoIconStyle} />
               <div css={infoContentStyle}>
                 <span css={infoLabelStyle}>주소</span>
-                <span css={infoValueStyle}>{address}</span>
+                <span css={infoValueStyle}>{location}</span>
               </div>
             </div>
             <div css={infoItemStyle}>
               <MdEventAvailable size={20} css={infoIconStyle} />
               <div css={infoContentStyle}>
                 <span css={infoLabelStyle}>신청 마감</span>
-                <span css={infoValueStyle}>{formatDate(applyDeadline || period.end)}</span>
+                <span css={infoValueStyle}>{formatDate(applyDeadline ?? endDate)}</span>
               </div>
             </div>
           </div>
@@ -205,8 +224,9 @@ const headerBackgroundStyle = css`
   left: 0;
   right: 0;
   bottom: 0;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 0;
   filter: brightness(0.8);
 `;
@@ -253,6 +273,12 @@ const primaryButtonStyle = css`
 
   &:hover {
     background-color: ${theme.colors.grayscale[200]};
+  }
+
+  &:disabled {
+    background-color: ${theme.colors.grayscale[200]};
+    color: ${theme.colors.grayscale[500]};
+    cursor: not-allowed;
   }
 `;
 

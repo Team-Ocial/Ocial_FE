@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Link } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 
 interface MyMenuCardProps {
@@ -10,18 +11,18 @@ const MyMenuCard = ({ activeMenu }: MyMenuCardProps) => {
     <aside css={sidebar}>
       <h3 css={sidebarTitle}>마이 오셜</h3>
       <nav css={sidebarNav}>
-        <a
-          href='/mypage/activities'
+        <Link
+          to='/mypage/activities'
           css={[sidebarItem, activeMenu === 'activities' && activeSidebarItem]}
         >
           활동내역
-        </a>
-        <a href='/mypage/likes' css={[sidebarItem, activeMenu === 'likes' && activeSidebarItem]}>
+        </Link>
+        <Link to='/mypage/likes' css={[sidebarItem, activeMenu === 'likes' && activeSidebarItem]}>
           좋아요
-        </a>
-        <a href='/mypage/edit' css={[sidebarItem, activeMenu === 'profile' && activeSidebarItem]}>
+        </Link>
+        <Link to='/mypage/edit' css={[sidebarItem, activeMenu === 'profile' && activeSidebarItem]}>
           정보수정
-        </a>
+        </Link>
       </nav>
     </aside>
   );

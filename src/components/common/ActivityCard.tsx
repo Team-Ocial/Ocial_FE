@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import { ActivityInfo } from '@/types/activity.types';
+import { FALLBACK_IMAGE } from '@/utils/image';
 import { MdCalendarMonth, MdMap, MdEventAvailable } from 'react-icons/md';
 import { PiThumbsUpLight, PiThumbsUpFill } from 'react-icons/pi';
 import Badge from './Badge';
@@ -13,7 +14,19 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { id, status, title, address, period, applyDeadline, thumbnail, likes } = activity;
+  const {
+    id,
+    status,
+    title,
+    location,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    applyDeadline,
+    thumbnail,
+    likes,
+  } = activity;
   const { isLiked: checkIsLiked, toggleLike } = useLikesStore();
 
   const handleLikeClick = (e: React.MouseEvent) => {
@@ -24,7 +37,14 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
   return (
     <Link to={`/activity/${id}`} css={cardStyle}>
       <div css={imageWrapper}>
-        <img src={thumbnail} alt={title} css={imageStyle} />
+        <img
+          src={thumbnail || FALLBACK_IMAGE}
+          alt={title}
+          css={imageStyle}
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE;
+          }}
+        />
         <div css={badgeWrapper}>
           <Badge variant='status'>{status}</Badge>
           <button type='button' css={likeContainerStyle} onClick={handleLikeClick}>
@@ -39,17 +59,16 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
           <div css={infoItemStyle}>
             <MdCalendarMonth size={16} />
             <span>
-              {formatDate(period.start)}-{formatDate(period.end)} {period.time.start} ~{' '}
-              {period.time.end}
+              {formatDate(startDate)}-{formatDate(endDate)} {startTime} ~ {endTime}
             </span>
           </div>
           <div css={infoItemStyle}>
             <MdMap size={16} />
-            <span>{address}</span>
+            <span>{location}</span>
           </div>
           <div css={infoItemStyle}>
             <MdEventAvailable size={16} />
-            <span>신청 마감: {formatDate(applyDeadline || period.end)}</span>
+            <span>신청 마감: {formatDate(applyDeadline ?? endDate)}</span>
           </div>
         </div>
       </div>
@@ -77,12 +96,14 @@ const imageWrapper = css`
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
+  background-color: ${theme.colors.grayscale[100]};
 `;
 
 const imageStyle = css`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 `;
 
 const badgeWrapper = css`

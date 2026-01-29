@@ -6,8 +6,8 @@ import {
   ActivityDetail,
   ActivityMainCategory,
   ActivityStatus,
-  ACTIVITY_CONSTANTS,
 } from '@/types/activity.types';
+import { ACTIVITY_CONSTANTS } from '@/constants/categories';
 import thumbnail1 from '@/assets/images/thumbnail1.png';
 import { MdExpandMore } from 'react-icons/md';
 
@@ -15,23 +15,24 @@ const createInitialActivity = (): ActivityDetail => {
   const today = new Date().toISOString().slice(0, 10);
 
   return {
-    id: '',
+    id: 0,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: '',
-    address: '',
-    period: {
-      start: `${today}T00:00:00.000Z`,
-      end: `${today}T00:00:00.000Z`,
-      time: { start: '10:00', end: '12:00' },
-    },
-    applyDeadline: `${today}T00:00:00.000Z`,
+    location: '',
+    startDate: today,
+    endDate: today,
+    startTime: '10:00',
+    endTime: '12:00',
+    applyDeadline: today,
     thumbnail: thumbnail1,
     likes: 0,
     isLiked: false,
+    createdAt: `${today}T00:00:00.000Z`,
+    updatedAt: `${today}T00:00:00.000Z`,
     description: '',
-    curriculum: '',
-    guidelines: '',
+    curriculum: null,
+    guidelines: null,
   };
 };
 
@@ -166,11 +167,11 @@ const ActivityCreatePage = () => {
                   <input
                     id='applyDeadline'
                     type='date'
-                    value={(activity.applyDeadline || activity.period.end).split('T')[0]}
+                    value={(activity.applyDeadline ?? activity.endDate).slice(0, 10)}
                     onChange={(e) =>
                       setActivity({
                         ...activity,
-                        applyDeadline: `${e.target.value}T00:00:00.000Z`,
+                        applyDeadline: e.target.value,
                       })
                     }
                     css={inputStyle}
@@ -191,11 +192,11 @@ const ActivityCreatePage = () => {
                     <input
                       id='startDate'
                       type='date'
-                      value={activity.period.start.split('T')[0]}
+                      value={activity.startDate}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, start: `${e.target.value}T00:00:00.000Z` },
+                          startDate: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -206,11 +207,11 @@ const ActivityCreatePage = () => {
                     <input
                       id='endDate'
                       type='date'
-                      value={activity.period.end.split('T')[0]}
+                      value={activity.endDate}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, end: `${e.target.value}T00:00:00.000Z` },
+                          endDate: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -223,14 +224,11 @@ const ActivityCreatePage = () => {
                     <input
                       id='startTime'
                       type='time'
-                      value={activity.period.time.start}
+                      value={activity.startTime}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: {
-                            ...activity.period,
-                            time: { ...activity.period.time, start: e.target.value },
-                          },
+                          startTime: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -241,14 +239,11 @@ const ActivityCreatePage = () => {
                     <input
                       id='endTime'
                       type='time'
-                      value={activity.period.time.end}
+                      value={activity.endTime}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: {
-                            ...activity.period,
-                            time: { ...activity.period.time, end: e.target.value },
-                          },
+                          endTime: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -263,12 +258,12 @@ const ActivityCreatePage = () => {
           <section css={sectionStyle}>
             <div css={fieldGroupStyle}>
               <div css={fieldStyle}>
-                <label htmlFor='address'>주소</label>
+                <label htmlFor='location'>장소명</label>
                 <input
-                  id='address'
+                  id='location'
                   type='text'
-                  value={activity.address}
-                  onChange={(e) => setActivity({ ...activity, address: e.target.value })}
+                  value={activity.location}
+                  onChange={(e) => setActivity({ ...activity, location: e.target.value })}
                   css={inputStyle}
                 />
               </div>

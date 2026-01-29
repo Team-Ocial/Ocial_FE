@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ActivityDetail } from '@/types/activity.types';
-import { ACTIVITY_DETAILS } from '@/mocks/data/activityData';
 import { useLikesStore } from '@/store/useLikesStore';
+import { getActivityDetail } from '@/api/activity';
 
 interface UseActivityDetailReturn {
   activity: ActivityDetail | null;
@@ -21,16 +21,9 @@ export const useActivityDetail = (id: string): UseActivityDetailReturn => {
     setError(null);
 
     try {
-      // API 연동 시 실제 API 호출로 대체
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay
-
-      const mockActivity = ACTIVITY_DETAILS[id];
-
-      if (mockActivity) {
-        setActivity(mockActivity);
-      } else {
-        throw new Error('Activity not found');
-      }
+      const numericId = Number(id);
+      const response = await getActivityDetail(numericId);
+      setActivity(response.activity);
     } catch (err) {
       setError('활동 상세 정보를 불러오는데 실패했습니다.');
       setActivity(null);

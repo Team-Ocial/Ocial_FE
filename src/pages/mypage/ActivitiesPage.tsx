@@ -1,22 +1,25 @@
 import { css } from '@emotion/react';
 import { MdMap, MdCalendarMonth } from 'react-icons/md';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { theme } from '@/styles/theme';
 import MyPageHeader from './MyPageHeader';
 import MyMenuCard from './MyMenuCard';
-import { ActivityInfo, ACTIVITY_CONSTANTS, ActivityMainCategory } from '@/types/activity.types';
-import { ACTIVITY_LIST } from '@/mocks/data/activityData';
+import { ActivityInfo, ActivityMainCategory } from '@/types/activity.types';
+import { ACTIVITY_CONSTANTS } from '@/constants/categories';
 import { formatDate } from '@/utils/formatDate';
 import Pagination from '@/components/common/Pagination';
 import SquareButton from '@/components/common/SquareButton';
+import LoadingState from '@/components/common/LoadingState';
+import ErrorState from '@/components/common/ErrorState';
+import { useMyActivities } from '@/hooks/useMyActivities';
+import { cancelMyActivity } from '@/api/activity';
+import { isDeadlineClosed } from '@/utils/activity';
+import { FALLBACK_IMAGE } from '@/utils/image';
+import { useModalStore } from '@/store/useModalStore';
+import { useToast } from '@/hooks/useToast';
 
 const ITEMS_PER_PAGE = 4;
-
-const isDeadlineClosed = (deadline: string) => {
-  return new Date(deadline).getTime() < Date.now();
-};
-
 const getCategoryLabel = (category: ActivityInfo['category']) => {
   return (
     ACTIVITY_CONSTANTS.FILTERS.find((filter) => filter.value === category)?.label ||
@@ -26,13 +29,31 @@ const getCategoryLabel = (category: ActivityInfo['category']) => {
 
 const ActivitiesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const activities = useMemo(() => ACTIVITY_LIST, []);
-  const totalPages = Math.ceil(activities.length / ITEMS_PER_PAGE);
+  const { openModal } = useModalStore();
+  const toast = useToast();
+  const { activities, isLoading, error, totalCount, scheduledCount, totalPages, refetch } =
+    useMyActivities({
+      page: currentPage,
+      itemsPerPage: ITEMS_PER_PAGE,
+    });
 
-  const scheduledCount = activities.filter(
-    (activity) => new Date(activity.period.start).getTime() > Date.now()
-  ).length;
-  const totalCount = activities.length;
+  const handleCancel = (activityId: number) => {
+    openModal({
+      type: 'warning',
+      title: '활동 취소',
+      desc: '정말로 취소하시겠어요?\n취소 후에는 되돌릴 수 없어요.',
+      actionButton: '취소하기',
+      onAction: async () => {
+        try {
+          await cancelMyActivity(activityId);
+          toast.success('활동이 취소되었습니다.');
+          await refetch();
+        } catch (err) {
+          toast.error('활동 취소에 실패했습니다.');
+        }
+      },
+    });
+  };
 
   return (
     <div css={pageContainer}>
@@ -42,58 +63,76 @@ const ActivitiesPage = () => {
         <main css={mainContent}>
           <h1 css={pageTitle}>내 활동 보기</h1>
           <div css={contentArea}>
-            <div css={activitiesList}>
-              {activities
-                .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-                .map((activity) => (
-                  <div key={activity.id} css={activityCard}>
-                    <div css={thumbnailWrapper}>
-                      <img src={activity.thumbnail} alt={activity.title} css={thumbnailImage} />
+            {isLoading ? (
+              <LoadingState height={300} />
+            ) : error ? (
+              <ErrorState message={error} height={300} />
+            ) : activities.length === 0 ? (
+              <div css={emptyState}>내 활동이 없습니다.</div>
+            ) : (
+              <>
+                <div css={activitiesList}>
+                  {activities.map((activity) => (
+                    <div key={activity.id} css={activityCard}>
+                      <div css={thumbnailWrapper}>
+                        <img
+                          src={activity.thumbnail || FALLBACK_IMAGE}
+                          alt={activity.title}
+                          css={thumbnailImage}
+                          onError={(e) => {
+                            e.currentTarget.src = FALLBACK_IMAGE;
+                          }}
+                        />
+                      </div>
+                      <div css={activityContent}>
+                        <div css={categoryBadge(activity.category)}>
+                          {getCategoryLabel(activity.category)}
+                        </div>
+                        <h3 css={activityTitle}>{activity.title}</h3>
+                        <div css={activityInfo}>
+                          <span css={infoLabel}>
+                            <MdCalendarMonth css={infoIcon} size={16} />
+                            일시
+                          </span>
+                          <span css={infoValue}>
+                          {formatDate(activity.startDate)} {activity.startTime} ~{' '}
+                          {formatDate(activity.endDate)} {activity.endTime}
+                          </span>
+                        </div>
+                        <div css={activityInfo}>
+                          <span css={infoLabel}>
+                            <MdMap css={infoIcon} size={16} />
+                            주소
+                          </span>
+                        <span css={infoValue}>{activity.location}</span>
+                        </div>
+                        <div css={activityActions}>
+                          <SquareButton
+                            size='small'
+                            variant='outlined'
+                          disabled={isDeadlineClosed(activity.applyDeadline, activity.endDate)}
+                            onClick={() => handleCancel(activity.id)}
+                          >
+                            {isDeadlineClosed(activity.applyDeadline, activity.endDate)
+                              ? '마감'
+                              : '취소하기'}
+                          </SquareButton>
+                        </div>
+                      </div>
                     </div>
-                    <div css={activityContent}>
-                      <div css={categoryBadge(activity.category)}>
-                        {getCategoryLabel(activity.category)}
-                      </div>
-                      <h3 css={activityTitle}>{activity.title}</h3>
-                      <div css={activityInfo}>
-                        <span css={infoLabel}>
-                          <MdCalendarMonth css={infoIcon} size={16} />
-                          일시
-                        </span>
-                        <span css={infoValue}>
-                          {formatDate(activity.period.start)} {activity.period.time.start} ~{' '}
-                          {formatDate(activity.period.end)} {activity.period.time.end}
-                        </span>
-                      </div>
-                      <div css={activityInfo}>
-                        <span css={infoLabel}>
-                          <MdMap css={infoIcon} size={16} />
-                          주소
-                        </span>
-                        <span css={infoValue}>{activity.address}</span>
-                      </div>
-                      <div css={activityActions}>
-                        <SquareButton
-                          size='small'
-                          variant='outlined'
-                          disabled={isDeadlineClosed(activity.applyDeadline || activity.period.end)}
-                        >
-                          {isDeadlineClosed(activity.applyDeadline || activity.period.end)
-                            ? '마감'
-                            : '취소하기'}
-                        </SquareButton>
-                      </div>
-                    </div>
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <div css={paginationWrapper}>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                    />
                   </div>
-                ))}
-            </div>
-            <div css={paginationWrapper}>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+                )}
+              </>
+            )}
           </div>
         </main>
       </div>
@@ -120,6 +159,10 @@ const mainContainer = css`
   display: grid;
   grid-template-columns: 250px 1fr;
   gap: 2rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const mainContent = css`
@@ -141,6 +184,15 @@ const activitiesList = css`
   gap: 1rem;
 `;
 
+const emptyState = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: ${theme.colors.grayscale[500]};
+  ${theme.typography.textLarge};
+`;
+
 const activityCard = css`
   display: flex;
   gap: 1.5rem;
@@ -148,6 +200,10 @@ const activityCard = css`
   border-radius: 8px;
   background: ${theme.colors.white};
   border: 1px solid ${theme.colors.grayscale[200]};
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 const thumbnailWrapper = css`
@@ -157,6 +213,12 @@ const thumbnailWrapper = css`
   height: 140px;
   border-radius: 4px;
   overflow: hidden;
+  background-color: ${theme.colors.grayscale[100]};
+
+  @media (max-width: 900px) {
+    width: 100%;
+    min-width: auto;
+  }
 `;
 
 const thumbnailImage = css`
@@ -164,6 +226,7 @@ const thumbnailImage = css`
   height: 100%;
   object-fit: cover;
   object-position: center;
+  display: block;
 `;
 
 const activityContent = css`
@@ -172,6 +235,7 @@ const activityContent = css`
   flex-direction: column;
   gap: 0.75rem;
 `;
+
 
 const categoryBadge = (category: ActivityInfo['category']) => css`
   margin-bottom: 0.5rem;
@@ -228,6 +292,7 @@ const categoryBadge = (category: ActivityInfo['category']) => css`
       background-color: ${theme.colors.grayscale[500]};
     }
   `}
+
 `;
 
 const activityTitle = css`
@@ -241,6 +306,12 @@ const activityInfo = css`
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 `;
 
 const infoLabel = css`
@@ -259,6 +330,8 @@ const infoIcon = css`
 const infoValue = css`
   color: ${theme.colors.grayscale[700]};
   font-size: 0.875rem;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 `;
 
 const activityActions = css`

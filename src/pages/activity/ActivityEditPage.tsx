@@ -3,7 +3,8 @@ import { theme } from '@/styles/theme';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useActivityDetail } from '@/hooks/useActivityDetail';
 import { useState, useEffect } from 'react';
-import { ActivityDetail, ACTIVITY_CONSTANTS } from '@/types/activity.types';
+import { ActivityDetail } from '@/types/activity.types';
+import { ACTIVITY_CONSTANTS } from '@/constants/categories';
 import { MdExpandMore } from 'react-icons/md';
 
 const ActivityEditPage = () => {
@@ -160,11 +161,11 @@ const ActivityEditPage = () => {
                   <input
                     id='applyDeadline'
                     type='date'
-                    value={(activity.applyDeadline || activity.period.end).split('T')[0]}
+                    value={(activity.applyDeadline ?? activity.endDate).slice(0, 10)}
                     onChange={(e) =>
                       setActivity({
                         ...activity,
-                        applyDeadline: `${e.target.value}T00:00:00.000Z`,
+                        applyDeadline: e.target.value,
                       })
                     }
                     css={inputStyle}
@@ -186,11 +187,11 @@ const ActivityEditPage = () => {
                     <input
                       id='startDate'
                       type='date'
-                      value={activity.period.start.split('T')[0]}
+                      value={activity.startDate}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, start: e.target.value + 'T00:00:00.000Z' },
+                          startDate: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -201,11 +202,11 @@ const ActivityEditPage = () => {
                     <input
                       id='endDate'
                       type='date'
-                      value={activity.period.end.split('T')[0]}
+                      value={activity.endDate}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: { ...activity.period, end: e.target.value + 'T00:00:00.000Z' },
+                          endDate: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -218,14 +219,11 @@ const ActivityEditPage = () => {
                     <input
                       id='startTime'
                       type='time'
-                      value={activity.period.time.start}
+                      value={activity.startTime}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: {
-                            ...activity.period,
-                            time: { ...activity.period.time, start: e.target.value },
-                          },
+                          startTime: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -236,14 +234,11 @@ const ActivityEditPage = () => {
                     <input
                       id='endTime'
                       type='time'
-                      value={activity.period.time.end}
+                      value={activity.endTime}
                       onChange={(e) =>
                         setActivity({
                           ...activity,
-                          period: {
-                            ...activity.period,
-                            time: { ...activity.period.time, end: e.target.value },
-                          },
+                          endTime: e.target.value,
                         })
                       }
                       css={inputStyle}
@@ -259,12 +254,12 @@ const ActivityEditPage = () => {
             {/* <h2 css={sectionTitleStyle}>장소 정보</h2> */}
             <div css={fieldGroupStyle}>
               <div css={fieldStyle}>
-                <label htmlFor='address'>주소</label>
+                <label htmlFor='location'>장소명</label>
                 <input
-                  id='address'
+                  id='location'
                   type='text'
-                  value={activity.address}
-                  onChange={(e) => setActivity({ ...activity, address: e.target.value })}
+                  value={activity.location}
+                  onChange={(e) => setActivity({ ...activity, location: e.target.value })}
                   css={inputStyle}
                 />
               </div>

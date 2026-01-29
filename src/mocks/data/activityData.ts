@@ -8,19 +8,21 @@ import { ActivityStatus, ActivityMainCategory } from '@/types/activity.types';
 
 const MASTER_ACTIVITY_DATA: ActivityDetail[] = [
   {
-    id: '1',
+    id: 1,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'Vision 스터디',
-    address: '서울 종로구 경희궁2길 8-4',
-    period: {
-      start: '2025-03-01T00:00:00.000Z',
-      end: '2025-04-30T00:00:00.000Z',
-      time: { start: '10:30', end: '12:30' },
-    },
+    location: '서울 종로구 경희궁2길 8-4',
+    startDate: '2025-03-01',
+    endDate: '2025-04-30',
+    startTime: '10:30',
+    endTime: '12:30',
+    applyDeadline: '2025-02-25',
     thumbnail: thumbnail1,
     likes: 42,
     isLiked: false,
+    createdAt: '2025-03-01T00:00:00.000Z',
+    updatedAt: '2025-04-30T00:00:00.000Z',
     description: `비전 스터디는 컴퓨터 비전과 이미지 처리 기술을 함께 학습하는 프로그램입니다.
 
 OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수행하며, 이론과 실습을 병행합니다.
@@ -53,19 +55,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 중간 프로젝트 발표 필수`,
   },
   {
-    id: '2',
+    id: 2,
     status: ActivityStatus.CLOSED,
     category: ActivityMainCategory.ONE_DAY,
     title: 'ChatGPT 기초 활용',
-    address: '서울 강남구 테헤란로 152',
-    period: {
-      start: '2025-03-15T00:00:00.000Z',
-      end: '2025-03-15T00:00:00.000Z',
-      time: { start: '14:00', end: '17:00' },
-    },
+    location: '서울 강남구 테헤란로 152',
+    startDate: '2025-03-15',
+    endDate: '2025-03-15',
+    startTime: '14:00',
+    endTime: '17:00',
+    applyDeadline: '2025-03-10',
     thumbnail: thumbnail2,
     likes: 15,
     isLiked: true,
+    createdAt: '2025-03-15T00:00:00.000Z',
+    updatedAt: '2025-03-15T00:00:00.000Z',
     description:
       'ChatGPT를 활용하여 일상과 업무의 생산성을 높이는 방법을 배웁니다. 프롬프트 작성법부터 다양한 활용 사례까지, AI 비서와 함께하는 스마트한 라이프를 경험해보세요.',
     curriculum: `1부: ChatGPT 시작하기
@@ -80,19 +84,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 수업 시작 10분 전까지 입실`,
   },
   {
-    id: '3',
+    id: 3,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'React 심화 스터디',
-    address: '경기 성남시 분당구 판교로 242',
-    period: {
-      start: '2025-04-01T00:00:00.000Z',
-      end: '2025-05-31T00:00:00.000Z',
-      time: { start: '19:00', end: '21:00' },
-    },
+    location: '경기 성남시 분당구 판교로 242',
+    startDate: '2025-04-01',
+    endDate: '2025-05-31',
+    startTime: '19:00',
+    endTime: '21:00',
+    applyDeadline: '2025-03-28',
     thumbnail: thumbnail1,
     likes: 38,
     isLiked: false,
+    createdAt: '2025-04-01T00:00:00.000Z',
+    updatedAt: '2025-05-31T00:00:00.000Z',
     description:
       'React의 고급 기능과 최신 트렌드를 학습하는 스터디입니다. 상태 관리, 성능 최적화, 테스팅 등 실무에서 필요한 심화 내용을 다룹니다.',
     curriculum: `1주차: React 최신 기능
@@ -114,19 +120,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 매주 과제 제출 필수`,
   },
   {
-    id: '4',
+    id: 4,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.ONE_DAY,
     title: 'UI/UX 디자인 워크샵',
-    address: '서울 마포구 와우산로 94',
-    period: {
-      start: '2025-04-15T00:00:00.000Z',
-      end: '2025-04-15T00:00:00.000Z',
-      time: { start: '13:00', end: '18:00' },
-    },
+    location: '서울 마포구 와우산로 94',
+    startDate: '2025-04-15',
+    endDate: '2025-04-15',
+    startTime: '13:00',
+    endTime: '18:00',
+    applyDeadline: '2025-04-10',
     thumbnail: thumbnail2,
     likes: 25,
     isLiked: false,
+    createdAt: '2025-04-15T00:00:00.000Z',
+    updatedAt: '2025-04-15T00:00:00.000Z',
     description:
       '실무에서 바로 적용할 수 있는 UI/UX 디자인 원칙과 프로세스를 배웁니다. Figma를 활용한 실습이 포함됩니다.',
     curriculum: `1부: UI/UX 기초
@@ -143,19 +151,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 디자인 경험 무관`,
   },
   {
-    id: '5',
+    id: 5,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'TypeScript 마스터 과정',
-    address: '서울 강남구 선릉로 428',
-    period: {
-      start: '2025-05-01T00:00:00.000Z',
-      end: '2025-06-30T00:00:00.000Z',
-      time: { start: '20:00', end: '22:00' },
-    },
+    location: '서울 강남구 선릉로 428',
+    startDate: '2025-05-01',
+    endDate: '2025-06-30',
+    startTime: '20:00',
+    endTime: '22:00',
+    applyDeadline: '2025-04-25',
     thumbnail: thumbnail1,
     likes: 31,
     isLiked: false,
+    createdAt: '2025-05-01T00:00:00.000Z',
+    updatedAt: '2025-06-30T00:00:00.000Z',
     description:
       'TypeScript의 고급 기능을 마스터하는 스터디입니다. 타입 시스템의 깊은 이해부터 실전 프로젝트까지 다룹니다.',
     curriculum: `1주차: 타입 시스템 심화
@@ -177,19 +187,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 매주 과제 제출`,
   },
   {
-    id: '6',
+    id: 6,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.ONE_DAY,
     title: 'Next.js 13 시작하기',
-    address: '서울 강남구 역삼로 172',
-    period: {
-      start: '2025-05-15T00:00:00.000Z',
-      end: '2025-05-15T00:00:00.000Z',
-      time: { start: '10:00', end: '17:00' },
-    },
+    location: '서울 강남구 역삼로 172',
+    startDate: '2025-05-15',
+    endDate: '2025-05-15',
+    startTime: '10:00',
+    endTime: '17:00',
+    applyDeadline: '2025-05-10',
     thumbnail: thumbnail2,
     likes: 45,
     isLiked: true,
+    createdAt: '2025-05-15T00:00:00.000Z',
+    updatedAt: '2025-05-15T00:00:00.000Z',
     description:
       'Next.js 13의 새로운 기능과 App Router를 활용한 웹 개발을 배웁니다. SSR, ISR, CSR의 개념부터 실전 프로젝트까지 진행합니다.',
     curriculum: `1부: Next.js 13 기초
@@ -206,19 +218,21 @@ OpenCV와 딥러닝 프레임워크를 활용하여 실전 프로젝트를 수�
 - 점심 제공`,
   },
   {
-    id: '7',
+    id: 7,
     status: ActivityStatus.OPEN,
     category: ActivityMainCategory.STUDY,
     title: 'DevOps 입문 스터디',
-    address: '서울 서초구 서초대로 396',
-    period: {
-      start: '2025-06-01T00:00:00.000Z',
-      end: '2025-07-31T00:00:00.000Z',
-      time: { start: '19:00', end: '21:30' },
-    },
+    location: '서울 서초구 서초대로 396',
+    startDate: '2025-06-01',
+    endDate: '2025-07-31',
+    startTime: '19:00',
+    endTime: '21:30',
+    applyDeadline: '2025-05-25',
     thumbnail: thumbnail1,
     likes: 28,
     isLiked: false,
+    createdAt: '2025-06-01T00:00:00.000Z',
+    updatedAt: '2025-07-31T00:00:00.000Z',
     description:
       'DevOps의 기본 개념과 도구 사용법을 배우는 스터디입니다. Docker, Kubernetes, CI/CD 파이프라인 구축 등을 다룹니다.',
     curriculum: `1주차: DevOps 개요
@@ -247,10 +261,10 @@ export const ACTIVITY_LIST: ActivityInfo[] = MASTER_ACTIVITY_DATA.map(
 );
 
 // --- 상세 조회용 데이터 (마스터 데이터에서 자동 생성) ---
-export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = MASTER_ACTIVITY_DATA.reduce(
+export const ACTIVITY_DETAILS: Record<number, ActivityDetail> = MASTER_ACTIVITY_DATA.reduce(
   (acc, activity) => {
     acc[activity.id] = activity;
     return acc;
   },
-  {} as Record<string, ActivityDetail>
+  {} as Record<number, ActivityDetail>
 );

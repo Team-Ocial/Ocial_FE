@@ -11,6 +11,7 @@ import { useLikesStore } from '@/store/useLikesStore';
 import { formatDate } from '@/utils/formatDate';
 import Pagination from '@/components/common/Pagination';
 import { ACTIVITY_DETAILS } from '@/mocks/data/activityData';
+import { FALLBACK_IMAGE } from '@/utils/image';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -48,7 +49,14 @@ const LikesPage = () => {
                 currentActivities.map((activity) => (
                   <div key={activity.id} css={activityCard}>
                     <div css={thumbnailWrapper}>
-                      <img src={activity.thumbnail} alt={activity.title} css={thumbnailImage} />
+                      <img
+                        src={activity.thumbnail || FALLBACK_IMAGE}
+                        alt={activity.title}
+                        css={thumbnailImage}
+                        onError={(e) => {
+                          e.currentTarget.src = FALLBACK_IMAGE;
+                        }}
+                      />
                       <div css={badgeWrapper}>
                         <Badge variant='status'>{activity.status}</Badge>
                       </div>
@@ -68,8 +76,8 @@ const LikesPage = () => {
                         <div css={infoItem}>
                           <MdCalendarMonth css={infoIcon} size={16} />
                           <span css={infoText}>
-                            {formatDate(activity.period.start)}-{formatDate(activity.period.end)}{' '}
-                            {activity.period.time.start} ~ {activity.period.time.end}
+                            {formatDate(activity.startDate)}-{formatDate(activity.endDate)}{' '}
+                            {activity.startTime} ~ {activity.endTime}
                           </span>
                         </div>
                       </div>
@@ -78,7 +86,7 @@ const LikesPage = () => {
                 ))
               )}
             </div>
-            {likedActivityData.length > 0 && (
+            {likedActivityData.length > 0 && totalPages > 1 && (
               <div css={paginationWrapper}>
                 <Pagination
                   currentPage={currentPage}
@@ -113,6 +121,10 @@ const mainContainer = css`
   display: grid;
   grid-template-columns: 250px 1fr;
   gap: 2rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const mainContent = css`
@@ -141,6 +153,10 @@ const activityCard = css`
   border-radius: 8px;
   background: ${theme.colors.white};
   border: 1px solid ${theme.colors.grayscale[200]};
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 const thumbnailWrapper = css`
@@ -150,12 +166,19 @@ const thumbnailWrapper = css`
   height: 140px;
   border-radius: 4px;
   overflow: hidden;
+  background-color: ${theme.colors.grayscale[100]};
+
+  @media (max-width: 900px) {
+    width: 100%;
+    min-width: auto;
+  }
 `;
 
 const thumbnailImage = css`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 `;
 
 const badgeWrapper = css`

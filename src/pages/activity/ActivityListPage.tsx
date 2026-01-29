@@ -4,9 +4,11 @@ import PageHeader from '@/components/common/PageHeader';
 import Button from '@/components/common/Button';
 import ActivityCard from '@/components/common/ActivityCard';
 import Pagination from '@/components/common/Pagination';
+import LoadingState from '@/components/common/LoadingState';
+import ErrorState from '@/components/common/ErrorState';
 import { theme } from '@/styles/theme';
 import { useActivity } from '@/hooks/useActivity';
-import { ACTIVITY_CONSTANTS, ActivityFilterCategory } from '@/types/activity.types';
+import { ActivityFilterCategory, ACTIVITY_CONSTANTS } from '@/constants/categories';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
@@ -94,9 +96,9 @@ const ActivityListPage = () => {
         </div>
 
         {isLoading ? (
-          <div css={messageStyle}>로딩 중...</div>
+          <LoadingState height={360} />
         ) : error ? (
-          <div css={messageStyle}>{error}</div>
+          <ErrorState message={error} height={360} />
         ) : activities.length === 0 ? (
           <div css={messageStyle}>활동이 없습니다.</div>
         ) : (
@@ -106,13 +108,15 @@ const ActivityListPage = () => {
                 <ActivityCard key={activity.id} activity={activity} />
               ))}
             </div>
-            <div css={paginationWrapper}>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            {totalPages > 1 && (
+              <div css={paginationWrapper}>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
